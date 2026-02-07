@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Macro Calculator</title>
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #f5f5f5;
@@ -15,324 +13,191 @@ body {
 }
 
 .calculator {
-  max-width: 700px;
+  max-width: 600px;
   margin: auto;
   background: #fff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
 }
 
-h2 { margin-bottom: 6px; }
-.subtitle { color: #666; font-size: 14px; margin-bottom: 24px; }
+h2 { margin-bottom: 10px; }
+.subtitle { color:#666; margin-bottom:20px; }
 
 .form-group { margin-bottom: 18px; }
-label { font-weight: 600; font-size: 14px; margin-bottom: 6px; display: block; }
+label { display:block; margin-bottom:6px; font-weight:600; }
 
 input, select {
-  width: 100%;
-  padding: 12px;
-  font-size: 15px;
-  border-radius: 6px;
-  border: 2px solid #ddd;
+  width:100%;
+  padding:10px;
+  font-size:16px;
+  border-radius:6px;
+  border:2px solid #ddd;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
+.row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 
-.unit-toggle {
-  display: flex;
-  gap: 6px;
-  margin-top: 6px;
-}
-
+.unit-toggle { display:flex; gap:6px; margin-top:6px; }
 .unit-btn {
-  flex: 1;
-  padding: 6px;
-  font-size: 12px;
-  border-radius: 4px;
-  border: 2px solid #ddd;
-  background: #fff;
-  cursor: pointer;
+  flex:1;
+  padding:6px;
+  cursor:pointer;
+  border:2px solid #ddd;
+  background:#fff;
 }
-
 .unit-btn.active {
-  background: #4CAF50;
-  color: #fff;
-  border-color: #4CAF50;
+  background:#4CAF50;
+  color:#fff;
+  border-color:#4CAF50;
 }
 
 .goal-buttons {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
 }
-
 .goal-btn {
-  padding: 14px;
-  border-radius: 6px;
-  border: 2px solid #ddd;
-  background: #fff;
-  font-weight: 600;
-  cursor: pointer;
+  padding:12px;
+  border:2px solid #ddd;
+  background:#fff;
+  cursor:pointer;
 }
-
 .goal-btn.active {
-  background: #4CAF50;
-  color: #fff;
-  border-color: #4CAF50;
-}
-
-.custom-macros {
-  margin-top: 24px;
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  border: 2px solid transparent;
-}
-
-.custom-macros.invalid {
-  border-color: #ffc107;
-}
-
-.slider {
-  margin-bottom: 18px;
-}
-
-.slider-header {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 600;
-  margin-bottom: 6px;
+  background:#4CAF50;
+  color:#fff;
+  border-color:#4CAF50;
 }
 
 .calculate-btn {
-  width: 100%;
-  margin-top: 24px;
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 6px;
-  border: none;
-  background: #4CAF50;
-  color: #fff;
-  cursor: pointer;
+  margin-top:20px;
+  width:100%;
+  padding:15px;
+  font-size:17px;
+  font-weight:700;
+  background:#4CAF50;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 
 .results {
-  display: none;
-  margin-top: 30px;
-  padding: 24px;
-  border-radius: 8px;
-  border: 2px solid #4CAF50;
-  background: #f0f8f0;
+  display:none;
+  margin-top:30px;
+  padding:20px;
+  border:2px solid #4CAF50;
+  border-radius:10px;
+  background:#f0f8f0;
 }
 
-.results.active { display: block; }
+.results.active { display:block; }
+
+.warning {
+  background:#fff3cd;
+  padding:10px;
+  border-left:4px solid #ffc107;
+  margin-top:10px;
+}
 </style>
 </head>
 
 <body>
+
 <div class="calculator">
+  <h2>Macro Calculator</h2>
+  <p class="subtitle">Personalized macros based on your goal</p>
 
-<h2>Macro Calculator</h2>
-<p class="subtitle">Metric & Imperial units • Safe macro validation</p>
-
-<form id="form">
-
-<div class="row">
-  <div class="form-group">
-    <label>Age</label>
-    <input type="number" id="age" required>
-  </div>
-
-  <div class="form-group">
-    <label>Gender</label>
-    <select id="gender" required>
-      <option value="">Select…</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-    </select>
-  </div>
-</div>
-
-<div class="row">
-  <div class="form-group">
-    <label>Weight</label>
-    <input type="number" id="weight" required>
-    <div class="unit-toggle">
-      <button type="button" class="unit-btn active" data-type="weight" data-unit="lbs">lbs</button>
-      <button type="button" class="unit-btn" data-type="weight" data-unit="kg">kg</button>
+  <form id="form">
+    <div class="row">
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number" id="age" required>
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <select id="gender" required>
+          <option value="">Select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label>Height</label>
-    <input type="number" id="height" required>
-    <div class="unit-toggle">
-      <button type="button" class="unit-btn active" data-type="height" data-unit="in">in</button>
-      <button type="button" class="unit-btn" data-type="height" data-unit="cm">cm</button>
+    <div class="form-group">
+      <label>Weight</label>
+      <input type="number" id="weight" required>
+      <div class="unit-toggle">
+        <button type="button" class="unit-btn active" data-unit="lbs">lbs</button>
+        <button type="button" class="unit-btn" data-unit="kg">kg</button>
+      </div>
     </div>
+
+    <div class="form-group">
+      <label>Height</label>
+      <input type="number" id="height" required>
+      <div class="unit-toggle">
+        <button type="button" class="unit-btn active" data-unit="in">in</button>
+        <button type="button" class="unit-btn" data-unit="cm">cm</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Goal</label>
+      <div class="goal-buttons">
+        <button type="button" class="goal-btn" data-goal="cut">Fat Loss</button>
+        <button type="button" class="goal-btn" data-goal="maintain">Maintain</button>
+        <button type="button" class="goal-btn" data-goal="bulk">Build</button>
+        <button type="button" class="goal-btn" data-goal="recomp">Recomp</button>
+      </div>
+    </div>
+
+    <button class="calculate-btn">Calculate</button>
+  </form>
+
+  <div class="results" id="results">
+    <h3>Your Calories</h3>
+    <div id="output"></div>
   </div>
-</div>
-
-<div class="form-group">
-  <label>Activity Level</label>
-  <select id="activity" required>
-    <option value="">Select…</option>
-    <option value="1.2">Sedentary</option>
-    <option value="1.375">Lightly Active</option>
-    <option value="1.55">Moderately Active</option>
-    <option value="1.725">Very Active</option>
-    <option value="1.9">Extremely Active</option>
-  </select>
-</div>
-
-<div class="form-group">
-  <label>Goal</label>
-  <div class="goal-buttons">
-    <button type="button" class="goal-btn" data-goal="cut">Fat Loss</button>
-    <button type="button" class="goal-btn" data-goal="maintain">Maintain</button>
-    <button type="button" class="goal-btn" data-goal="bulk">Build Muscle</button>
-    <button type="button" class="goal-btn" data-goal="recomp">Recomp</button>
-  </div>
-</div>
-
-<div class="custom-macros" id="macroBox">
-  <div class="slider">
-    <div class="slider-header"><span>Protein</span><span id="pVal">30%</span></div>
-    <input type="range" id="protein" min="20" max="50" value="30">
-  </div>
-  <div class="slider">
-    <div class="slider-header"><span>Carbs</span><span id="cVal">40%</span></div>
-    <input type="range" id="carbs" min="10" max="60" value="40">
-  </div>
-  <div class="slider">
-    <div class="slider-header"><span>Fat</span><span id="fVal">30%</span></div>
-    <input type="range" id="fat" min="15" max="40" value="30">
-  </div>
-</div>
-
-<button class="calculate-btn">Calculate</button>
-</form>
-
-<div class="results" id="results">
-  <h3 id="calories"></h3>
-  <p id="macros"></p>
-</div>
-
 </div>
 
 <script>
-/* ===== ELEMENTS ===== */
-const weight = document.getElementById('weight');
-const height = document.getElementById('height');
-const age = document.getElementById('age');
-const gender = document.getElementById('gender');
-const activity = document.getElementById('activity');
-const results = document.getElementById('results');
-const caloriesEl = document.getElementById('calories');
-const macrosEl = document.getElementById('macros');
-
-const protein = document.getElementById('protein');
-const carbs = document.getElementById('carbs');
-const fat = document.getElementById('fat');
-const pVal = document.getElementById('pVal');
-const cVal = document.getElementById('cVal');
-const fVal = document.getElementById('fVal');
-const macroBox = document.getElementById('macroBox');
-
 let weightUnit = 'lbs';
 let heightUnit = 'in';
 let goal = null;
 
-const goalMods = {
-  cut: -0.2,
-  maintain: 0,
-  bulk: 0.15,
-  recomp: 0
-};
-
-/* ===== UNIT TOGGLES ===== */
-document.querySelectorAll('.unit-btn').forEach(btn => {
-  btn.onclick = () => {
-    const type = btn.dataset.type;
-    const unit = btn.dataset.unit;
-    const input = type === 'weight' ? weight : height;
-    const value = parseFloat(input.value);
-
-    if (!isNaN(value)) {
-      if (type === 'weight') {
-        input.value = unit === 'kg'
-          ? (value / 2.20462).toFixed(1)
-          : (value * 2.20462).toFixed(1);
-        weightUnit = unit;
-      } else {
-        input.value = unit === 'cm'
-          ? (value * 2.54).toFixed(1)
-          : (value / 2.54).toFixed(1);
-        heightUnit = unit;
-      }
-    }
-
-    btn.parentElement.querySelectorAll('.unit-btn')
-      .forEach(b => b.classList.remove('active'));
+document.querySelectorAll('.unit-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-  };
+    btn.dataset.unit.length === 2 ? weightUnit = btn.dataset.unit : heightUnit = btn.dataset.unit;
+  }
 });
 
-/* ===== GOALS ===== */
-document.querySelectorAll('.goal-btn').forEach(b => {
-  b.onclick = () => {
-    document.querySelectorAll('.goal-btn').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    goal = b.dataset.goal;
-  };
+document.querySelectorAll('.goal-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.goal-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    goal = btn.dataset.goal;
+  }
 });
 
-/* ===== MACRO VALIDATION ===== */
-function updateMacros() {
-  const p = +protein.value;
-  const c = +carbs.value;
-  const f = +fat.value;
-  const total = p + c + f;
-
-  pVal.textContent = p + '%';
-  cVal.textContent = c + '%';
-  fVal.textContent = f + '%';
-
-  macroBox.classList.toggle('invalid', total !== 100);
-}
-[protein, carbs, fat].forEach(s => s.oninput = updateMacros);
-updateMacros();
-
-/* ===== CALCULATE ===== */
-document.getElementById('form').onsubmit = e => {
+document.getElementById('form').onsubmit=e=>{
   e.preventDefault();
+  if(!goal) return alert('Select a goal');
 
-  if (!goal) return alert('Select a goal');
-  if (+protein.value + +carbs.value + +fat.value !== 100)
-    return alert('Macros must equal 100%');
+  let w = +weight.value;
+  let h = +height.value;
 
-  const wKg = weightUnit === 'kg' ? +weight.value : +weight.value / 2.20462;
-  const hCm = heightUnit === 'cm' ? +height.value : +height.value * 2.54;
+  if(weightUnit==='lbs') w*=0.4536;
+  if(heightUnit==='in') h*=2.54;
 
-  const bmr = gender.value === 'male'
-    ? (10*wKg)+(6.25*hCm)-(5*age.value)+5
-    : (10*wKg)+(6.25*hCm)-(5*age.value)-161;
+  let bmr = gender.value==='male'
+    ? 10*w + 6.25*h - 5*age.value + 5
+    : 10*w + 6.25*h - 5*age.value - 161;
 
-  const cal = Math.round(bmr * activity.value * (1 + goalMods[goal]));
-
-  const pG = Math.round((cal * (protein.value/100)) / 4);
-  const cG = Math.round((cal * (carbs.value/100)) / 4);
-  const fG = Math.round((cal * (fat.value/100)) / 9);
-
+  document.getElementById('output').innerText =
+    Math.round(bmr) + ' calories/day';
   results.classList.add('active');
-  caloriesEl.textContent = `${cal.toLocaleString()} kcal/day`;
-  macrosEl.textContent = `Protein ${pG}g • Carbs ${cG}g • Fat ${fG}g`;
 };
 </script>
 
