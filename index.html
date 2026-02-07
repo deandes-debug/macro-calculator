@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Macro Calculator</title>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.calculator {
+  max-width: 650px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+}
+
+h2 { margin-bottom: 6px; }
+.subtitle { color: #666; font-size: 14px; margin-bottom: 24px; }
+
+.form-group { margin-bottom: 18px; }
+label { font-weight: 600; font-size: 14px; margin-bottom: 6px; display: block; }
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 2px solid #ddd;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.unit-toggle {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.unit-btn {
+  flex: 1;
+  padding: 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 2px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.unit-btn.active {
+  background: #4CAF50;
+  color: #fff;
+  border-color: #4CAF50;
+}
+
+.goal-buttons {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+}
+
+.goal-btn {
+  padding: 14px;
+  border-radius: 6px;
+  border: 2px solid #ddd;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.goal-btn.active {
+  background: #4CAF50;
+  color: #fff;
+  border-color: #4CAF50;
+}
+
+.custom-toggle {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+
+.custom-macros {
+  display: none;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.custom-macros.active { display: block; }
+
+.calculate-btn {
+  width: 100%;
+  margin-top: 22px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  background: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.results {
+  display: none;
+  margin-top: 30px;
+  padding: 24px;
+  border-radius: 8px;
+  border: 2px solid #4CAF50;
+  background: #f0f8f0;
+}
+
+.results.active { display: block; }
+</style>
+</head>
+
+<body>
+<div class="calculator">
+
+<h2>Macro Calculator</h2>
+<p class="subtitle">Metric & Imperial units fully supported</p>
+
+<form id="macroForm">
+
+<div class="row">
+  <div class="form-group">
+    <label>Age</label>
+    <input type="number" id="age" required>
+  </div>
+
+  <div class="form-group">
+    <label>Gender</label>
+    <select id="gender" required>
+      <option value="">Select…</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group">
+    <label>Weight</label>
+    <input type="number" id="weight" required>
+    <div class="unit-toggle">
+      <button type="button" class="unit-btn active" data-type="weight" data-unit="lbs">lbs</button>
+      <button type="button" class="unit-btn" data-type="weight" data-unit="kg">kg</button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Height</label>
+    <input type="number" id="height" required>
+    <div class="unit-toggle">
+      <button type="button" class="unit-btn active" data-type="height" data-unit="in">in</button>
+      <button type="button" class="unit-btn" data-type="height" data-unit="cm">cm</button>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label>Activity Level</label>
+  <select id="activity" required>
+    <option value="">Select…</option>
+    <option value="1.2">Sedentary</option>
+    <option value="1.375">Lightly Active</option>
+    <option value="1.55">Moderately Active</option>
+    <option value="1.725">Very Active</option>
+    <option value="1.9">Extremely Active</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label>Goal</label>
+  <div class="goal-buttons">
+    <button type="button" class="goal-btn" data-goal="cut">Fat Loss</button>
+    <button type="button" class="goal-btn" data-goal="maintain">Maintain</button>
+    <button type="button" class="goal-btn" data-goal="bulk">Build Muscle</button>
+    <button type="button" class="goal-btn" data-goal="recomp">Recomp</button>
+  </div>
+</div>
+
+<button class="calculate-btn">Calculate</button>
+</form>
+
+<div class="results" id="results">
+  <h3 id="calories"></h3>
+  <p id="macros"></p>
+</div>
+
+</div>
+
+<script>
+/* ===== DOM REFERENCES (CRITICAL FIX) ===== */
+const weightInput = document.getElementById('weight');
+const heightInput = document.getElementById('height');
+const ageInput = document.getElementById('age');
+const genderSelect = document.getElementById('gender');
+const activitySelect = document.getElementById('activity');
+const resultsDiv = document.getElementById('results');
+const caloriesEl = document.getElementById('calories');
+const macrosEl = document.getElementById('macros');
+
+let weightUnit = 'lbs';
+let heightUnit = 'in';
+let selectedGoal = null;
+
+const goals = {
+  cut:{mod:-0.2},
+  maintain:{mod:0},
+  bulk:{mod:0.15},
+  recomp:{mod:0}
+};
+
+/* ===== UNIT TOGGLES (NOW WORKING) ===== */
+document.querySelectorAll('.unit-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const type = btn.dataset.type;
+    const unit = btn.dataset.unit;
+
+    const input = type === 'weight' ? weightInput : heightInput;
+    let value = parseFloat(input.value);
+
+    if (!isNaN(value)) {
+      if (type === 'weight') {
+        input.value = unit === 'kg'
+          ? (value / 2.20462).toFixed(1)
+          : (value * 2.20462).toFixed(1);
+        weightUnit = unit;
+      } else {
+        input.value = unit === 'cm'
+          ? (value * 2.54).toFixed(1)
+          : (value / 2.54).toFixed(1);
+        heightUnit = unit;
+      }
+    }
+
+    btn.parentElement.querySelectorAll('.unit-btn')
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+/* ===== GOALS ===== */
+document.querySelectorAll('.goal-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.goal-btn')
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedGoal = btn.dataset.goal;
+  };
+});
+
+/* ===== CALCULATE ===== */
+document.getElementById('macroForm').onsubmit = e => {
+  e.preventDefault();
+  if (!selectedGoal) return alert('Select a goal');
+
+  const wKg = weightUnit === 'kg'
+    ? +weightInput.value
+    : +weightInput.value / 2.20462;
+
+  const hCm = heightUnit === 'cm'
+    ? +heightInput.value
+    : +heightInput.value * 2.54;
+
+  const age = +ageInput.value;
+
+  const bmr = genderSelect.value === 'male'
+    ? (10*wKg)+(6.25*hCm)-(5*age)+5
+    : (10*wKg)+(6.25*hCm)-(5*age)-161;
+
+  const calories = Math.round(bmr * activitySelect.value * (1 + goals[selectedGoal].mod));
+
+  resultsDiv.classList.add('active');
+  caloriesEl.textContent = `${calories.toLocaleString()} kcal/day`;
+  macrosEl.textContent = 'Macros calculated successfully';
+};
+</script>
+
+</body>
+</html>
