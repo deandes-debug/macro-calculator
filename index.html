@@ -3,51 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MacroFitCalc - Macro Calculator</title>
+  <title>MacroFitCalc - Calculate Your Macros</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>Get Your Macro Targets in 30 Seconds</h1>
-    <p>Science-based macro estimates. Educational use only — not medical advice.</p>
+    <img src="assets/logo.png" alt="MacroFitCalc Logo" class="logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="sales.html">Starter Pack</a>
+      <a href="#">Blog</a>
+      <a href="#">FAQ</a>
+    </nav>
   </header>
 
   <main>
-    <section id="calculator">
-      <h2>Enter Your Details</h2>
-      <form id="macroForm">
-        <label>Age: <input type="number" name="age" required></label>
-        <label>Sex:
-          <select name="sex" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </label>
-        <label>Height (cm): <input type="number" name="height" required></label>
-        <label>Weight (kg): <input type="number" name="weight" required></label>
-        <label>Activity Level:
-          <select name="activity" required>
-            <option value="1.2">Sedentary</option>
-            <option value="1.375">Light</option>
-            <option value="1.55">Moderate</option>
-            <option value="1.725">Active</option>
-          </select>
-        </label>
-        <label>Goal:
-          <select name="goal" required>
-            <option value="lose">Lose Fat</option>
-            <option value="maintain">Maintain</option>
-            <option value="gain">Build Muscle</option>
-          </select>
-        </label>
-        <button type="submit">Calculate My Macros</button>
-      </form>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Get Your Macro Targets in 30 Seconds</h1>
+        <p>Science-based macro estimates. Educational use only — not medical advice.</p>
+        <div class="calculator-card">
+          <h2>Enter Your Details</h2>
+          <form id="macroForm">
+            <label>Age: <input type="number" name="age" required></label>
+            <label>Sex:
+              <select name="sex" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </label>
+            <label>Height (cm): <input type="number" name="height" required></label>
+            <label>Weight (kg): <input type="number" name="weight" required></label>
+            <label>Activity Level:
+              <select name="activity" required>
+                <option value="1.2">Sedentary</option>
+                <option value="1.375">Light</option>
+                <option value="1.55">Moderate</option>
+                <option value="1.725">Active</option>
+              </select>
+            </label>
+            <label>Goal:
+              <select name="goal" required>
+                <option value="lose">Lose Fat</option>
+                <option value="maintain">Maintain</option>
+                <option value="gain">Build Muscle</option>
+              </select>
+            </label>
+            <button type="submit" class="btn">Calculate My Macros</button>
+          </form>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer>
     <p>Educational purposes only. Not medical advice.</p>
-    <a href="sales.html">Starter Pack</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+    <a href="sales.html" class="btn">Starter Pack</a>
   </footer>
 
   <script src="js/calculator.js"></script>
