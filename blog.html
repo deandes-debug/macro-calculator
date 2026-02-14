@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free nutrition guides, macro tips, and fitness advice. Learn how to track macros, meal prep, and reach your goals.">
+<title>Nutrition Blog - MacroFitCalc</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #FF6B35;
+  --primary-dark: #E55A2B;
+  --secondary: #004E89;
+  --accent: #FFD23F;
+  --success: #06D6A0;
+  --bg: #FFFFFF;
+  --bg-alt: #F8F9FA;
+  --text: #1A1A1A;
+  --text-light: #666666;
+  --border: #E0E0E0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  background: var(--bg);
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  padding: 1rem 0;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--primary);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--primary);
+}
+
+.cta-btn {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.cta-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.hero-small {
+  margin-top: 80px;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #FFF5F0 0%, #FFFFFF 100%);
+  text-align: center;
+}
+
+.hero-small h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  color: var(--text);
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.hero-small p {
+  font-size: 1.2rem;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.blog-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.blog-image {
+  width: 100%;
+  height: 220px;
+  background: var(--bg-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+.blog-content {
+  padding: 2rem;
+}
+
+.blog-category {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.blog-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.blog-excerpt {
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.blog-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.read-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.categories-section {
+  max-width: 1200px;
+  margin: 0 auto 80px;
+  padding: 0 20px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.category-chip {
+  background: var(--bg-alt);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+}
+
+.category-chip:hover {
+  background: white;
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.category-chip span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.category-chip strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.category-chip small {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.newsletter-cta {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+  margin: 80px 0;
+}
+
+.newsletter-cta h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.newsletter-cta p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.email-form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.email-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+}
+
+.email-submit {
+  background: var(--text);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.email-submit:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.footer {
+  background: var(--text);
+  color: white;
+  padding: 60px 20px 30px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-section h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="nav-container">
+    <a href="index.html" class="logo">MACROFITCALC</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="calculator.html">Calculator</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="calculator.html" class="cta-btn">Get Started Free</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero-small">
+  <h1>Nutrition Blog</h1>
+  <p>Expert guides on macros, meal planning, and fitness nutrition</p>
+</section>
+
+<section class="categories-section">
+  <div class="categories-grid">
+    <a href="#" class="category-chip">
+      <span>📊</span>
+      <strong>Macro Basics</strong>
+      <small>12 articles</small>
+    </a>
+    <a href="#" class="category-chip">
+      <span>🍽️</span>
+      <strong>Meal Planning</strong>
+      <small>8 articles</small>
+    </a>
+    <a href="#" class="category-chip">
+      <span>💪</span>
+      <strong>Muscle Building</strong>
+      <small>15 articles</small>
+    </a>
+    <a href="#" class="category-chip">
+      <span>🔥</span>
+      <strong>Fat Loss</strong>
+      <small>18 articles</small>
+    </a>
+    <a href="#" class="category-chip">
+      <span>🥗</span>
+      <strong>Recipes</strong>
+      <small>24 articles</small>
+    </a>
+  </div>
+</section>
+
+<div class="blog-container">
+  <div class="blog-grid">
+    
+    <a href="#" class="blog-card">
+      <div class="blog-image">🎯</div>
+      <div class="blog-content">
+        <span class="blog-category">Macro Basics</span>
+        <h3>Complete Beginner's Guide to Tracking Macros</h3>
+        <p class="blog-excerpt">Everything you need to know to start tracking macros, from calculating your targets to choosing the right apps and staying consistent.</p>
+        <div class="blog-meta">
+          <span>📅 Jan 15, 2026</span>
+          <span class="read-time">⏱️ 8 min read</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="blog-card">
+      <div class="blog-image">💪</div>
+      <div class="blog-content">
+        <span class="blog-category">Muscle Building</span>
+        <h3>How Much Protein Do You Really Need to Build Muscle?</h3>
+        <p class="blog-excerpt">Science-backed recommendations on protein intake for muscle growth, including timing, sources, and common myths debunked.</p>
+        <div class="blog-meta">
+          <span>📅 Jan 12, 2026</span>
+          <span class="read-time">⏱️ 6 min read</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="blog-card">
+      <div class="blog-image">🍽️</div>
+      <div class="blog-content">
+        <span class="blog-category">Meal Planning</span>
+        <h3>7-Day High Protein Meal Plan (2000 Calories)</h3>
+        <p class="blog-excerpt">A complete week of macro-friendly meals with grocery list and prep instructions. Perfect for muscle building or weight loss.</p>
+        <div class="blog-meta">
+          <span>📅 Jan 10, 2026</span>
+          <span class="read-time">⏱️ 12 min read</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="blog-card">
+      <div class="blog-image">🔥</div>
+      <div class="blog-content">
+        <span class="blog-category">Fat Loss</span>
+        <h3>Creating a Calorie Deficit: The Complete Guide</h3>
+        <p class="blog-excerpt">Learn how to calculate your deficit, avoid common mistakes, and sustain fat loss without destroying your metabolism.</p>
+        <div class="blog-meta">
+          <span>📅 Jan 8, 2026</span>
+          <span class="read-time">⏱️ 10 min read</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="blog-card">
+      <div class="blog-image">⚖️</div>
+      <div class="blog-content">
+        <span class="blog-category">Macro Basics</span>
+        <h3>Carbs vs. Fat: Which Macro Should You Prioritize?</h3>
+        <p class="blog-excerpt">Understanding the role of carbs and fats in your diet, and how to adjust your macro split for your goals and lifestyle.</p>
+        <div class="blog-meta">
+          <span>📅 Jan 5, 2026</span>
+          <span class="read-time">⏱️ 7 min read</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="blog-card">
+      <div class="blog-image">🥗</div>
+      <div class="blog-content">
+        <span class="blog-category">Recipes</span>
+        <h3>15 High-Protein Breakfast Ideas Under 400 Calories</h3>
+        <p class="blog-excerpt">Quick, delicious breakfast recipes that hit your protein goals and keep you full until lunch. Macros included for each recipe.</p>
+        <div class="blog-meta">
+          <span>📅 Jan 3, 2026</span>
+          <span class="read-time">⏱️ 5 min read</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<section class="newsletter-cta">
+  <h2>Get Weekly Nutrition Tips</h2>
+  <p>Join 5,000+ readers getting free macro guides, recipes, and fitness advice every week</p>
+  <form class="email-form">
+    <input type="email" class="email-input" placeholder="Enter your email" required>
+    <button type="submit" class="email-submit">Subscribe Free</button>
+  </form>
+</section>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>MacroFitCalc</h3>
+      <p>Free macro calculator and nutrition tools to help you reach your fitness goals.</p>
+    </div>
+    <div class="footer-section">
+      <h3>Tools</h3>
+      <ul class="footer-links">
+        <li><a href="calculator.html">Macro Calculator</a></li>
+        <li><a href="blog.html">Nutrition Blog</a></li>
+        <li><a href="about.html">How It Works</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Company</h3>
+      <ul class="footer-links">
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="mailto:hello@macrofitcalc.com">Contact</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Resources</h3>
+      <ul class="footer-links">
+        <li><a href="about.html#methodology">Macro Guide</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="blog.html">Nutrition Tips</a></li>
+        <li><a href="calculator.html">Meal Plans</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 MacroFitCalc. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
