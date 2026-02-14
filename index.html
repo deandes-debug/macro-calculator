@@ -1,62 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MacroFitCalc - Modern Macro Calculator</title>
-<link rel="stylesheet" href="css/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacroFitCalc | Premium Nutrition & Training</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --dark-blue: #0A2540;
+            --orange: #FF7A00;
+            --light-gray: #F5F7FA;
+            --white: #FFFFFF;
+            --slate: #64748b;
+            --shadow: 0 10px 30px rgba(10, 37, 64, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light-gray); color: var(--dark-blue); line-height: 1.6; }
+
+        /* --- UI Elements --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .section-padding { padding: 80px 0; }
+        .btn-premium {
+            background: linear-gradient(135deg, var(--orange) 0%, #ff9533 100%);
+            color: white; border: none; padding: 16px 32px; border-radius: 12px;
+            font-weight: 700; cursor: pointer; transition: var(--transition);
+            text-decoration: none; display: inline-block; box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
+        }
+        .btn-premium:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 122, 0, 0.4); }
+
+        /* --- Hero --- */
+        header {
+            background: var(--dark-blue);
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 32px 32px;
+            padding: 100px 20px 140px;
+            color: var(--white);
+            text-align: center;
+        }
+        header h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 15px; }
+        header p { opacity: 0.8; font-size: 1.1rem; }
+
+        /* --- Calculator Card --- */
+        .calc-wrapper { margin-top: -80px; }
+        .card {
+            background: var(--white); border-radius: 24px; padding: 40px;
+            box-shadow: var(--shadow); position: relative;
+        }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .field { position: relative; }
+        .field label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.85rem; color: var(--slate); }
+        .field i { position: absolute; left: 15px; top: 38px; color: var(--slate); width: 18px; }
+        .field input, .field select {
+            width: 100%; padding: 12px 12px 12px 45px; border: 2px solid #edf2f7;
+            border-radius: 10px; font-size: 1rem; transition: var(--transition);
+        }
+        .field input:focus { border-color: var(--orange); outline: none; }
+
+        /* --- Results Area --- */
+        #results { display: none; margin-top: 50px; border-top: 1px solid #edf2f7; padding-top: 40px; animation: slideUp 0.6s ease; }
+        .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .macro-box { background: var(--light-gray); padding: 20px; border-radius: 16px; text-align: center; border: 1px solid transparent; transition: var(--transition); }
+        .macro-box:hover { border-color: var(--orange); background: white; transform: scale(1.02); }
+        .macro-box i { color: var(--orange); margin-bottom: 10px; }
+        .macro-box span { display: block; font-size: 0.75rem; font-weight: 700; color: var(--slate); text-transform: uppercase; }
+        .macro-box strong { font-size: 1.75rem; display: block; color: var(--dark-blue); }
+
+        /* --- Pricing / Sales --- */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .price-card {
+            background: var(--white); padding: 40px; border-radius: 20px; border: 1px solid #edf2f7;
+            text-align: center; transition: var(--transition);
+        }
+        .price-card.featured { border: 2px solid var(--orange); transform: scale(1.05); }
+        .price-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .price-card .cost { font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; }
+        .price-card ul { list-style: none; margin-bottom: 30px; text-align: left; }
+        .price-card li { margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
+        .price-card li i { color: #10b981; width: 18px; }
+
+        /* --- FAQ --- */
+        .faq-item { background: var(--white); margin-bottom: 15px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .faq-trigger { padding: 20px; width: 100%; text-align: left; background: none; border: none; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; }
+        .faq-content { padding: 0 20px 20px; display: none; color: var(--slate); }
+
+        /* --- Mobile Sticky CTA --- */
+        .sticky-cta {
+            position: fixed; bottom: 0; left: 0; right: 0; background: var(--white);
+            padding: 15px 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; display: none;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .price-card.featured { transform: scale(1); }
+            .sticky-cta { display: flex; }
+            body { padding-bottom: 80px; }
+        }
+    </style>
 </head>
 <body>
+
 <header>
-<img src="assets/logo.png" alt="MacroFitCalc Logo" class="logo">
-<nav>
-<a href="index.html">Home</a>
-<a href="sales.html">Starter Pack</a>
-<a href="#">FAQ</a>
-</nav>
+    <div class="container">
+        <h1>MacroFitCalc</h1>
+        <p>Stop guessing. Start tracking with professional precision.</p>
+    </div>
 </header>
-<main>
-<section class="hero">
-<div class="hero-content">
-<h1>Get Your Macro Targets in 30 Seconds</h1>
-<p>Science-based estimates. Educational purposes only.</p>
-<div class="calculator-card">
-<h2>Enter Your Details</h2>
-<form id="macroForm">
-<label>Age: <input type="number" name="age" required></label>
-<label>Sex:
-<select name="sex" required>
-<option value="male">Male</option>
-<option value="female">Female</option>
-</select>
-</label>
-<label>Height (cm): <input type="number" name="height" required></label>
-<label>Weight (kg): <input type="number" name="weight" required></label>
-<label>Activity Level:
-<select name="activity" required>
-<option value="1.2">Sedentary</option>
-<option value="1.375">Light</option>
-<option value="1.55">Moderate</option>
-<option value="1.725">Active</option>
-</select>
-</label>
-<label>Goal:
-<select name="goal" required>
-<option value="lose">Lose Fat</option>
-<option value="maintain">Maintain</option>
-<option value="gain">Build Muscle</option>
-</select>
-</label>
-<button type="submit" class="btn">Calculate My Macros</button>
-</form>
-</div>
-</div>
-</section>
+
+<main class="container calc-wrapper">
+    <div class="card">
+        <div class="input-grid">
+            <div class="field">
+                <label>Gender</label>
+                <i data-lucide="users"></i>
+                <select id="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Weight (kg)</label>
+                <i data-lucide="weight"></i>
+                <input type="number" id="weight" placeholder="e.g. 80">
+            </div>
+            <div class="field">
+                <label>Height (cm)</label>
+                <i data-lucide="ruler"></i>
+                <input type="number" id="height" placeholder="e.g. 180">
+            </div>
+            <div class="field">
+                <label>Age</label>
+                <i data-lucide="calendar"></i>
+                <input type="number" id="age" placeholder="e.g. 30">
+            </div>
+            <div class="field">
+                <label>Activity Level</label>
+                <i data-lucide="activity"></i>
+                <select id="activity">
+                    <option value="1.2">Sedentary</option>
+                    <option value="1.375">Lightly Active</option>
+                    <option value="1.55">Moderately Active</option>
+                    <option value="1.725">Very Active</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-premium" style="width: 100%;" onclick="calculate()">Calculate My Daily Macros</button>
+
+        <div id="results">
+            <div class="macro-grid">
+                <div class="macro-box">
+                    <i data-lucide="flame"></i>
+                    <span>Calories</span>
+                    <strong id="res-cal">-</strong>
+                </div>
+                <div class="macro-box">
+                    <i data-lucide="beef"></i>
+                    <span>Protein</span>
+                    <strong id="res-pro">-</strong>
+                </div>
+                <div class="macro-box">
+                    <i data-lucide="wheat"></i>
+                    <span>Carbs</span>
+                    <strong id="res-carb">-</strong>
+                </div>
+                <div class="macro-box">
+                    <i data-lucide="droplet"></i>
+                    <span>Fats</span>
+                    <strong id="res-fat">-</strong>
+                </div>
+            </div>
+
+            <div style="text-align: center; background: #fff9f5; padding: 30px; border-radius: 15px; border: 1px solid #ffe8d6;">
+                <h2 style="margin-bottom: 10px;">Ready to hit these numbers?</h2>
+                <p style="color: var(--slate); margin-bottom: 20px;">Download your custom Starter Pack and remove the guesswork.</p>
+                <a href="#pricing" class="btn-premium">Get My Starter Pack</a>
+            </div>
+        </div>
+    </div>
+
+    <section id="pricing" class="section-padding">
+        <h2 style="text-align: center; margin-bottom: 40px;">Choose Your Plan</h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>Basic Calc</h3>
+                <div class="cost">$19</div>
+                <ul>
+                    <li><i data-lucide="check-circle"></i> Custom Macro Split</li>
+                    <li><i data-lucide="check-circle"></i> Grocery List PDF</li>
+                </ul>
+                <button class="btn-premium" style="background: var(--dark-blue); width: 100%;">Select</button>
+            </div>
+            <div class="price-card featured">
+                <div style="background: var(--orange); color: white; font-size: 0.7rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px;">MOST POPULAR</div>
+                <h3>Starter Pack</h3>
+                <div class="cost">$29</div>
+                <ul>
+                    <li><i data-lucide="check-circle"></i> Everything in Basic</li>
+                    <li><i data-lucide="check-circle"></i> 4-Week Meal Plan</li>
+                    <li><i data-lucide="check-circle"></i> Workout Guide</li>
+                </ul>
+                <button class="btn-premium" style="width: 100%;">Get Started</button>
+            </div>
+            <div class="price-card">
+                <h3>Elite Pro</h3>
+                <div class="cost">$49</div>
+                <ul>
+                    <li><i data-lucide="check-circle"></i> Starter Pack +</li>
+                    <li><i data-lucide="check-circle"></i> Video Tutorials</li>
+                    <li><i data-lucide="check-circle"></i> Supplement Guide</li>
+                </ul>
+                <button class="btn-premium" style="background: var(--dark-blue); width: 100%;">Select</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <h2 style="text-align: center; margin-bottom: 40px;">Common Questions</h2>
+        <div style="max-width: 700px; margin: 0 auto;">
+            <div class="faq-item">
+                <button class="faq-trigger" onclick="toggleFaq(this)">How accurate is this? <i data-lucide="chevron-down"></i></button>
+                <div class="faq-content">We use the Mifflin-St Jeor equation, the gold standard for metabolic rate estimation.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-trigger" onclick="toggleFaq(this)">Is this a one-time payment? <i data-lucide="chevron-down"></i></button>
+                <div class="faq-content">Yes! No subscriptions. Buy your plan once and keep it forever.</div>
+            </div>
+        </div>
+    </section>
 </main>
-<footer>
-<p>Educational purposes only. Not medical advice.</p>
-</footer>
-<script src="js/calculator.js"></script>
+
+<div class="sticky-cta">
+    <div>
+        <div style="font-weight: 700; font-size: 0.9rem;">Starter Pack</div>
+        <div style="font-size: 0.8rem; color: var(--slate);">$29 One-Time</div>
+    </div>
+    <button class="btn-premium" style="padding: 10px 20px;">Buy Now</button>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    function calculate() {
+        const w = parseFloat(document.getElementById('weight').value);
+        const h = parseFloat(document.getElementById('height').value);
+        const a = parseFloat(document.getElementById('age').value);
+        const g = document.getElementById('gender').value;
+        const act = parseFloat(document.getElementById('activity').value);
+
+        if(!w || !h || !a) return alert("Please fill in your details!");
+
+        // Calculation Logic
+        let bmr = (10 * w) + (6.25 * h) - (5 * a);
+        bmr = (g === 'male') ? bmr + 5 : bmr - 161;
+        const tdee = Math.round(bmr * act);
+        
+        document.getElementById('res-cal').innerText = tdee;
+        document.getElementById('res-pro').innerText = Math.round((tdee * 0.3) / 4) + 'g';
+        document.getElementById('res-carb').innerText = Math.round((tdee * 0.4) / 4) + 'g';
+        document.getElementById('res-fat').innerText = Math.round((tdee * 0.3) / 9) + 'g';
+
+        document.getElementById('results').style.display = 'block';
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+
+    function toggleFaq(btn) {
+        const content = btn.nextElementSibling;
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+</script>
 </body>
 </html>
