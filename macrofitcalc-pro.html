@@ -3,119 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc Pro - Bio-Metric Precision Engineering</title>
+    <title>MacroFitCalc Pro - Precision Nutrition Engineering</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-purple: #8b5cf6;
+            --accent-red: #ef4444;
+            --accent-yellow: #eab308;
+            --dark-navy: #0a0f1e;
+            --dark-void: #050810;
+        }
+
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #050810 100%);
+            background: linear-gradient(135deg, var(--dark-navy) 0%, var(--dark-void) 100%);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .glassmorphism {
+        /* Glass Morphism Effect */
+        .glass-card {
             background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Premium Badge */
+        .premium-badge {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+            border: 1px solid rgba(59, 130, 246, 0.4);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .pill-badge {
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
-
-        .macro-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
-
-        .macro-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(59, 130, 246, 0.4);
-        }
-
-        .macro-card-protein:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(239, 68, 68, 0.4);
-        }
-
-        .macro-card-carbs:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(59, 130, 246, 0.4);
-        }
-
-        .macro-card-fats:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(234, 179, 8, 0.4);
-        }
-
+        /* Gradient Text */
         .gradient-text {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .pricing-card {
+        /* Macro Cards with Advanced Hover */
+        .macro-card {
+            position: relative;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .macro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .macro-card:hover {
+            transform: translateY(-12px) scale(1.02);
+        }
+
+        .macro-card:hover::before {
+            opacity: 1;
+        }
+
+        .macro-card.protein:hover {
+            box-shadow: 0 24px 48px rgba(239, 68, 68, 0.25), 0 0 40px rgba(239, 68, 68, 0.3);
+        }
+
+        .macro-card.carbs:hover {
+            box-shadow: 0 24px 48px rgba(59, 130, 246, 0.25), 0 0 40px rgba(59, 130, 246, 0.3);
+        }
+
+        .macro-card.fats:hover {
+            box-shadow: 0 24px 48px rgba(234, 179, 8, 0.25), 0 0 40px rgba(234, 179, 8, 0.3);
+        }
+
+        /* Animated Icon Pulse */
+        .icon-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Input Focus Effects */
+        .premium-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            font-size: 1.125rem;
+            font-weight: 600;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            background: white;
+        }
+
+        .premium-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Gender Toggle Buttons */
+        .gender-btn {
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            border: 2px solid #d1d5db;
+            background: white;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gender-btn.active {
+            border-color: var(--primary-blue);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.05));
+            color: var(--primary-blue);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .gender-btn:hover:not(.active) {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Chart Container with Goal-Based Effects */
+        .chart-wrapper {
+            position: relative;
+            height: 320px;
+            transition: all 0.6s ease;
+        }
+
+        .chart-wrapper.fat-loss {
+            filter: hue-rotate(120deg) saturate(1.3) brightness(1.05);
+        }
+
+        .chart-wrapper.maintenance {
+            filter: hue-rotate(25deg) saturate(1.15) brightness(1.02);
+        }
+
+        .chart-wrapper.muscle-gain {
+            filter: hue-rotate(-10deg) saturate(1.35) brightness(1.08);
+        }
+
+        /* Calorie Display */
+        .calorie-display {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* Pricing Cards */
+        .pricing-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2.5rem;
+            border: 3px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
         }
 
         .pricing-card:hover {
-            transform: translateY(-5px);
-            border-color: #3b82f6;
-            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2);
+            transform: translateY(-10px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.25);
         }
 
-        .sticky-checkout {
+        .pricing-card.featured {
+            border-color: var(--primary-blue);
+            transform: scale(1.05);
+            box-shadow: 0 25px 70px rgba(59, 130, 246, 0.3);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.08) translateY(-10px);
+        }
+
+        /* Premium Button */
+        .btn-premium {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            font-weight: 800;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-premium:hover::before {
+            left: 100%;
+        }
+
+        .btn-premium:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-premium:active {
+            transform: scale(0.98);
+        }
+
+        /* Sticky Checkout Bar */
+        .checkout-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            padding: 1.5rem 0;
+            box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.4);
             transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
         }
 
-        .sticky-checkout.visible {
+        .checkout-bar.visible {
             transform: translateY(0);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
-        }
-
-        input, select {
-            transition: all 0.2s ease;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin: 0 auto;
-        }
-
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -123,86 +274,112 @@
             }
         }
 
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease-out;
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        /* Goal-based chart colors */
-        .goal-fat-loss {
-            filter: hue-rotate(90deg) saturate(1.2);
+        .animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+        /* Feature List Checkmarks */
+        .feature-check {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
         }
 
-        .goal-maintenance {
-            filter: hue-rotate(30deg) saturate(1.1);
-        }
-
-        .goal-muscle-gain {
-            filter: hue-rotate(0deg) saturate(1.3);
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+            
+            .macro-card:hover {
+                transform: translateY(-8px) scale(1.01);
+            }
         }
     </style>
 </head>
-<body class="text-gray-900">
-    <!-- Hero Section -->
-    <div class="container mx-auto px-4 py-8 md:py-16">
-        <!-- Badge -->
-        <div class="flex justify-center mb-8 fade-in-up">
-            <div class="pill-badge px-6 py-2 rounded-full text-blue-400 text-sm font-semibold uppercase tracking-wider">
-                ⚡ Bio-Metric Precision Engineering
+<body>
+    <div class="container mx-auto px-4 py-12 md:py-20">
+        
+        <!-- Hero Badge -->
+        <div class="flex justify-center mb-8 animate-fade-in-up">
+            <div class="premium-badge px-8 py-3 rounded-full inline-flex items-center gap-2">
+                <span class="text-2xl">⚡</span>
+                <span class="text-blue-400 font-bold uppercase tracking-widest text-sm">Bio-Metric Precision Engineering</span>
             </div>
         </div>
 
-        <!-- Main Heading -->
-        <h1 class="text-5xl md:text-7xl font-black text-center text-white mb-4 fade-in-up">
-            MacroFitCalc<span class="gradient-text">.</span>
-        </h1>
-        <p class="text-center text-gray-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto fade-in-up">
-            Advanced macro calculator powered by the Mifflin-St Jeor equation. Get precision nutrition targets tailored to your bio-metrics.
-        </p>
+        <!-- Main Title -->
+        <div class="text-center mb-6 animate-fade-in-up animate-delay-1">
+            <h1 class="text-6xl md:text-8xl font-black text-white mb-4">
+                MacroFitCalc<span class="gradient-text">.</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                Advanced macro calculator engineered with the Mifflin-St Jeor equation. 
+                Transform your body composition with precision-targeted nutrition.
+            </p>
+        </div>
 
-        <!-- Calculator Card -->
-        <div class="glassmorphism rounded-3xl shadow-2xl max-w-6xl mx-auto p-8 md:p-12 mb-16 fade-in-up">
-            <div class="grid md:grid-cols-2 gap-12">
+        <!-- Main Calculator Card -->
+        <div class="glass-card rounded-3xl max-w-7xl mx-auto p-8 md:p-16 mb-20 animate-fade-in-up animate-delay-2">
+            <div class="grid md:grid-cols-2 gap-16">
+                
                 <!-- Input Section -->
                 <div>
-                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Your Bio-Metrics</h2>
-                    
-                    <!-- Gender -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button id="gender-male" class="gender-btn py-3 px-4 rounded-xl border-2 border-blue-500 bg-blue-50 text-blue-600 font-semibold transition-all">
-                                👨 Male
+                    <h2 class="text-3xl font-black text-gray-800 mb-8 flex items-center gap-3">
+                        <span class="text-4xl">📊</span>
+                        Your Bio-Metrics
+                    </h2>
+
+                    <!-- Gender Selection -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Gender</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button id="btn-male" class="gender-btn active" onclick="setGender('male')">
+                                <span class="text-2xl mr-2">👨</span> Male
                             </button>
-                            <button id="gender-female" class="gender-btn py-3 px-4 rounded-xl border-2 border-gray-300 bg-white text-gray-600 font-semibold transition-all">
-                                👩 Female
+                            <button id="btn-female" class="gender-btn" onclick="setGender('female')">
+                                <span class="text-2xl mr-2">👩</span> Female
                             </button>
                         </div>
                     </div>
 
-                    <!-- Age -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Age (years)</label>
-                        <input type="number" id="age" value="30" min="15" max="100" class="w-full px-4 py-3 rounded-xl border-2 border-gray-300 text-lg font-medium">
+                    <!-- Age Input -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Age (years)</label>
+                        <input type="number" id="input-age" class="premium-input" value="30" min="15" max="100" oninput="calculateMacros()">
                     </div>
 
-                    <!-- Weight -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Weight</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <input type="number" id="weight" value="75" min="30" max="300" class="col-span-2 px-4 py-3 rounded-xl border-2 border-gray-300 text-lg font-medium">
-                            <select id="weight-unit" class="px-4 py-3 rounded-xl border-2 border-gray-300 text-lg font-medium">
+                    <!-- Weight Input -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Weight</label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <input type="number" id="input-weight" class="premium-input col-span-2" value="75" min="30" max="300" oninput="calculateMacros()">
+                            <select id="select-weight-unit" class="premium-input" onchange="calculateMacros()">
                                 <option value="kg">kg</option>
                                 <option value="lb">lb</option>
                             </select>
                         </div>
                     </div>
 
-                    <!-- Height -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Height</label>
-                        <div class="grid grid-cols-3 gap-3">
-                            <input type="number" id="height" value="175" min="100" max="250" class="col-span-2 px-4 py-3 rounded-xl border-2 border-gray-300 text-lg font-medium">
-                            <select id="height-unit" class="px-4 py-3 rounded-xl border-2 border-gray-300 text-lg font-medium">
+                    <!-- Height Input -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Height</label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <input type="number" id="input-height" class="premium-input col-span-2" value="175" min="100" max="250" oninput="calculateMacros()">
+                            <select id="select-height-unit" class="premium-input" onchange="calculateMacros()">
                                 <option value="cm">cm</option>
                                 <option value="in">in</option>
                             </select>
@@ -210,21 +387,21 @@
                     </div>
 
                     <!-- Activity Level -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Activity Level</label>
-                        <select id="activity" class="w-full px-4 py-3 rounded-xl border-2 border-gray-300 text-lg font-medium">
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Activity Level</label>
+                        <select id="select-activity" class="premium-input" onchange="calculateMacros()">
                             <option value="1.2">Sedentary (little or no exercise)</option>
                             <option value="1.375">Light (exercise 1-3 days/week)</option>
                             <option value="1.55" selected>Moderate (exercise 3-5 days/week)</option>
                             <option value="1.725">Very Active (exercise 6-7 days/week)</option>
-                            <option value="1.9">Extremely Active (athlete/physical job)</option>
+                            <option value="1.9">Extremely Active (athlete level)</option>
                         </select>
                     </div>
 
-                    <!-- Goal -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Your Goal</label>
-                        <select id="goal" class="w-full px-4 py-3 rounded-xl border-2 border-gray-300 text-lg font-medium">
+                    <!-- Goal Selection -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Your Goal</label>
+                        <select id="select-goal" class="premium-input" onchange="calculateMacros()">
                             <option value="fat-loss">🔥 Rapid Fat Loss (-20%)</option>
                             <option value="maintenance" selected>⚖️ Maintenance (0%)</option>
                             <option value="muscle-gain">💪 Steady Lean Mass Gain (+15%)</option>
@@ -234,205 +411,229 @@
 
                 <!-- Results Section -->
                 <div>
-                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Your Macro Blueprint</h2>
-                    
+                    <h2 class="text-3xl font-black text-gray-800 mb-8 flex items-center gap-3">
+                        <span class="text-4xl">🎯</span>
+                        Your Macro Blueprint
+                    </h2>
+
                     <!-- Chart -->
-                    <div class="chart-container mb-8" id="chart-wrapper">
-                        <canvas id="macroChart"></canvas>
+                    <div id="chart-container" class="chart-wrapper mb-10">
+                        <canvas id="donut-chart"></canvas>
                     </div>
 
-                    <!-- Daily Calories -->
-                    <div class="text-center mb-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl">
-                        <p class="text-sm font-semibold text-gray-600 mb-1">Daily Calorie Target</p>
-                        <p class="text-5xl font-black gradient-text" id="total-calories">2200</p>
-                        <p class="text-xs text-gray-500 mt-2">Based on Mifflin-St Jeor Equation</p>
+                    <!-- Total Calories -->
+                    <div class="calorie-display mb-10">
+                        <p class="text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">Daily Calorie Target</p>
+                        <p id="display-calories" class="text-6xl font-black gradient-text mb-2">2200</p>
+                        <p class="text-xs text-gray-500 font-medium">Calculated via Mifflin-St Jeor Equation</p>
                     </div>
 
-                    <!-- Macro Cards -->
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="macro-card macro-card-protein bg-white rounded-2xl p-4 shadow-lg text-center">
-                            <div class="text-red-500 text-3xl mb-2">🥩</div>
-                            <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Protein</p>
-                            <p class="text-2xl font-black text-gray-800" id="protein-grams">165</p>
-                            <p class="text-xs text-gray-500">grams</p>
-                            <p class="text-sm font-bold text-red-500 mt-2" id="protein-cals">660 cal</p>
+                    <!-- Macro Cards Grid -->
+                    <div class="grid grid-cols-3 gap-5">
+                        <!-- Protein Card -->
+                        <div class="macro-card protein">
+                            <div class="text-4xl mb-3 icon-pulse">🥩</div>
+                            <p class="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Protein</p>
+                            <p id="display-protein-g" class="text-3xl font-black text-gray-900 mb-1">165</p>
+                            <p class="text-xs text-gray-500 font-semibold mb-3">grams</p>
+                            <p id="display-protein-cal" class="text-sm font-bold text-red-500">660 cal</p>
                         </div>
 
-                        <div class="macro-card macro-card-carbs bg-white rounded-2xl p-4 shadow-lg text-center">
-                            <div class="text-blue-500 text-3xl mb-2">🍚</div>
-                            <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Carbs</p>
-                            <p class="text-2xl font-black text-gray-800" id="carbs-grams">220</p>
-                            <p class="text-xs text-gray-500">grams</p>
-                            <p class="text-sm font-bold text-blue-500 mt-2" id="carbs-cals">880 cal</p>
+                        <!-- Carbs Card -->
+                        <div class="macro-card carbs">
+                            <div class="text-4xl mb-3 icon-pulse">🍚</div>
+                            <p class="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Carbs</p>
+                            <p id="display-carbs-g" class="text-3xl font-black text-gray-900 mb-1">220</p>
+                            <p class="text-xs text-gray-500 font-semibold mb-3">grams</p>
+                            <p id="display-carbs-cal" class="text-sm font-bold text-blue-500">880 cal</p>
                         </div>
 
-                        <div class="macro-card macro-card-fats bg-white rounded-2xl p-4 shadow-lg text-center">
-                            <div class="text-yellow-500 text-3xl mb-2">🥑</div>
-                            <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Fats</p>
-                            <p class="text-2xl font-black text-gray-800" id="fats-grams">73</p>
-                            <p class="text-xs text-gray-500">grams</p>
-                            <p class="text-sm font-bold text-yellow-600 mt-2" id="fats-cals">660 cal</p>
+                        <!-- Fats Card -->
+                        <div class="macro-card fats">
+                            <div class="text-4xl mb-3 icon-pulse">🥑</div>
+                            <p class="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Fats</p>
+                            <p id="display-fats-g" class="text-3xl font-black text-gray-900 mb-1">73</p>
+                            <p class="text-xs text-gray-500 font-semibold mb-3">grams</p>
+                            <p id="display-fats-cal" class="text-sm font-bold text-yellow-600">660 cal</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- The Blueprint Section -->
-        <div class="max-w-6xl mx-auto mb-16 fade-in-up">
-            <div class="glassmorphism rounded-3xl shadow-2xl p-8 md:p-12">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
+        <!-- Blueprint Section -->
+        <div class="max-w-7xl mx-auto mb-20 animate-fade-in-up animate-delay-3">
+            <div class="glass-card rounded-3xl p-10 md:p-16">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
                     <div>
-                        <h2 class="text-3xl md:text-4xl font-black text-gray-800 mb-4">
+                        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
                             The 30-Day Master Nutrition Blueprint
                         </h2>
-                        <p class="text-lg text-gray-600 mb-6">
-                            Don't let these numbers go to waste. Transform your macro targets into real results with our scientifically-designed meal plans, grocery lists, and coaching system.
+                        <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                            Don't let these precision numbers go to waste. Transform your calculated macros into 
+                            real-world results with our scientifically-designed nutrition system.
                         </p>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-3 text-xl">✓</span>
-                                <span class="text-gray-700">120+ macro-balanced recipes tailored to your numbers</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-3 text-xl">✓</span>
-                                <span class="text-gray-700">Auto-generated weekly meal prep schedules</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-3 text-xl">✓</span>
-                                <span class="text-gray-700">Progress tracking dashboard with photo timeline</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-500 mr-3 text-xl">✓</span>
-                                <span class="text-gray-700">24/7 nutrition coach support via app</span>
-                            </li>
-                        </ul>
+                        
+                        <div class="space-y-4 mb-10">
+                            <div class="flex items-start">
+                                <span class="feature-check">✓</span>
+                                <span class="text-gray-700 font-medium text-lg">120+ macro-balanced recipes calibrated to your exact targets</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="feature-check">✓</span>
+                                <span class="text-gray-700 font-medium text-lg">Auto-generated weekly meal prep schedules with shopping lists</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="feature-check">✓</span>
+                                <span class="text-gray-700 font-medium text-lg">Advanced progress tracking dashboard with photo timeline</span>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="feature-check">✓</span>
+                                <span class="text-gray-700 font-medium text-lg">24/7 certified nutrition coach support via mobile app</span>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div>
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=600&fit=crop" alt="Healthy meal prep" class="rounded-2xl shadow-xl w-full">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700&h=700&fit=crop&q=90" 
+                             alt="Premium meal prep" 
+                             class="rounded-2xl shadow-2xl w-full transform hover:scale-105 transition-transform duration-500">
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Pricing Section -->
-        <div class="max-w-6xl mx-auto mb-16 fade-in-up">
-            <h2 class="text-3xl md:text-4xl font-black text-white text-center mb-4">
-                Choose Your Nutrition Pack
-            </h2>
-            <p class="text-center text-gray-400 text-lg mb-12">
-                Unlock your full potential with premium nutrition planning
-            </p>
+        <div class="max-w-7xl mx-auto mb-20">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-black text-white mb-5">
+                    Choose Your Nutrition Pack
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Unlock your transformation with premium nutrition planning
+                </p>
+            </div>
 
             <div class="grid md:grid-cols-3 gap-8">
+                
                 <!-- Starter Pack -->
-                <div class="pricing-card glassmorphism rounded-3xl p-8 relative">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Starter Pack</h3>
-                    <p class="text-gray-600 text-sm mb-6">Perfect for beginners</p>
-                    <div class="mb-6">
-                        <span class="text-5xl font-black text-gray-800">$29</span>
-                        <span class="text-gray-600">/month</span>
+                <div class="pricing-card">
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">Starter Pack</h3>
+                    <p class="text-gray-600 mb-6">Perfect for beginners</p>
+                    
+                    <div class="mb-8">
+                        <span class="text-6xl font-black text-gray-900">$29</span>
+                        <span class="text-gray-600 text-xl font-semibold">/mo</span>
                     </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>30 macro-balanced recipes</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>Weekly meal plans</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>Basic progress tracking</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>Email support</span>
-                        </li>
-                    </ul>
-                    <button class="select-pack w-full btn-primary text-white py-4 rounded-xl font-bold text-lg" data-pack="Starter Pack" data-price="29">
+
+                    <div class="space-y-4 mb-10">
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">30 macro-balanced recipes</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Weekly meal plans</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Basic progress tracking</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Email support</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-premium" onclick="selectPack('Starter Pack', 29)">
                         Select Starter
                     </button>
                 </div>
 
-                <!-- Pro Pack (Recommended) -->
-                <div class="pricing-card glassmorphism rounded-3xl p-8 relative border-4 border-blue-500 transform scale-105">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-1 rounded-full text-sm font-bold">
-                        MOST POPULAR
+                <!-- Pro Pack (Featured) -->
+                <div class="pricing-card featured">
+                    <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-2 rounded-full font-black text-sm uppercase tracking-wider">
+                        Most Popular
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Pro Pack</h3>
-                    <p class="text-gray-600 text-sm mb-6">For serious results</p>
-                    <div class="mb-6">
-                        <span class="text-5xl font-black text-gray-800">$59</span>
-                        <span class="text-gray-600">/month</span>
+                    
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">Pro Pack</h3>
+                    <p class="text-gray-600 mb-6">For serious results</p>
+                    
+                    <div class="mb-8">
+                        <span class="text-6xl font-black text-gray-900">$59</span>
+                        <span class="text-gray-600 text-xl font-semibold">/mo</span>
                     </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>120+ macro-balanced recipes</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>Custom meal prep schedules</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>Advanced analytics dashboard</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>24/7 coach app support</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>Grocery list generator</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-blue-500 mr-2">✓</span>
-                            <span>Recipe substitution engine</span>
-                        </li>
-                    </ul>
-                    <button class="select-pack w-full btn-primary text-white py-4 rounded-xl font-bold text-lg" data-pack="Pro Pack" data-price="59">
+
+                    <div class="space-y-4 mb-10">
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">120+ macro-balanced recipes</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Custom meal prep schedules</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Advanced analytics dashboard</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">24/7 coach app support</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Grocery list generator</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Recipe substitution engine</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-premium" onclick="selectPack('Pro Pack', 59)">
                         Select Pro
                     </button>
                 </div>
 
                 <!-- Elite Pack -->
-                <div class="pricing-card glassmorphism rounded-3xl p-8 relative">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Elite Pack</h3>
-                    <p class="text-gray-600 text-sm mb-6">Premium coaching</p>
-                    <div class="mb-6">
-                        <span class="text-5xl font-black text-gray-800">$99</span>
-                        <span class="text-gray-600">/month</span>
+                <div class="pricing-card">
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">Elite Pack</h3>
+                    <p class="text-gray-600 mb-6">Premium coaching</p>
+                    
+                    <div class="mb-8">
+                        <span class="text-6xl font-black text-gray-900">$99</span>
+                        <span class="text-gray-600 text-xl font-semibold">/mo</span>
                     </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start text-sm">
-                            <span class="text-purple-500 mr-2">✓</span>
-                            <span><strong>Everything in Pro</strong></span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-purple-500 mr-2">✓</span>
-                            <span>1-on-1 nutrition coaching</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-purple-500 mr-2">✓</span>
-                            <span>Bi-weekly check-ins</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-purple-500 mr-2">✓</span>
-                            <span>Custom supplement protocol</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-purple-500 mr-2">✓</span>
-                            <span>DNA-based optimization</span>
-                        </li>
-                        <li class="flex items-start text-sm">
-                            <span class="text-purple-500 mr-2">✓</span>
-                            <span>VIP community access</span>
-                        </li>
-                    </ul>
-                    <button class="select-pack w-full btn-primary text-white py-4 rounded-xl font-bold text-lg" data-pack="Elite Pack" data-price="99">
+
+                    <div class="space-y-4 mb-10">
+                        <div class="flex items-start">
+                            <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium"><strong>Everything in Pro</strong></span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">1-on-1 nutrition coaching</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Bi-weekly video check-ins</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Custom supplement protocol</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">DNA-based optimization</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">VIP community access</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-premium" onclick="selectPack('Elite Pack', 99)">
                         Select Elite
                     </button>
                 </div>
@@ -440,37 +641,37 @@
         </div>
 
         <!-- Footer -->
-        <div class="max-w-6xl mx-auto text-center text-gray-500 text-sm space-y-4 pb-32">
-            <p class="text-xs leading-relaxed max-w-3xl mx-auto">
-                <strong>Medical Disclaimer:</strong> This calculator provides estimates based on standard equations and should not replace professional medical or nutritional advice. Consult with a healthcare provider or registered dietitian before making significant dietary changes.
+        <div class="max-w-6xl mx-auto text-center space-y-6 pb-40">
+            <p class="text-sm text-gray-500 leading-relaxed max-w-4xl mx-auto">
+                <strong class="text-gray-400">Medical Disclaimer:</strong> This calculator provides estimates based on standard equations and should not replace professional medical or nutritional advice. Always consult with a healthcare provider or registered dietitian before making significant dietary changes.
             </p>
-            <p>
-                <a href="mailto:support@macrofitcalc.pro" class="text-blue-400 hover:text-blue-300 transition-colors">Contact Support</a> | 
-                <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors ml-4">Privacy Policy</a> | 
-                <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors ml-4">Terms of Service</a>
-            </p>
-            <p class="text-gray-600">© 2024 MacroFitCalc Pro. All rights reserved.</p>
+            <div class="flex justify-center gap-8 text-sm">
+                <a href="mailto:support@macrofitcalc.pro" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Contact Support</a>
+                <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Privacy Policy</a>
+                <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Terms of Service</a>
+            </div>
+            <p class="text-gray-600 font-semibold">© 2024 MacroFitCalc Pro. All rights reserved.</p>
         </div>
     </div>
 
     <!-- Sticky Checkout Bar -->
-    <div id="sticky-checkout" class="sticky-checkout">
-        <div class="container mx-auto px-4 py-4">
+    <div id="checkout-bar" class="checkout-bar">
+        <div class="container mx-auto px-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-lg p-3 mr-4">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                <div class="flex items-center gap-4">
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p class="text-white font-bold text-lg" id="selected-pack-name">Pro Pack Selected</p>
-                        <p class="text-blue-100 text-sm">Start your transformation today</p>
+                        <p id="checkout-pack-name" class="text-white font-black text-xl">Pro Pack Selected</p>
+                        <p class="text-blue-100 font-medium">Transform your nutrition today</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <p class="text-white text-3xl font-black" id="selected-pack-price">$59/mo</p>
-                    <button id="checkout-btn" class="bg-white text-blue-600 px-8 py-3 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all">
+                <div class="flex items-center gap-6">
+                    <p id="checkout-price" class="text-white text-4xl font-black">$59/mo</p>
+                    <button onclick="checkout()" class="bg-white text-blue-600 px-10 py-4 rounded-xl font-black text-xl hover:bg-blue-50 transition-all transform hover:scale-105">
                         Checkout Now →
                     </button>
                 </div>
@@ -479,37 +680,48 @@
     </div>
 
     <script>
-        // State
-        let selectedGender = 'male';
-        let selectedPack = null;
-        let macroChart = null;
+        // Application State
+        const state = {
+            gender: 'male',
+            age: 30,
+            weight: 75,
+            height: 175,
+            weightUnit: 'kg',
+            heightUnit: 'cm',
+            activity: 1.55,
+            goal: 'maintenance',
+            selectedPack: null
+        };
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeCalculator();
-            setupEventListeners();
-            calculate();
-        });
+        let chartInstance = null;
 
-        function initializeCalculator() {
-            const ctx = document.getElementById('macroChart').getContext('2d');
-            macroChart = new Chart(ctx, {
+        // Initialize Application
+        function init() {
+            createChart();
+            calculateMacros();
+        }
+
+        // Create Donut Chart
+        function createChart() {
+            const ctx = document.getElementById('donut-chart').getContext('2d');
+            chartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Protein', 'Carbs', 'Fats'],
                     datasets: [{
                         data: [30, 40, 30],
                         backgroundColor: [
-                            'rgba(239, 68, 68, 0.8)',
-                            'rgba(59, 130, 246, 0.8)',
-                            'rgba(234, 179, 8, 0.8)'
+                            'rgba(239, 68, 68, 0.85)',
+                            'rgba(59, 130, 246, 0.85)',
+                            'rgba(234, 179, 8, 0.85)'
                         ],
                         borderColor: [
                             'rgba(239, 68, 68, 1)',
                             'rgba(59, 130, 246, 1)',
                             'rgba(234, 179, 8, 1)'
                         ],
-                        borderWidth: 2
+                        borderWidth: 3,
+                        hoverOffset: 15
                     }]
                 },
                 options: {
@@ -519,14 +731,21 @@
                         legend: {
                             position: 'bottom',
                             labels: {
-                                padding: 20,
+                                padding: 25,
                                 font: {
-                                    size: 14,
-                                    weight: 'bold'
-                                }
+                                    size: 16,
+                                    weight: 'bold',
+                                    family: 'Inter'
+                                },
+                                color: '#374151'
                             }
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: { size: 16, weight: 'bold' },
+                            bodyFont: { size: 14 },
+                            padding: 12,
+                            cornerRadius: 8,
                             callbacks: {
                                 label: function(context) {
                                     return context.label + ': ' + context.parsed + '%';
@@ -534,165 +753,117 @@
                             }
                         }
                     },
-                    cutout: '65%'
+                    cutout: '70%'
                 }
             });
         }
 
-        function setupEventListeners() {
-            // Gender buttons
-            document.getElementById('gender-male').addEventListener('click', () => selectGender('male'));
-            document.getElementById('gender-female').addEventListener('click', () => selectGender('female'));
-
-            // Input listeners
-            ['age', 'weight', 'height', 'activity', 'goal', 'weight-unit', 'height-unit'].forEach(id => {
-                document.getElementById(id).addEventListener('input', calculate);
-                document.getElementById(id).addEventListener('change', calculate);
-            });
-
-            // Pack selection
-            document.querySelectorAll('.select-pack').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const packName = this.dataset.pack;
-                    const packPrice = this.dataset.price;
-                    selectPack(packName, packPrice);
-                });
-            });
-
-            // Checkout button
-            document.getElementById('checkout-btn').addEventListener('click', function() {
-                alert('Checkout functionality would be integrated with your payment processor (Stripe, PayPal, etc.)');
-            });
+        // Set Gender
+        function setGender(gender) {
+            state.gender = gender;
+            
+            document.getElementById('btn-male').classList.toggle('active', gender === 'male');
+            document.getElementById('btn-female').classList.toggle('active', gender === 'female');
+            
+            calculateMacros();
         }
 
-        function selectGender(gender) {
-            selectedGender = gender;
-            
-            // Update button styles
-            const maleBtn = document.getElementById('gender-male');
-            const femaleBtn = document.getElementById('gender-female');
-            
-            if (gender === 'male') {
-                maleBtn.classList.add('border-blue-500', 'bg-blue-50', 'text-blue-600');
-                maleBtn.classList.remove('border-gray-300', 'bg-white', 'text-gray-600');
-                femaleBtn.classList.remove('border-blue-500', 'bg-blue-50', 'text-blue-600');
-                femaleBtn.classList.add('border-gray-300', 'bg-white', 'text-gray-600');
-            } else {
-                femaleBtn.classList.add('border-blue-500', 'bg-blue-50', 'text-blue-600');
-                femaleBtn.classList.remove('border-gray-300', 'bg-white', 'text-gray-600');
-                maleBtn.classList.remove('border-blue-500', 'bg-blue-50', 'text-blue-600');
-                maleBtn.classList.add('border-gray-300', 'bg-white', 'text-gray-600');
-            }
-            
-            calculate();
-        }
-
-        function calculate() {
-            // Get inputs
-            const age = parseInt(document.getElementById('age').value);
-            let weight = parseFloat(document.getElementById('weight').value);
-            let height = parseFloat(document.getElementById('height').value);
-            const weightUnit = document.getElementById('weight-unit').value;
-            const heightUnit = document.getElementById('height-unit').value;
-            const activity = parseFloat(document.getElementById('activity').value);
-            const goal = document.getElementById('goal').value;
+        // Calculate Macros using Mifflin-St Jeor
+        function calculateMacros() {
+            // Get current values
+            state.age = parseInt(document.getElementById('input-age').value);
+            state.weight = parseFloat(document.getElementById('input-weight').value);
+            state.height = parseFloat(document.getElementById('input-height').value);
+            state.weightUnit = document.getElementById('select-weight-unit').value;
+            state.heightUnit = document.getElementById('select-height-unit').value;
+            state.activity = parseFloat(document.getElementById('select-activity').value);
+            state.goal = document.getElementById('select-goal').value;
 
             // Convert to metric
-            if (weightUnit === 'lb') weight = weight * 0.453592;
-            if (heightUnit === 'in') height = height * 2.54;
+            let weightKg = state.weight;
+            let heightCm = state.height;
 
-            // Mifflin-St Jeor Equation
+            if (state.weightUnit === 'lb') weightKg = state.weight * 0.453592;
+            if (state.heightUnit === 'in') heightCm = state.height * 2.54;
+
+            // Mifflin-St Jeor BMR Calculation
             let bmr;
-            if (selectedGender === 'male') {
-                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            if (state.gender === 'male') {
+                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * state.age) + 5;
             } else {
-                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+                bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * state.age) - 161;
             }
 
-            // Total Daily Energy Expenditure
-            let tdee = bmr * activity;
+            // Calculate TDEE
+            let tdee = bmr * state.activity;
 
-            // Adjust for goal
-            let targetCalories = tdee;
-            let proteinPercent = 30;
-            let carbsPercent = 40;
-            let fatsPercent = 30;
+            // Macro split percentages based on goal
+            let macroSplit = {
+                'fat-loss': { protein: 35, carbs: 35, fats: 30, modifier: 0.8 },
+                'maintenance': { protein: 30, carbs: 40, fats: 30, modifier: 1.0 },
+                'muscle-gain': { protein: 30, carbs: 45, fats: 25, modifier: 1.15 }
+            };
 
-            if (goal === 'fat-loss') {
-                targetCalories = tdee * 0.8; // 20% deficit
-                proteinPercent = 35;
-                carbsPercent = 35;
-                fatsPercent = 30;
-            } else if (goal === 'muscle-gain') {
-                targetCalories = tdee * 1.15; // 15% surplus
-                proteinPercent = 30;
-                carbsPercent = 45;
-                fatsPercent = 25;
-            }
+            const split = macroSplit[state.goal];
+            const targetCalories = tdee * split.modifier;
 
-            // Calculate macros
-            const proteinCals = targetCalories * (proteinPercent / 100);
-            const carbsCals = targetCalories * (carbsPercent / 100);
-            const fatsCals = targetCalories * (fatsPercent / 100);
+            // Calculate macro grams
+            const proteinCals = targetCalories * (split.protein / 100);
+            const carbsCals = targetCalories * (split.carbs / 100);
+            const fatsCals = targetCalories * (split.fats / 100);
 
             const proteinGrams = Math.round(proteinCals / 4);
             const carbsGrams = Math.round(carbsCals / 4);
             const fatsGrams = Math.round(fatsCals / 9);
 
             // Update UI
-            document.getElementById('total-calories').textContent = Math.round(targetCalories);
+            document.getElementById('display-calories').textContent = Math.round(targetCalories);
             
-            document.getElementById('protein-grams').textContent = proteinGrams;
-            document.getElementById('protein-cals').textContent = Math.round(proteinCals) + ' cal';
+            document.getElementById('display-protein-g').textContent = proteinGrams;
+            document.getElementById('display-protein-cal').textContent = Math.round(proteinCals) + ' cal';
             
-            document.getElementById('carbs-grams').textContent = carbsGrams;
-            document.getElementById('carbs-cals').textContent = Math.round(carbsCals) + ' cal';
+            document.getElementById('display-carbs-g').textContent = carbsGrams;
+            document.getElementById('display-carbs-cal').textContent = Math.round(carbsCals) + ' cal';
             
-            document.getElementById('fats-grams').textContent = fatsGrams;
-            document.getElementById('fats-cals').textContent = Math.round(fatsCals) + ' cal';
+            document.getElementById('display-fats-g').textContent = fatsGrams;
+            document.getElementById('display-fats-cal').textContent = Math.round(fatsCals) + ' cal';
 
             // Update chart
-            macroChart.data.datasets[0].data = [proteinPercent, carbsPercent, fatsPercent];
-            macroChart.update();
+            chartInstance.data.datasets[0].data = [split.protein, split.carbs, split.fats];
+            chartInstance.update('none'); // Instant update without animation
 
-            // Apply goal-based styling to chart wrapper
-            const chartWrapper = document.getElementById('chart-wrapper');
-            chartWrapper.classList.remove('goal-fat-loss', 'goal-maintenance', 'goal-muscle-gain');
-            
-            if (goal === 'fat-loss') {
-                chartWrapper.classList.add('goal-fat-loss');
-            } else if (goal === 'maintenance') {
-                chartWrapper.classList.add('goal-maintenance');
-            } else if (goal === 'muscle-gain') {
-                chartWrapper.classList.add('goal-muscle-gain');
-            }
+            // Update chart container styling based on goal
+            const chartContainer = document.getElementById('chart-container');
+            chartContainer.className = 'chart-wrapper ' + state.goal;
         }
 
-        function selectPack(packName, packPrice) {
-            selectedPack = { name: packName, price: packPrice };
+        // Select Pack
+        function selectPack(packName, price) {
+            state.selectedPack = { name: packName, price: price };
             
-            // Update sticky bar
-            document.getElementById('selected-pack-name').textContent = packName + ' Selected';
-            document.getElementById('selected-pack-price').textContent = '$' + packPrice + '/mo';
+            document.getElementById('checkout-pack-name').textContent = packName + ' Selected';
+            document.getElementById('checkout-price').textContent = '$' + price + '/mo';
             
-            // Show sticky checkout
-            const stickyCheckout = document.getElementById('sticky-checkout');
-            stickyCheckout.classList.add('visible');
+            document.getElementById('checkout-bar').classList.add('visible');
             
-            // Highlight selected card
-            document.querySelectorAll('.pricing-card').forEach(card => {
-                card.style.opacity = '0.6';
-            });
-            event.target.closest('.pricing-card').style.opacity = '1';
-            
-            // Scroll to checkout
+            // Smooth scroll to bottom
             setTimeout(() => {
                 window.scrollTo({
                     top: document.body.scrollHeight,
                     behavior: 'smooth'
                 });
-            }, 300);
+            }, 400);
         }
+
+        // Checkout
+        function checkout() {
+            if (!state.selectedPack) return;
+            
+            alert(`Checkout for ${state.selectedPack.name} ($${state.selectedPack.price}/mo)\n\nIn production, this would redirect to your payment processor (Stripe, PayPal, etc.)`);
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
