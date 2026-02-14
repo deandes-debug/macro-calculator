@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc Pro - Precision Nutrition Engineering</title>
+    <title>MacroFitCalc Pro - Science-Backed Nutrition Planning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* Glass Morphism Effect */
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px) saturate(180%);
@@ -40,14 +39,32 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        /* Premium Badge */
         .premium-badge {
             background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
             border: 1px solid rgba(59, 130, 246, 0.4);
             backdrop-filter: blur(10px);
         }
 
-        /* Gradient Text */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-mark {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        }
+
         .gradient-text {
             background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
             -webkit-background-clip: text;
@@ -55,7 +72,6 @@
             background-clip: text;
         }
 
-        /* Macro Cards with Advanced Hover */
         .macro-card {
             position: relative;
             background: white;
@@ -99,7 +115,6 @@
             box-shadow: 0 24px 48px rgba(234, 179, 8, 0.25), 0 0 40px rgba(234, 179, 8, 0.3);
         }
 
-        /* Animated Icon Pulse */
         .icon-pulse {
             animation: pulse 2s ease-in-out infinite;
         }
@@ -109,7 +124,6 @@
             50% { transform: scale(1.1); }
         }
 
-        /* Input Focus Effects */
         .premium-input {
             width: 100%;
             padding: 1rem 1.25rem;
@@ -128,7 +142,6 @@
             transform: translateY(-2px);
         }
 
-        /* Gender Toggle Buttons */
         .gender-btn {
             padding: 1rem 1.5rem;
             border-radius: 1rem;
@@ -151,7 +164,6 @@
             transform: translateY(-2px);
         }
 
-        /* Chart Container with Goal-Based Effects */
         .chart-wrapper {
             position: relative;
             height: 320px;
@@ -170,7 +182,6 @@
             filter: hue-rotate(-10deg) saturate(1.35) brightness(1.08);
         }
 
-        /* Calorie Display */
         .calorie-display {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
             border-radius: 1.5rem;
@@ -178,7 +189,6 @@
             text-align: center;
         }
 
-        /* Pricing Cards */
         .pricing-card {
             background: white;
             border-radius: 2rem;
@@ -204,7 +214,6 @@
             transform: scale(1.08) translateY(-10px);
         }
 
-        /* Premium Button */
         .btn-premium {
             width: 100%;
             padding: 1.25rem 2rem;
@@ -244,7 +253,74 @@
             transform: scale(0.98);
         }
 
-        /* Sticky Checkout Bar */
+        .phone-mockup {
+            width: 280px;
+            height: 560px;
+            background: #1f2937;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 28px;
+            background: #1f2937;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #fbbf24;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .trust-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
         .checkout-bar {
             position: fixed;
             bottom: 0;
@@ -262,7 +338,6 @@
             transform: translateY(0);
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -281,8 +356,8 @@
         .animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
         .animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
         .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
 
-        /* Feature List Checkmarks */
         .feature-check {
             display: inline-block;
             width: 24px;
@@ -298,7 +373,6 @@
             flex-shrink: 0;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 768px) {
             .pricing-card.featured {
                 transform: scale(1);
@@ -307,13 +381,17 @@
             .macro-card:hover {
                 transform: translateY(-8px) scale(1.01);
             }
+
+            .phone-mockup {
+                width: 240px;
+                height: 480px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container mx-auto px-4 py-12 md:py-20">
         
-        <!-- Hero Badge -->
         <div class="flex justify-center mb-8 animate-fade-in-up">
             <div class="premium-badge px-8 py-3 rounded-full inline-flex items-center gap-2">
                 <span class="text-2xl">⚡</span>
@@ -321,29 +399,43 @@
             </div>
         </div>
 
-        <!-- Main Title -->
-        <div class="text-center mb-6 animate-fade-in-up animate-delay-1">
-            <h1 class="text-6xl md:text-8xl font-black text-white mb-4">
+        <div class="logo-container animate-fade-in-up animate-delay-1">
+            <div class="logo-mark">
+                🎯
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black text-white">
                 MacroFitCalc<span class="gradient-text">.</span>
             </h1>
+        </div>
+
+        <div class="text-center mb-6 animate-fade-in-up animate-delay-1">
             <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                Advanced macro calculator engineered with the Mifflin-St Jeor equation. 
-                Transform your body composition with precision-targeted nutrition.
+                Science-backed macro calculator trusted by 10,000+ athletes. 
+                Get your personalized nutrition blueprint in 60 seconds.
             </p>
         </div>
 
-        <!-- Main Calculator Card -->
-        <div class="glass-card rounded-3xl max-w-7xl mx-auto p-8 md:p-16 mb-20 animate-fade-in-up animate-delay-2">
+        <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in-up animate-delay-2">
+            <div class="trust-badge">
+                <p class="text-white font-bold text-sm">✓ Evidence-Based</p>
+            </div>
+            <div class="trust-badge">
+                <p class="text-white font-bold text-sm">✓ RD Approved</p>
+            </div>
+            <div class="trust-badge">
+                <p class="text-white font-bold text-sm">✓ 10,000+ Users</p>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-3xl max-w-7xl mx-auto p-8 md:p-16 mb-20 animate-fade-in-up animate-delay-3">
             <div class="grid md:grid-cols-2 gap-16">
                 
-                <!-- Input Section -->
                 <div>
                     <h2 class="text-3xl font-black text-gray-800 mb-8 flex items-center gap-3">
                         <span class="text-4xl">📊</span>
                         Your Bio-Metrics
                     </h2>
 
-                    <!-- Gender Selection -->
                     <div class="mb-8">
                         <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Gender</label>
                         <div class="grid grid-cols-2 gap-4">
@@ -356,13 +448,11 @@
                         </div>
                     </div>
 
-                    <!-- Age Input -->
                     <div class="mb-8">
                         <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Age (years)</label>
                         <input type="number" id="input-age" class="premium-input" value="30" min="15" max="100" oninput="calculateMacros()">
                     </div>
 
-                    <!-- Weight Input -->
                     <div class="mb-8">
                         <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Weight</label>
                         <div class="grid grid-cols-3 gap-4">
@@ -374,7 +464,6 @@
                         </div>
                     </div>
 
-                    <!-- Height Input -->
                     <div class="mb-8">
                         <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Height</label>
                         <div class="grid grid-cols-3 gap-4">
@@ -386,7 +475,6 @@
                         </div>
                     </div>
 
-                    <!-- Activity Level -->
                     <div class="mb-8">
                         <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Activity Level</label>
                         <select id="select-activity" class="premium-input" onchange="calculateMacros()">
@@ -398,7 +486,6 @@
                         </select>
                     </div>
 
-                    <!-- Goal Selection -->
                     <div class="mb-8">
                         <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Your Goal</label>
                         <select id="select-goal" class="premium-input" onchange="calculateMacros()">
@@ -409,28 +496,23 @@
                     </div>
                 </div>
 
-                <!-- Results Section -->
                 <div>
                     <h2 class="text-3xl font-black text-gray-800 mb-8 flex items-center gap-3">
                         <span class="text-4xl">🎯</span>
                         Your Macro Blueprint
                     </h2>
 
-                    <!-- Chart -->
                     <div id="chart-container" class="chart-wrapper mb-10">
                         <canvas id="donut-chart"></canvas>
                     </div>
 
-                    <!-- Total Calories -->
                     <div class="calorie-display mb-10">
                         <p class="text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">Daily Calorie Target</p>
                         <p id="display-calories" class="text-6xl font-black gradient-text mb-2">2200</p>
                         <p class="text-xs text-gray-500 font-medium">Calculated via Mifflin-St Jeor Equation</p>
                     </div>
 
-                    <!-- Macro Cards Grid -->
                     <div class="grid grid-cols-3 gap-5">
-                        <!-- Protein Card -->
                         <div class="macro-card protein">
                             <div class="text-4xl mb-3 icon-pulse">🥩</div>
                             <p class="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Protein</p>
@@ -439,7 +521,6 @@
                             <p id="display-protein-cal" class="text-sm font-bold text-red-500">660 cal</p>
                         </div>
 
-                        <!-- Carbs Card -->
                         <div class="macro-card carbs">
                             <div class="text-4xl mb-3 icon-pulse">🍚</div>
                             <p class="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Carbs</p>
@@ -448,7 +529,6 @@
                             <p id="display-carbs-cal" class="text-sm font-bold text-blue-500">880 cal</p>
                         </div>
 
-                        <!-- Fats Card -->
                         <div class="macro-card fats">
                             <div class="text-4xl mb-3 icon-pulse">🥑</div>
                             <p class="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Fats</p>
@@ -461,72 +541,119 @@
             </div>
         </div>
 
-        <!-- Blueprint Section -->
-        <div class="max-w-7xl mx-auto mb-20 animate-fade-in-up animate-delay-3">
+        <div class="max-w-7xl mx-auto mb-20 animate-fade-in-up animate-delay-4">
+            <h2 class="text-4xl md:text-5xl font-black text-white text-center mb-4">
+                What Our Beta Testers Are Saying
+            </h2>
+            <p class="text-center text-gray-400 mb-12 text-lg">Real results from real people</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar">SM</div>
+                    <div class="stars">★★★★★</div>
+                    <p class="text-gray-700 mb-4 italic">"Lost 18 lbs in 8 weeks following my custom macro plan. The precision made all the difference - no more guessing!"</p>
+                    <p class="font-bold text-gray-900">Sarah M.</p>
+                    <p class="text-sm text-gray-500">Competitive CrossFit Athlete</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">JK</div>
+                    <div class="stars">★★★★★</div>
+                    <p class="text-gray-700 mb-4 italic">"Finally hit my strength goals! Gained 12 lbs of lean mass without the fat. The app made meal prep so simple."</p>
+                    <p class="font-bold text-gray-900">James K.</p>
+                    <p class="text-sm text-gray-500">Powerlifter, 242 lb class</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">LP</div>
+                    <div class="stars">★★★★★</div>
+                    <p class="text-gray-700 mb-4 italic">"As a busy mom, I needed something simple. Down 25 lbs and I actually enjoy my meals now. Life-changing!"</p>
+                    <p class="font-bold text-gray-900">Lisa P.</p>
+                    <p class="text-sm text-gray-500">Marathon Runner & Mom of 3</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto mb-20">
             <div class="glass-card rounded-3xl p-10 md:p-16">
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <div>
                         <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
-                            The 30-Day Master Nutrition Blueprint
+                            Get Your Complete Nutrition System
                         </h2>
                         <p class="text-xl text-gray-600 mb-8 leading-relaxed">
-                            Don't let these precision numbers go to waste. Transform your calculated macros into 
-                            real-world results with our scientifically-designed nutrition system.
+                            Your personalized macro targets are just the beginning. Transform them into real results with our complete nutrition management platform.
                         </p>
                         
                         <div class="space-y-4 mb-10">
                             <div class="flex items-start">
                                 <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">120+ macro-balanced recipes calibrated to your exact targets</span>
+                                <span class="text-gray-700 font-medium text-lg">Mobile app with barcode scanner & meal tracking</span>
                             </div>
                             <div class="flex items-start">
                                 <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">Auto-generated weekly meal prep schedules with shopping lists</span>
+                                <span class="text-gray-700 font-medium text-lg">120+ recipes auto-adjusted to your exact macros</span>
                             </div>
                             <div class="flex items-start">
                                 <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">Advanced progress tracking dashboard with photo timeline</span>
+                                <span class="text-gray-700 font-medium text-lg">Weekly meal plans with auto-generated grocery lists</span>
                             </div>
                             <div class="flex items-start">
                                 <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">24/7 certified nutrition coach support via mobile app</span>
+                                <span class="text-gray-700 font-medium text-lg">Progress photos & body composition tracking</span>
                             </div>
+                            <div class="flex items-start">
+                                <span class="feature-check">✓</span>
+                                <span class="text-gray-700 font-medium text-lg">24/7 support from certified nutrition coaches</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
+                            <p class="text-sm font-bold text-blue-900 mb-2">🎁 LIMITED TIME OFFER</p>
+                            <p class="text-gray-700 font-semibold">First 100 users get lifetime access to all future features at the current price. Lock in now!</p>
                         </div>
                     </div>
                     
                     <div>
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700&h=700&fit=crop&q=90" 
-                             alt="Premium meal prep" 
-                             class="rounded-2xl shadow-2xl w-full transform hover:scale-105 transition-transform duration-500">
+                        <div class="phone-mockup">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen">
+                                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&h=600&fit=crop&q=90" 
+                                     alt="App interface" 
+                                     style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Pricing Section -->
         <div class="max-w-7xl mx-auto mb-20">
             <div class="text-center mb-16">
                 <h2 class="text-5xl md:text-6xl font-black text-white mb-5">
-                    Choose Your Nutrition Pack
+                    Choose Your Plan
                 </h2>
                 <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-                    Unlock your transformation with premium nutrition planning
+                    Monthly subscription • Cancel anytime • 30-day money-back guarantee
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
                 
-                <!-- Starter Pack -->
                 <div class="pricing-card">
-                    <h3 class="text-2xl font-black text-gray-900 mb-2">Starter Pack</h3>
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">Starter</h3>
                     <p class="text-gray-600 mb-6">Perfect for beginners</p>
                     
                     <div class="mb-8">
                         <span class="text-6xl font-black text-gray-900">$29</span>
-                        <span class="text-gray-600 text-xl font-semibold">/mo</span>
+                        <span class="text-gray-600 text-xl font-semibold">/month</span>
                     </div>
 
                     <div class="space-y-4 mb-10">
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">Macro calculator access</span>
+                        </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
                             <span class="text-gray-700 font-medium">30 macro-balanced recipes</span>
@@ -537,49 +664,40 @@
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Basic progress tracking</span>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
                             <span class="text-gray-700 font-medium">Email support</span>
                         </div>
                     </div>
 
-                    <button class="btn-premium" onclick="selectPack('Starter Pack', 29)">
-                        Select Starter
+                    <button class="btn-premium" onclick="selectPack('Starter', 29, 'Get started with personalized macros and basic meal planning')">
+                        Start My Transformation
                     </button>
                 </div>
 
-                <!-- Pro Pack (Featured) -->
                 <div class="pricing-card featured">
                     <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-2 rounded-full font-black text-sm uppercase tracking-wider">
                         Most Popular
                     </div>
                     
-                    <h3 class="text-2xl font-black text-gray-900 mb-2">Pro Pack</h3>
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">Pro</h3>
                     <p class="text-gray-600 mb-6">For serious results</p>
                     
                     <div class="mb-8">
                         <span class="text-6xl font-black text-gray-900">$59</span>
-                        <span class="text-gray-600 text-xl font-semibold">/mo</span>
+                        <span class="text-gray-600 text-xl font-semibold">/month</span>
                     </div>
 
                     <div class="space-y-4 mb-10">
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">120+ macro-balanced recipes</span>
+                            <span class="text-gray-700 font-medium"><strong>Everything in Starter, plus:</strong></span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Custom meal prep schedules</span>
+                            <span class="text-gray-700 font-medium">Mobile app with barcode scanner</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Advanced analytics dashboard</span>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">24/7 coach app support</span>
+                            <span class="text-gray-700 font-medium">120+ recipes auto-adjusted to your macros</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
@@ -587,33 +705,36 @@
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Recipe substitution engine</span>
+                            <span class="text-gray-700 font-medium">Progress tracking dashboard</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
+                            <span class="text-gray-700 font-medium">24/7 chat support</span>
                         </div>
                     </div>
 
-                    <button class="btn-premium" onclick="selectPack('Pro Pack', 59)">
-                        Select Pro
+                    <button class="btn-premium" onclick="selectPack('Pro', 59, 'Full mobile app, recipe library, and progress tracking')">
+                        Generate My Custom Plan Now
                     </button>
                 </div>
 
-                <!-- Elite Pack -->
                 <div class="pricing-card">
-                    <h3 class="text-2xl font-black text-gray-900 mb-2">Elite Pack</h3>
-                    <p class="text-gray-600 mb-6">Premium coaching</p>
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">Elite</h3>
+                    <p class="text-gray-600 mb-6">Premium 1-on-1 coaching</p>
                     
                     <div class="mb-8">
                         <span class="text-6xl font-black text-gray-900">$99</span>
-                        <span class="text-gray-600 text-xl font-semibold">/mo</span>
+                        <span class="text-gray-600 text-xl font-semibold">/month</span>
                     </div>
 
                     <div class="space-y-4 mb-10">
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium"><strong>Everything in Pro</strong></span>
+                            <span class="text-gray-700 font-medium"><strong>Everything in Pro, plus:</strong></span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">1-on-1 nutrition coaching</span>
+                            <span class="text-gray-700 font-medium">Personal nutrition coach (RD)</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
@@ -621,11 +742,11 @@
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Custom supplement protocol</span>
+                            <span class="text-gray-700 font-medium">Custom supplement recommendations</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">DNA-based optimization</span>
+                            <span class="text-gray-700 font-medium">Priority support (2hr response)</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
@@ -633,14 +754,13 @@
                         </div>
                     </div>
 
-                    <button class="btn-premium" onclick="selectPack('Elite Pack', 99)">
-                        Select Elite
+                    <button class="btn-premium" onclick="selectPack('Elite', 99, 'Personal RD coaching, custom protocols, and VIP support')">
+                        Get Personal Coaching
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="max-w-6xl mx-auto text-center space-y-6 pb-40">
             <p class="text-sm text-gray-500 leading-relaxed max-w-4xl mx-auto">
                 <strong class="text-gray-400">Medical Disclaimer:</strong> This calculator provides estimates based on standard equations and should not replace professional medical or nutritional advice. Always consult with a healthcare provider or registered dietitian before making significant dietary changes.
@@ -654,25 +774,24 @@
         </div>
     </div>
 
-    <!-- Sticky Checkout Bar -->
     <div id="checkout-bar" class="checkout-bar">
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between flex-wrap gap-4">
                 <div class="flex items-center gap-4">
                     <div class="bg-white bg-opacity-20 rounded-xl p-4">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                     <div>
-                        <p id="checkout-pack-name" class="text-white font-black text-xl">Pro Pack Selected</p>
-                        <p class="text-blue-100 font-medium">Transform your nutrition today</p>
+                        <p id="checkout-pack-name" class="text-white font-black text-xl">Pro Plan Selected</p>
+                        <p id="checkout-pack-desc" class="text-blue-100 font-medium text-sm">Full app access + 120 recipes</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-6">
                     <p id="checkout-price" class="text-white text-4xl font-black">$59/mo</p>
                     <button onclick="checkout()" class="bg-white text-blue-600 px-10 py-4 rounded-xl font-black text-xl hover:bg-blue-50 transition-all transform hover:scale-105">
-                        Checkout Now →
+                        Secure Checkout →
                     </button>
                 </div>
             </div>
@@ -680,7 +799,6 @@
     </div>
 
     <script>
-        // Application State
         const state = {
             gender: 'male',
             age: 30,
@@ -695,13 +813,11 @@
 
         let chartInstance = null;
 
-        // Initialize Application
         function init() {
             createChart();
             calculateMacros();
         }
 
-        // Create Donut Chart
         function createChart() {
             const ctx = document.getElementById('donut-chart').getContext('2d');
             chartInstance = new Chart(ctx, {
@@ -753,12 +869,17 @@
                             }
                         }
                     },
-                    cutout: '70%'
+                    cutout: '70%',
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    }
                 }
             });
         }
 
-        // Set Gender
         function setGender(gender) {
             state.gender = gender;
             
@@ -768,9 +889,22 @@
             calculateMacros();
         }
 
-        // Calculate Macros using Mifflin-St Jeor
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.round(current);
+            }, 16);
+        }
+
         function calculateMacros() {
-            // Get current values
             state.age = parseInt(document.getElementById('input-age').value);
             state.weight = parseFloat(document.getElementById('input-weight').value);
             state.height = parseFloat(document.getElementById('input-height').value);
@@ -779,14 +913,12 @@
             state.activity = parseFloat(document.getElementById('select-activity').value);
             state.goal = document.getElementById('select-goal').value;
 
-            // Convert to metric
             let weightKg = state.weight;
             let heightCm = state.height;
 
             if (state.weightUnit === 'lb') weightKg = state.weight * 0.453592;
             if (state.heightUnit === 'in') heightCm = state.height * 2.54;
 
-            // Mifflin-St Jeor BMR Calculation
             let bmr;
             if (state.gender === 'male') {
                 bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * state.age) + 5;
@@ -794,10 +926,8 @@
                 bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * state.age) - 161;
             }
 
-            // Calculate TDEE
             let tdee = bmr * state.activity;
 
-            // Macro split percentages based on goal
             let macroSplit = {
                 'fat-loss': { protein: 35, carbs: 35, fats: 30, modifier: 0.8 },
                 'maintenance': { protein: 30, carbs: 40, fats: 30, modifier: 1.0 },
@@ -807,7 +937,6 @@
             const split = macroSplit[state.goal];
             const targetCalories = tdee * split.modifier;
 
-            // Calculate macro grams
             const proteinCals = targetCalories * (split.protein / 100);
             const carbsCals = targetCalories * (split.carbs / 100);
             const fatsCals = targetCalories * (split.fats / 100);
@@ -816,37 +945,38 @@
             const carbsGrams = Math.round(carbsCals / 4);
             const fatsGrams = Math.round(fatsCals / 9);
 
-            // Update UI
-            document.getElementById('display-calories').textContent = Math.round(targetCalories);
+            const currentCals = parseInt(document.getElementById('display-calories').textContent) || 0;
+            animateValue(document.getElementById('display-calories'), currentCals, Math.round(targetCalories), 800);
             
-            document.getElementById('display-protein-g').textContent = proteinGrams;
+            const currentProtein = parseInt(document.getElementById('display-protein-g').textContent) || 0;
+            animateValue(document.getElementById('display-protein-g'), currentProtein, proteinGrams, 800);
+            
+            const currentCarbs = parseInt(document.getElementById('display-carbs-g').textContent) || 0;
+            animateValue(document.getElementById('display-carbs-g'), currentCarbs, carbsGrams, 800);
+            
+            const currentFats = parseInt(document.getElementById('display-fats-g').textContent) || 0;
+            animateValue(document.getElementById('display-fats-g'), currentFats, fatsGrams, 800);
+
             document.getElementById('display-protein-cal').textContent = Math.round(proteinCals) + ' cal';
-            
-            document.getElementById('display-carbs-g').textContent = carbsGrams;
             document.getElementById('display-carbs-cal').textContent = Math.round(carbsCals) + ' cal';
-            
-            document.getElementById('display-fats-g').textContent = fatsGrams;
             document.getElementById('display-fats-cal').textContent = Math.round(fatsCals) + ' cal';
 
-            // Update chart
             chartInstance.data.datasets[0].data = [split.protein, split.carbs, split.fats];
-            chartInstance.update('none'); // Instant update without animation
+            chartInstance.update();
 
-            // Update chart container styling based on goal
             const chartContainer = document.getElementById('chart-container');
             chartContainer.className = 'chart-wrapper ' + state.goal;
         }
 
-        // Select Pack
-        function selectPack(packName, price) {
-            state.selectedPack = { name: packName, price: price };
+        function selectPack(packName, price, description) {
+            state.selectedPack = { name: packName, price: price, description: description };
             
-            document.getElementById('checkout-pack-name').textContent = packName + ' Selected';
+            document.getElementById('checkout-pack-name').textContent = packName + ' Plan Selected';
+            document.getElementById('checkout-pack-desc').textContent = description;
             document.getElementById('checkout-price').textContent = '$' + price + '/mo';
             
             document.getElementById('checkout-bar').classList.add('visible');
             
-            // Smooth scroll to bottom
             setTimeout(() => {
                 window.scrollTo({
                     top: document.body.scrollHeight,
@@ -855,14 +985,12 @@
             }, 400);
         }
 
-        // Checkout
         function checkout() {
             if (!state.selectedPack) return;
             
-            alert(`Checkout for ${state.selectedPack.name} ($${state.selectedPack.price}/mo)\n\nIn production, this would redirect to your payment processor (Stripe, PayPal, etc.)`);
+            window.location.href = `https://buy.stripe.com/test_YOURLINK?plan=${state.selectedPack.name}&price=${state.selectedPack.price}`;
         }
 
-        // Initialize on page load
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
