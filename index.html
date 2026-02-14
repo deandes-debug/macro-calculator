@@ -1,279 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc | Precision Nutrition Intelligence</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        :root {
-            --brand-dark: #060D17;
-            --brand-navy: #0A2540;
-            --accent: #FF7A00;
-            --accent-glow: rgba(255, 122, 0, 0.15);
-            --text-main: #1E293B;
-            --text-muted: #64748B;
-            --glass: rgba(255, 255, 255, 0.8);
-            --border: #E2E8F0;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { font-family: 'Inter', sans-serif; background: #F1F5F9; color: var(--text-main); line-height: 1.6; }
-
-        /* --- Luxury Header --- */
-        header { 
-            background: var(--brand-dark); 
-            padding: 120px 0 200px; 
-            text-align: center; 
-            color: white; 
-            background-image: radial-gradient(circle at 50% -20%, #163a5f 0%, var(--brand-dark) 70%);
-        }
-        .hero-badge { 
-            background: var(--accent-glow); color: var(--accent); 
-            padding: 6px 16px; border-radius: 100px; font-weight: 700; font-size: 0.75rem;
-            text-transform: uppercase; letter-spacing: 1px; border: 1px solid var(--accent);
-            margin-bottom: 24px; display: inline-block;
-        }
-        header h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -3px; line-height: 0.95; }
-        header p { color: #94A3B8; font-size: 1.25rem; max-width: 600px; margin: 25px auto; }
-
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-
-        /* --- Premium Calculator Card --- */
-        #calculator { margin-top: -140px; }
-        .main-card { 
-            background: var(--glass); backdrop-filter: blur(10px);
-            border-radius: 32px; padding: 48px; 
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.15), 0 30px 60px -30px rgba(0,0,0,0.2); 
-            border: 1px solid white; 
-        }
-
-        .input-section-label { 
-            display: flex; align-items: center; gap: 10px; 
-            font-size: 0.9rem; font-weight: 800; color: var(--brand-navy);
-            margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .input-section-label i { color: var(--accent); }
-
-        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 40px; }
-        
-        .field-group { display: flex; flex-direction: column; gap: 8px; }
-        .field-group label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
-        .field-group input, .field-group select { 
-            padding: 16px; border: 2px solid #F1F5F9; border-radius: 14px; 
-            font-size: 1rem; font-weight: 600; transition: 0.3s; background: white;
-        }
-        .field-group input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px var(--accent-glow); }
-
-        .btn-premium { 
-            width: 100%; background: var(--accent); color: white; border: none; padding: 24px; border-radius: 18px; 
-            font-size: 1.2rem; font-weight: 800; cursor: pointer; transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-        }
-        .btn-premium:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(255, 122, 0, 0.4); }
-
-        /* --- Dashboard Results --- */
-        #results { display: none; margin-top: 60px; padding-top: 60px; border-top: 1px solid #EDF2F7; animation: reveal 0.8s ease; }
-        .dashboard-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; }
-        
-        .chart-box { position: relative; width: 100%; display: flex; justify-content: center; }
-        .chart-container { position: relative; width: 340px; height: 340px; }
-        .chart-center { 
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            text-align: center; pointer-events: none;
-        }
-        .chart-center span { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .chart-center strong { font-size: 3rem; display: block; color: var(--brand-navy); line-height: 1; margin-top: 5px; }
-
-        .macro-stats { display: flex; flex-direction: column; gap: 16px; }
-        .macro-card { 
-            background: #F8FAFC; padding: 24px; border-radius: 20px; border-left: 6px solid #CBD5E1;
-            display: flex; justify-content: space-between; align-items: center; transition: 0.3s;
-        }
-        .macro-card:hover { transform: translateX(8px); background: white; border-color: var(--accent); }
-        .macro-card h4 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; }
-        .macro-card .val { font-size: 1.5rem; font-weight: 800; color: var(--brand-navy); }
-
-        /* --- Social Proof & Testimonials --- */
-        .testimonials { margin-top: 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .testi-card { background: white; padding: 30px; border-radius: 20px; font-size: 0.95rem; border: 1px solid var(--border); }
-        .testi-card .user { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
-        .testi-card .user img { width: 40px; height: 40px; border-radius: 50%; background: #eee; }
-
-        /* --- The Expensive Sales Closer --- */
-        .sales-funnel { 
-            margin-top: 80px; background: var(--brand-navy); border-radius: 32px; overflow: hidden; 
-            display: flex; color: white; border: 1px solid rgba(255,255,255,0.1);
-        }
-        .sales-info { flex: 1; padding: 60px; }
-        .sales-image { flex: 1; background: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80') center/cover; }
-        
-        .price-badge { font-size: 3.5rem; font-weight: 800; color: var(--accent); margin: 24px 0; }
-        .price-badge span { font-size: 1.2rem; text-decoration: line-through; opacity: 0.4; margin-left: 10px; }
-
-        @keyframes reveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 850px) { .dashboard-grid, .sales-funnel, .testimonials { grid-template-columns: 1fr; } .sales-image { height: 300px; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Macro & Merchant</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* Neon colors */
+.neon-lime { color:#39FF14; }
+.neon-cyan { color:#00FFFF; }
+.neon-bg-lime { background-color:#39FF14; }
+.neon-bg-cyan { background-color:#00FFFF; }
+.card-highlight { transform: scale(1.05); border:2px solid #39FF14; }
+.transition-smooth { transition: all 0.3s ease-in-out; }
+</style>
 </head>
-<body>
+<body class="bg-gray-900 text-white">
 
-<header>
-    <div class="container">
-        <div class="hero-badge">Bio-Metric Precision Engineering</div>
-        <h1>MacroFitCalc<span style="color:var(--accent)">.</span></h1>
-        <p>Advanced metabolic algorithms designed to decode your body's specific nutritional requirements.</p>
-    </div>
+<header class="flex justify-between items-center p-6 bg-gray-800">
+  <div class="text-2xl font-bold neon-lime">Macro & Merchant</div>
 </header>
 
-<div class="container" id="calculator">
-    <div class="main-card">
-        <div class="input-section-label"><i data-lucide="user"></i> Physical Metrics</div>
-        <div class="input-grid">
-            <div class="field-group"><label>Weight (kg)</label><input type="number" id="weight" placeholder="e.g. 82"></div>
-            <div class="field-group"><label>Height (cm)</label><input type="number" id="height" placeholder="e.g. 185"></div>
-            <div class="field-group"><label>Age</label><input type="number" id="age" placeholder="e.g. 29"></div>
-            <div class="field-group"><label>Gender</label><select id="gender"><option value="male">Male</option><option value="female">Female</option></select></div>
-        </div>
+<main class="max-w-4xl mx-auto p-6">
 
-        <div class="input-section-label"><i data-lucide="zap"></i> Performance & Goals</div>
-        <div class="input-grid">
-            <div class="field-group" style="grid-column: span 2">
-                <label>Activity Coefficient</label>
-                <select id="activity">
-                    <option value="1.2">Sedentary (Minimal movement, desk job)</option>
-                    <option value="1.375">Lightly Active (1-2 workouts per week)</option>
-                    <option value="1.55">Moderately Active (3-5 intense workouts)</option>
-                    <option value="1.725">Highly Active (Daily heavy training)</option>
-                </select>
-            </div>
-            <div class="field-group">
-                <label>Target Outcome</label>
-                <select id="goal">
-                    <option value="-500">Rapid Fat Loss</option>
-                    <option value="-250">Lean Body Recomposition</option>
-                    <option value="0">Metabolic Maintenance</option>
-                    <option value="400">Muscle Hypertrophy</option>
-                </select>
-            </div>
-        </div>
+<!-- Calculator -->
+<section class="text-center mb-12">
+<h1 class="text-4xl font-bold neon-cyan mb-4">Calculate Your Perfect Macros</h1>
+<form id="macroForm" class="bg-gray-800 p-6 rounded-xl shadow-lg max-w-xl mx-auto space-y-4">
+  <div class="flex justify-between gap-4">
+    <label class="flex-1">Age
+      <input type="number" name="age" class="w-full p-2 rounded bg-gray-900 text-white"/>
+    </label>
+    <label class="flex-1">Gender
+      <select name="gender" class="w-full p-2 rounded bg-gray-900 text-white">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </label>
+  </div>
 
-        <button class="btn-premium" onclick="calculate()">Generate My Dashboard →</button>
+  <div class="flex justify-between gap-4">
+    <label class="flex-1">Weight
+      <input type="number" name="weight" class="w-full p-2 rounded bg-gray-900 text-white"/>
+    </label>
+    <label class="flex-1">Height
+      <input type="number" name="height" class="w-full p-2 rounded bg-gray-900 text-white"/>
+    </label>
+  </div>
 
-        <div id="results">
-            <div class="dashboard-grid">
-                <div class="chart-box">
-                    <div class="chart-container">
-                        <canvas id="macroChart"></canvas>
-                        <div class="chart-center">
-                            <span>Target</span>
-                            <strong id="res-cal">----</strong>
-                        </div>
-                    </div>
-                </div>
-                <div class="macro-stats">
-                    <div class="macro-card" style="border-left-color: var(--accent);">
-                        <div><h4>Protein</h4><p style="font-size: 0.8rem; color: var(--text-muted)">Muscle Tissue Repair</p></div>
-                        <div class="val" id="res-pro">--g</div>
-                    </div>
-                    <div class="macro-card" style="border-left-color: #3B82F6;">
-                        <div><h4>Carbohydrates</h4><p style="font-size: 0.8rem; color: var(--text-muted)">Glycogen & Performance</p></div>
-                        <div class="val" id="res-carb">--g</div>
-                    </div>
-                    <div class="macro-card" style="border-left-color: #10B981;">
-                        <div><h4>Dietary Fats</h4><p style="font-size: 0.8rem; color: var(--text-muted)">Hormonal Optimization</p></div>
-                        <div class="val" id="res-fat">--g</div>
-                    </div>
-                    <p style="font-size: 0.75rem; text-align: center; color: var(--text-muted); margin-top: 10px;">
-                        *Figures optimized using the Mifflin-St Jeor Equation.
-                    </p>
-                </div>
-            </div>
-
-            <div class="sales-funnel">
-                <div class="sales-info">
-                    <div class="hero-badge" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;">Exclusive Offer</div>
-                    <h2 style="font-size: 2.2rem; font-weight: 800; line-height: 1.1;">The 30-Day Master Nutrition Blueprint</h2>
-                    <p style="margin: 20px 0; opacity: 0.8;">Don't let these numbers go to waste. Get the exact meal plan, grocery list, and supplement guide designed to hit these targets perfectly.</p>
-                    <div class="price-badge">$19 <span>$67</span></div>
-                    <a href="https://your-payment-link.com" class="btn-premium" style="display:block; text-align:center; text-decoration:none;">Download Your Blueprint Now →</a>
-                    <p style="margin-top: 20px; font-size: 0.85rem; opacity: 0.6; text-align: center;">Verified Secure Checkout • Instant Digital Access</p>
-                </div>
-                <div class="sales-image"></div>
-            </div>
-        </div>
+  <div class="flex justify-between gap-4">
+    <label class="flex-1">Activity
+      <select name="activity" class="w-full p-2 rounded bg-gray-900 text-white">
+        <option value="1.2">Sedentary</option>
+        <option value="1.375">Light</option>
+        <option value="1.55">Moderate</option>
+        <option value="1.725">Very Active</option>
+        <option value="1.9">Athlete</option>
+      </select>
+    </label>
+    <div class="flex-1 flex flex-col">
+      Goal:
+      <div class="flex gap-2 mt-1">
+        <button type="button" data-goal="lose" class="goal-btn p-2 rounded bg-gray-700 neon-lime">Lose</button>
+        <button type="button" data-goal="maintain" class="goal-btn p-2 rounded bg-gray-700 neon-cyan">Maintain</button>
+        <button type="button" data-goal="gain" class="goal-btn p-2 rounded bg-gray-700 neon-lime">Gain</button>
+      </div>
     </div>
+  </div>
 
-    <div class="testimonials">
-        <div class="testi-card">
-            <p>"The most accurate calculation I've found. Finally broke my weight loss plateau after 6 months."</p>
-            <div class="user"><strong>Sarah J.</strong><span>Verified Client</span></div>
-        </div>
-        <div class="testi-card">
-            <p>"I went from guessing to knowing. The Starter Pack is worth 10x the price for the grocery list alone."</p>
-            <div class="user"><strong>Marcus K.</strong><span>Elite Member</span></div>
-        </div>
-        <div class="testi-card">
-            <p>"Simplified everything. No more scanning barcodes for hours. Just clear, precise targets."</p>
-            <div class="user"><strong>David L.</strong><span>Bodybuilder</span></div>
-        </div>
-    </div>
+  <button type="submit" class="w-full p-3 rounded-xl neon-bg-lime font-bold mt-4">Calculate Macros</button>
+</form>
+</section>
+
+<!-- Results -->
+<section id="results" class="mb-12 hidden">
+<h2 class="text-3xl font-bold neon-cyan mb-4 text-center">Your Daily Macros</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div class="p-4 bg-gray-800 rounded-xl text-center transition-smooth">
+    <div class="text-lg font-bold">Calories</div>
+    <div id="calories" class="text-2xl font-bold neon-lime">-</div>
+  </div>
+  <div class="p-4 bg-gray-800 rounded-xl text-center transition-smooth">
+    <div class="text-lg font-bold">Protein</div>
+    <div id="protein" class="text-2xl font-bold neon-lime">-</div>
+  </div>
+  <div class="p-4 bg-gray-800 rounded-xl text-center transition-smooth">
+    <div class="text-lg font-bold">Carbs</div>
+    <div id="carbs" class="text-2xl font-bold neon-lime">-</div>
+  </div>
+  <div class="p-4 bg-gray-800 rounded-xl text-center transition-smooth">
+    <div class="text-lg font-bold">Fat</div>
+    <div id="fat" class="text-2xl font-bold neon-lime">-</div>
+  </div>
 </div>
+</section>
 
-<footer style="padding: 100px 0; text-align: center; opacity: 0.5; font-size: 0.8rem;">
-    &copy; 2026 MacroFitCalc. Professional Grade Nutrition.
-</footer>
+<!-- Nutrition Shop -->
+<section id="shop">
+<h2 class="text-3xl font-bold neon-cyan mb-4 text-center">Fuel Your Results: Custom Nutrition Packs</h2>
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="nutrition-card p-6 bg-gray-800 rounded-xl text-center transition-smooth">
+    <h3 class="text-xl font-bold mb-2">Lean Starter Pack</h3>
+    <p class="mb-2">High protein, low carb</p>
+    <p class="mb-2 font-bold">$29</p>
+    <ul class="mb-4 list-disc list-inside text-left">
+      <li>Protein Powder</li>
+      <li>Meal Plan</li>
+      <li>Tracking Sheets</li>
+    </ul>
+    <button class="buy-btn p-2 rounded neon-bg-cyan font-bold">Buy Now</button>
+  </div>
+  <div class="nutrition-card p-6 bg-gray-800 rounded-xl text-center transition-smooth">
+    <h3 class="text-xl font-bold mb-2">Muscle Bundle</h3>
+    <p class="mb-2">Mass gain & recovery</p>
+    <p class="mb-2 font-bold">$49</p>
+    <ul class="mb-4 list-disc list-inside text-left">
+      <li>Protein Powder</li>
+      <li>Creatine</li>
+      <li>Meal Templates</li>
+    </ul>
+    <button class="buy-btn p-2 rounded neon-bg-cyan font-bold">Buy Now</button>
+  </div>
+  <div class="nutrition-card p-6 bg-gray-800 rounded-xl text-center transition-smooth">
+    <h3 class="text-xl font-bold mb-2">Vegan Performance Kit</h3>
+    <p class="mb-2">Plant-based macros</p>
+    <p class="mb-2 font-bold">$39</p>
+    <ul class="mb-4 list-disc list-inside text-left">
+      <li>Vegan Protein</li>
+      <li>Meal Templates</li>
+      <li>Supplements</li>
+    </ul>
+    <button class="buy-btn p-2 rounded neon-bg-cyan font-bold">Buy Now</button>
+  </div>
+</div>
+</section>
+
+</main>
 
 <script>
-    lucide.createIcons();
-    let myChart = null;
+// Goal selection
+let selectedGoal = 'maintain';
+document.querySelectorAll('.goal-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedGoal = btn.dataset.goal;
+    document.querySelectorAll('.goal-btn').forEach(b=>b.classList.remove('neon-bg-lime'));
+    btn.classList.add('neon-bg-lime');
+  });
+});
 
-    function calculate() {
-        const w = parseFloat(document.getElementById('weight').value);
-        const h = parseFloat(document.getElementById('height').value);
-        const a = parseFloat(document.getElementById('age').value);
-        const g = document.getElementById('gender').value;
-        const act = parseFloat(document.getElementById('activity').value);
-        const goal = parseFloat(document.getElementById('goal').value);
+// Calculator
+document.getElementById('macroForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const age = Number(this.age.value);
+  const gender = this.gender.value;
+  const height = Number(this.height.value);
+  const weight = Number(this.weight.value);
+  const activity = Number(this.activity.value);
 
-        if(!w || !h || !a) return alert("Please complete your physical profile.");
+  let bmr = gender === 'male'
+    ? 10*weight + 6.25*height - 5*age + 5
+    : 10*weight + 6.25*height - 5*age -161;
 
-        let bmr = (10 * w) + (6.25 * h) - (5 * a);
-        bmr = (g === 'male') ? bmr + 5 : bmr - 161;
-        const total = Math.round((bmr * act) + goal);
+  if(selectedGoal === 'lose') bmr -= 500;
+  if(selectedGoal === 'gain') bmr += 500;
 
-        const p = Math.round((total * 0.3) / 4);
-        const c = Math.round((total * 0.4) / 4);
-        const f = Math.round((total * 0.3) / 9);
+  const calories = Math.round(bmr);
+  const protein = Math.round((calories*0.3)/4);
+  const carbs = Math.round((calories*0.4)/4);
+  const fat = Math.round((calories*0.3)/9);
 
-        document.getElementById('res-cal').innerText = total.toLocaleString();
-        document.getElementById('res-pro').innerText = p + 'g';
-        document.getElementById('res-carb').innerText = c + 'g';
-        document.getElementById('res-fat').innerText = f + 'g';
+  document.getElementById('calories').textContent = calories;
+  document.getElementById('protein').textContent = protein + " g";
+  document.getElementById('carbs').textContent = carbs + " g";
+  document.getElementById('fat').textContent = fat + " g";
 
-        const ctx = document.getElementById('macroChart').getContext('2d');
-        if (myChart) myChart.destroy();
-        myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Protein', 'Carbs', 'Fats'],
-                datasets: [{
-                    data: [p, c, f],
-                    backgroundColor: ['#FF7A00', '#3B82F6', '#10B981'],
-                    borderWidth: 0,
-                    hoverOffset: 15
-                }]
-            },
-            options: { cutout: '82%', plugins: { legend: { display: false } } }
-        });
+  document.getElementById('results').classList.remove('hidden');
 
-        document.getElementById('results').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-    }
+  // Highlight nutrition pack based on goal
+  document.querySelectorAll('.nutrition-card').forEach(card=>card.classList.remove('card-highlight'));
+  if(selectedGoal === 'lose') document.querySelector('.nutrition-card:nth-child(1)').classList.add('card-highlight');
+  if(selectedGoal === 'gain') document.querySelector('.nutrition-card:nth-child(2)').classList.add('card-highlight');
+  if(selectedGoal === 'maintain') document.querySelector('.nutrition-card:nth-child(3)').classList.add('card-highlight');
+
+  // Smooth scroll
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+});
+
+// Mock Buy Now popup
+document.querySelectorAll('.buy-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    alert('Success! Your purchase is mocked for demo purposes.');
+  });
+});
 </script>
 </body>
 </html>
