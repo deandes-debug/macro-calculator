@@ -1,9 +1,16 @@
-body { font-family: Arial, sans-serif; margin:0; padding:0; line-height:1.5; }
-header { text-align:center; padding:2rem; background:#f8f8f8; }
-main { padding:2rem; max-width:800px; margin:0 auto; }
-form label { display:block; margin-bottom:1rem; }
-input, select { width:100%; padding:0.5rem; margin-top:0.25rem; }
-button, .btn { padding:1rem 2rem; background:#007bff; color:white; border:none; cursor:pointer; text-decoration:none; display:inline-block; margin-top:1rem; }
-table { width:100%; margin-top:1rem; border-collapse: collapse; }
-td { padding:0.5rem; border-bottom:1px solid #ccc; }
-ul { margin-top:1rem; }
+body { font-family: 'Inter', sans-serif; margin:0; padding:0; line-height:1.5; background:#f5f7fa; color:#0A2540; }
+header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.logo { height:50px; }
+nav a { margin-left:1rem; text-decoration:none; color:#0A2540; font-weight:600; }
+main { padding:2rem; max-width:900px; margin:0 auto; }
+.hero { display:flex; justify-content:center; }
+.hero-content { max-width:600px; text-align:center; }
+.calculator-card, .sales-section, .results-section { background:#fff; padding:2rem; margin:2rem 0; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.05); }
+input, select { width:100%; padding:0.5rem; margin-top:0.25rem; border-radius:6px; border:1px solid #ccc; }
+button, .btn { padding:1rem 2rem; background:#FF7A00; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600; margin-top:1rem; text-decoration:none; display:inline-block; }
+button:hover, .btn:hover { background:#e66a00; }
+.macro-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:1rem; margin:2rem 0; }
+.card { background:#0A2540; color:white; padding:1rem; border-radius:10px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+.affiliate-tools { display:flex; gap:1rem; flex-wrap:wrap; margin:1rem 0; }
+.features { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin:1rem 0; }
+footer { text-align:center; padding:2rem; font-size:0.9rem; color:#555; }
