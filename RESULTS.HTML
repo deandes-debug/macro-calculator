@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Macro Results</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Your Estimated Daily Macros</h1>
+  </header>
+
+  <main>
+    <section id="results">
+      <table>
+        <tr><td>Calories:</td><td id="calories"></td></tr>
+        <tr><td>Protein:</td><td id="protein"></td></tr>
+        <tr><td>Carbs:</td><td id="carbs"></td></tr>
+        <tr><td>Fat:</td><td id="fat"></td></tr>
+      </table>
+
+      <p>Want a 4-week structured macro plan built around these numbers?</p>
+      <a href="sales.html" class="btn">Get My Starter Pack</a>
+
+      <h3>Tools to make tracking easier:</h3>
+      <ul>
+        <li><a href="#">Macro Tracking App (Affiliate)</a></li>
+        <li><a href="#">Food Scale (Affiliate)</a></li>
+        <li><a href="#">Protein Powder (Affiliate)</a></li>
+      </ul>
+
+      <p><strong>Disclaimer:</strong> Educational purposes only. Not personalised medical advice.</p>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('calories').textContent = sessionStorage.getItem('calories');
+    document.getElementById('protein').textContent = sessionStorage.getItem('protein') + " g";
+    document.getElementById('carbs').textContent = sessionStorage.getItem('carbs') + " g";
+    document.getElementById('fat').textContent = sessionStorage.getItem('fat') + " g";
+  </script>
+</body>
+</html>
