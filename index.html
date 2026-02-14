@@ -1,190 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc | Pro Results</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --dark-blue: #0A2540;
-            --orange: #FF7A00;
-            --light-gray: #F5F7FA;
-            --white: #FFFFFF;
-            --slate: #64748b;
-            --shadow: 0 10px 30px rgba(10, 37, 64, 0.1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--light-gray); color: var(--dark-blue); line-height: 1.6; }
-
-        header { background: var(--dark-blue); padding: 80px 20px 120px; color: var(--white); text-align: center; }
-        .container { max-width: 1000px; margin: -60px auto 60px; padding: 0 20px; }
-        
-        .card { background: var(--white); border-radius: 20px; padding: 40px; box-shadow: var(--shadow); }
-        
-        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .field { position: relative; }
-        .field label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.8rem; color: var(--slate); }
-        .field i { position: absolute; left: 12px; top: 34px; width: 16px; color: var(--slate); z-index: 1; }
-        .field input, .field select { 
-            width: 100%; padding: 12px 10px 12px 40px; border: 2px solid #eee; border-radius: 10px; font-size: 1rem; position: relative;
-        }
-
-        .btn-premium {
-            background: linear-gradient(135deg, var(--orange), #ff9533);
-            color: white; border: none; padding: 18px; border-radius: 12px;
-            font-weight: 700; width: 100%; cursor: pointer; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px; font-size: 1rem;
-            text-decoration: none; display: block; text-align: center;
-        }
-        .btn-premium:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,122,0,0.4); }
-
-        #results { display: none; margin-top: 40px; padding-top: 30px; border-top: 2px solid #f0f0f0; animation: fadeIn 0.5s; }
-        .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 20px 0; }
-        .macro-card { background: var(--light-gray); padding: 20px; border-radius: 15px; text-align: center; }
-        .macro-card strong { font-size: 1.5rem; display: block; margin-top: 5px; }
-
-        .pricing-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 50px; }
-        .price-card { background: white; padding: 30px; border-radius: 20px; border: 1px solid #eee; text-align: center; }
-        .featured { border: 2px solid var(--orange); position: relative; }
-        .price-card h3 { margin-bottom: 10px; }
-        .price { font-size: 2rem; font-weight: 700; margin-bottom: 20px; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MacroFitCalc - Premium Macro Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family:'Inter',sans-serif; margin:0; padding:0; background:#f5f7fa; color:#0A2540; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#0A2540; color:white; }
+  header .logo { font-size:1.5rem; font-weight:700; }
+  nav a { margin-left:1rem; text-decoration:none; color:white; font-weight:600; }
+  main { padding:2rem; max-width:900px; margin:0 auto; }
+  .hero { text-align:center; padding:2rem; background:linear-gradient(135deg,#0A2540,#0F3A70); color:white; border-radius:12px; margin-bottom:2rem; }
+  .hero h1 { font-size:2rem; margin-bottom:0.5rem; }
+  .hero p { font-size:1rem; opacity:0.8; margin-bottom:1.5rem; }
+  .calculator-card { background:white; padding:2rem; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.05); margin-bottom:2rem; }
+  .calculator-card label { display:block; margin-top:1rem; font-weight:600; }
+  input, select { width:100%; padding:0.5rem; margin-top:0.25rem; border-radius:6px; border:1px solid #ccc; }
+  button, .btn { padding:1rem 2rem; background:#FF7A00; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600; margin-top:1rem; text-decoration:none; display:inline-block; transition:0.3s; }
+  button:hover, .btn:hover { background:#e66a00; }
+  .macro-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:1rem; margin:2rem 0; }
+  .macro-card { background:#0A2540; color:white; padding:1rem; border-radius:10px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; flex-direction:column; align-items:center; transition:0.3s; }
+  .macro-card:hover { transform:translateY(-5px); }
+  .macro-card img { width:40px; margin-bottom:0.5rem; }
+  .starter-pack { background:white; padding:2rem; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.05); text-align:center; margin-top:2rem; }
+  .starter-pack h2 { margin-bottom:1rem; }
+  .starter-pack .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin:1rem 0; }
+  .starter-pack .features div { background:#0A2540; color:white; padding:1rem; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+  footer { text-align:center; padding:2rem; font-size:0.9rem; color:#555; margin-top:2rem; }
+</style>
 </head>
 <body>
-
 <header>
-    <h1>MacroFitCalc</h1>
-    <p>Scientific Macro Calculations (MFP Standard)</p>
+<div class="logo">MacroFitCalc</div>
+<nav>
+<a href="#calculator">Calculator</a>
+<a href="#results">Results</a>
+<a href="#starter-pack">Starter Pack</a>
+</nav>
 </header>
 
-<div class="container">
-    <div class="card">
-        <div class="input-grid">
-            <div class="field">
-                <label>Weight (kg)</label>
-                <i data-lucide="weight"></i>
-                <input type="number" id="weight" placeholder="75">
-            </div>
-            <div class="field">
-                <label>Height (cm)</label>
-                <i data-lucide="ruler"></i>
-                <input type="number" id="height" placeholder="180">
-            </div>
-            <div class="field">
-                <label>Age</label>
-                <i data-lucide="calendar"></i>
-                <input type="number" id="age" placeholder="30">
-            </div>
-            <div class="field">
-                <label>Gender</label>
-                <i data-lucide="users"></i>
-                <select id="gender">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-        </div>
+<main>
+<section class="hero">
+<h1>Get Your Macro Targets Instantly</h1>
+<p>Science-based estimates. Educational purposes only.</p>
+</section>
 
-        <div class="input-grid">
-            <div class="field">
-                <label>Activity Level</label>
-                <i data-lucide="activity"></i>
-                <select id="activity">
-                    <option value="1.2">Not Active (Desk Job)</option>
-                    <option value="1.375">Lightly Active (1-2 days/wk)</option>
-                    <option value="1.55">Moderately Active (3-5 days/wk)</option>
-                    <option value="1.725">Very Active (Daily Training)</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>My Goal</label>
-                <i data-lucide="target"></i>
-                <select id="goal">
-                    <option value="-500">Lose Weight (-1 lb/wk)</option>
-                    <option value="0">Maintain Weight</option>
-                    <option value="500">Gain Muscle (+1 lb/wk)</option>
-                </select>
-            </div>
-        </div>
+<section id="calculator" class="calculator-card">
+<h2>Enter Your Details</h2>
+<form id="macroForm">
+<label>Age: <input type="number" name="age" required></label>
+<label>Sex:
+<select name="sex" required>
+<option value="male">Male</option>
+<option value="female">Female</option>
+</select>
+</label>
+<label>Height (cm): <input type="number" name="height" required></label>
+<label>Weight (kg): <input type="number" name="weight" required></label>
+<label>Activity Level:
+<select name="activity" required>
+<option value="1.2">Sedentary</option>
+<option value="1.375">Light</option>
+<option value="1.55">Moderate</option>
+<option value="1.725">Active</option>
+</select>
+</label>
+<label>Goal:
+<select name="goal" required>
+<option value="lose">Lose Fat</option>
+<option value="maintain">Maintain</option>
+<option value="gain">Build Muscle</option>
+</select>
+</label>
+<button type="submit">Calculate My Macros</button>
+</form>
+</section>
 
-        <button class="btn-premium" onclick="calculate()">Show My Results</button>
-
-        <div id="results">
-            <h2 style="text-align:center">Daily Targets</h2>
-            <div class="macro-grid">
-                <div class="macro-card"><span>Calories</span><strong id="res-cal">0</strong></div>
-                <div class="macro-card"><span>Protein</span><strong id="res-pro">0g</strong></div>
-                <div class="macro-card"><span>Carbs</span><strong id="res-carb">0g</strong></div>
-                <div class="macro-card"><span>Fats</span><strong id="res-fat">0g</strong></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="pricing-section">
-        <div class="price-card">
-            <h3>Starter Pack</h3>
-            <div class="price">$19</div>
-            <p style="margin-bottom:20px; color:var(--slate)">Custom 4-week macros & grocery list.</p>
-            <a href="https://your-checkout-link.com/starter" class="btn-premium">Buy Now</a>
-        </div>
-        <div class="price-card featured">
-            <div style="background:var(--orange); color:white; font-size:0.7rem; position:absolute; top:-12px; left:50%; transform:translateX(-50%); padding:5px 15px; border-radius:20px; font-weight:700;">BEST VALUE</div>
-            <h3>Elite Transformation</h3>
-            <div class="price">$49</div>
-            <p style="margin-bottom:20px; color:var(--slate)">Full meal plan + workout programming.</p>
-            <a href="https://your-checkout-link.com/elite" class="btn-premium">Buy Now</a>
-        </div>
-    </div>
+<section id="results">
+<h2>Your Daily Macro Targets</h2>
+<div class="macro-cards">
+<div class="macro-card"><img src="assets/icons/calories.png"><h3>Calories</h3><p id="calories">-</p></div>
+<div class="macro-card"><img src="assets/icons/protein.png"><h3>Protein</h3><p id="protein">-</p></div>
+<div class="macro-card"><img src="assets/icons/carbs.png"><h3>Carbs</h3><p id="carbs">-</p></div>
+<div class="macro-card"><img src="assets/icons/fat.png"><h3>Fat</h3><p id="fat">-</p></div>
 </div>
+</section>
+
+<section id="starter-pack" class="starter-pack">
+<h2>MacroFit 4-Week Starter Pack</h2>
+<p>Turn your macro targets into a structured plan!</p>
+<div class="features">
+<div>Macro Framework</div>
+<div>4-Week Tracking Templates</div>
+<div>Grocery & Meal Guides</div>
+<div>Educational PDF</div>
+<div>Optional Video Walkthrough</div>
+</div>
+<a href="#" class="btn">Get My Starter Pack → $19–$49</a>
+</section>
+
+</main>
+
+<footer>
+<p>Educational purposes only. Not medical advice.</p>
+</footer>
 
 <script>
-    lucide.createIcons();
+document.getElementById('macroForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const age = Number(this.age.value);
+  const sex = this.sex.value;
+  const height = Number(this.height.value);
+  const weight = Number(this.weight.value);
+  const activity = Number(this.activity.value);
+  const goal = this.goal.value;
 
-    function calculate() {
-        const w = parseFloat(document.getElementById('weight').value);
-        const h = parseFloat(document.getElementById('height').value);
-        const a = parseFloat(document.getElementById('age').value);
-        const g = document.getElementById('gender').value;
-        const activity = parseFloat(document.getElementById('activity').value);
-        const goal = parseFloat(document.getElementById('goal').value);
+  let bmr = sex === 'male'
+    ? 10*weight + 6.25*height - 5*age + 5
+    : 10*weight + 6.25*height - 5*age - 161;
 
-        if(!w || !h || !a) {
-            alert("Please fill in all fields to see your macros.");
-            return;
-        }
+  let calories = bmr * activity;
+  if(goal==='lose') calories -= 500;
+  if(goal==='gain') calories += 500;
 
-        // 1. Calculate BMR (Mifflin-St Jeor)
-        let bmr = (10 * w) + (6.25 * h) - (5 * a);
-        if (g === 'male') { bmr += 5; } else { bmr -= 161; }
+  const protein = Math.round((calories*0.3)/4);
+  const carbs = Math.round((calories*0.4)/4);
+  const fat = Math.round((calories*0.3)/9);
 
-        // 2. Calculate TDEE and apply Goal Adjustment
-        let totalCalories = (bmr * activity) + goal;
+  document.getElementById('calories').textContent = Math.round(calories);
+  document.getElementById('protein').textContent = protein + " g";
+  document.getElementById('carbs').textContent = carbs + " g";
+  document.getElementById('fat').textContent = fat + " g";
 
-        // 3. MFP Safeguard (Minimum calories)
-        if (g === 'male' && totalCalories < 1500) totalCalories = 1500;
-        if (g === 'female' && totalCalories < 1200) totalCalories = 1200;
-
-        const finalCals = Math.round(totalCalories);
-
-        // 4. Macro Splits (Standard 30% Protein / 40% Carbs / 30% Fat)
-        const p = Math.round((finalCals * 0.30) / 4);
-        const c = Math.round((finalCals * 0.40) / 4);
-        const f = Math.round((finalCals * 0.30) / 9);
-
-        // UI Update
-        document.getElementById('res-cal').innerText = finalCals;
-        document.getElementById('res-pro').innerText = p + 'g';
-        document.getElementById('res-carb').innerText = c + 'g';
-        document.getElementById('res-fat').innerText = f + 'g';
-
-        document.getElementById('results').style.display = 'block';
-        window.scrollTo({ top: 400, behavior: 'smooth' });
-    }
+  // scroll to results
+  document.getElementById('results').scrollIntoView({behavior:"smooth"});
+});
 </script>
 </body>
 </html>
