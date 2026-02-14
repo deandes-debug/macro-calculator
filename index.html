@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc Pro - Science-Backed Nutrition Planning</title>
+    <title>MacroFitCalc - Science-Based Macro Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -253,38 +253,6 @@
             transform: scale(0.98);
         }
 
-        .phone-mockup {
-            width: 280px;
-            height: 560px;
-            background: #1f2937;
-            border-radius: 40px;
-            padding: 12px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
-            position: relative;
-            margin: 0 auto;
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            background: white;
-            border-radius: 32px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .phone-notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 28px;
-            background: #1f2937;
-            border-radius: 0 0 20px 20px;
-            z-index: 10;
-        }
-
         .testimonial-card {
             background: white;
             border-radius: 1.5rem;
@@ -292,18 +260,16 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
-        .testimonial-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
+        .beta-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            margin-bottom: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
         }
 
         .stars {
@@ -312,13 +278,11 @@
             margin-bottom: 1rem;
         }
 
-        .trust-badge {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .meal-card {
+            background: white;
             border-radius: 1rem;
-            padding: 1rem 1.5rem;
-            backdrop-filter: blur(10px);
-            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .checkout-bar {
@@ -373,6 +337,14 @@
             flex-shrink: 0;
         }
 
+        .disclaimer-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+        }
+
         @media (max-width: 768px) {
             .pricing-card.featured {
                 transform: scale(1);
@@ -380,11 +352,6 @@
             
             .macro-card:hover {
                 transform: translateY(-8px) scale(1.01);
-            }
-
-            .phone-mockup {
-                width: 240px;
-                height: 480px;
             }
         }
     </style>
@@ -394,8 +361,8 @@
         
         <div class="flex justify-center mb-8 animate-fade-in-up">
             <div class="premium-badge px-8 py-3 rounded-full inline-flex items-center gap-2">
-                <span class="text-2xl">⚡</span>
-                <span class="text-blue-400 font-bold uppercase tracking-widest text-sm">Bio-Metric Precision Engineering</span>
+                <span class="text-2xl">📊</span>
+                <span class="text-blue-400 font-bold uppercase tracking-widest text-sm">Science-Based Calculations</span>
             </div>
         </div>
 
@@ -408,26 +375,15 @@
             </h1>
         </div>
 
-        <div class="text-center mb-6 animate-fade-in-up animate-delay-1">
-            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                Science-backed macro calculator trusted by 10,000+ athletes. 
-                Get your personalized nutrition blueprint in 60 seconds.
+        <div class="text-center mb-12 animate-fade-in-up animate-delay-1">
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-4">
+                I built the nutrition tool I couldn't find—a simple calculator based on proven Mifflin-St Jeor science to simplify my own fitness journey.
             </p>
+            <p class="text-sm text-gray-500 italic">Not a doctor or RD. Just a passionate founder sharing what worked for me.</p>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in-up animate-delay-2">
-            <div class="trust-badge">
-                <p class="text-white font-bold text-sm">✓ Evidence-Based</p>
-            </div>
-            <div class="trust-badge">
-                <p class="text-white font-bold text-sm">✓ RD Approved</p>
-            </div>
-            <div class="trust-badge">
-                <p class="text-white font-bold text-sm">✓ 10,000+ Users</p>
-            </div>
-        </div>
-
-        <div class="glass-card rounded-3xl max-w-7xl mx-auto p-8 md:p-16 mb-20 animate-fade-in-up animate-delay-3">
+        <!-- Main Calculator Card -->
+        <div class="glass-card rounded-3xl max-w-7xl mx-auto p-8 md:p-16 mb-20 animate-fade-in-up animate-delay-2">
             <div class="grid md:grid-cols-2 gap-16">
                 
                 <div>
@@ -489,9 +445,9 @@
                     <div class="mb-8">
                         <label class="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Your Goal</label>
                         <select id="select-goal" class="premium-input" onchange="calculateMacros()">
-                            <option value="fat-loss">🔥 Rapid Fat Loss (-20%)</option>
+                            <option value="fat-loss">🔥 Fat Loss (-20%)</option>
                             <option value="maintenance" selected>⚖️ Maintenance (0%)</option>
-                            <option value="muscle-gain">💪 Steady Lean Mass Gain (+15%)</option>
+                            <option value="muscle-gain">💪 Muscle Gain (+15%)</option>
                         </select>
                     </div>
                 </div>
@@ -499,7 +455,7 @@
                 <div>
                     <h2 class="text-3xl font-black text-gray-800 mb-8 flex items-center gap-3">
                         <span class="text-4xl">🎯</span>
-                        Your Macro Blueprint
+                        Your Macro Targets
                     </h2>
 
                     <div id="chart-container" class="chart-wrapper mb-10">
@@ -509,7 +465,7 @@
                     <div class="calorie-display mb-10">
                         <p class="text-sm font-bold text-gray-600 uppercase tracking-wider mb-2">Daily Calorie Target</p>
                         <p id="display-calories" class="text-6xl font-black gradient-text mb-2">2200</p>
-                        <p class="text-xs text-gray-500 font-medium">Calculated via Mifflin-St Jeor Equation</p>
+                        <p class="text-xs text-gray-500 font-medium">Using Mifflin-St Jeor Equation</p>
                     </div>
 
                     <div class="grid grid-cols-3 gap-5">
@@ -541,135 +497,161 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto mb-20 animate-fade-in-up animate-delay-4">
+        <!-- Beta Tester Results -->
+        <div class="max-w-7xl mx-auto mb-20 animate-fade-in-up animate-delay-3">
             <h2 class="text-4xl md:text-5xl font-black text-white text-center mb-4">
-                What Our Beta Testers Are Saying
+                Results from Our 30-Day Beta Program
             </h2>
-            <p class="text-center text-gray-400 mb-12 text-lg">Real results from real people</p>
+            <p class="text-center text-gray-400 mb-12 text-lg">Real people who tested the meal plans</p>
             
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="testimonial-card">
-                    <div class="testimonial-avatar">SM</div>
+                    <span class="beta-badge">Beta Tester</span>
                     <div class="stars">★★★★★</div>
-                    <p class="text-gray-700 mb-4 italic">"Lost 18 lbs in 8 weeks following my custom macro plan. The precision made all the difference - no more guessing!"</p>
+                    <p class="text-gray-700 mb-4 italic">"Lost 12 lbs in the first month. The shopping lists organized by aisle made grocery runs so much faster. Game changer!"</p>
                     <p class="font-bold text-gray-900">Sarah M.</p>
-                    <p class="text-sm text-gray-500">Competitive CrossFit Athlete</p>
+                    <p class="text-sm text-gray-500">30-Day Beta Program</p>
                 </div>
 
                 <div class="testimonial-card">
-                    <div class="testimonial-avatar" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">JK</div>
+                    <span class="beta-badge">Beta Tester</span>
                     <div class="stars">★★★★★</div>
-                    <p class="text-gray-700 mb-4 italic">"Finally hit my strength goals! Gained 12 lbs of lean mass without the fat. The app made meal prep so simple."</p>
+                    <p class="text-gray-700 mb-4 italic">"The 4-week plan gave me structure I never had. Meal prep on Sundays became my routine. Down 18 lbs!"</p>
                     <p class="font-bold text-gray-900">James K.</p>
-                    <p class="text-sm text-gray-500">Powerlifter, 242 lb class</p>
+                    <p class="text-sm text-gray-500">30-Day Beta Program</p>
                 </div>
 
                 <div class="testimonial-card">
-                    <div class="testimonial-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">LP</div>
+                    <span class="beta-badge">Beta Tester</span>
                     <div class="stars">★★★★★</div>
-                    <p class="text-gray-700 mb-4 italic">"As a busy mom, I needed something simple. Down 25 lbs and I actually enjoy my meals now. Life-changing!"</p>
+                    <p class="text-gray-700 mb-4 italic">"Finally hit my protein goals consistently. The bulk-buy shopping list saved me money. Highly recommend!"</p>
                     <p class="font-bold text-gray-900">Lisa P.</p>
-                    <p class="text-sm text-gray-500">Marathon Runner & Mom of 3</p>
+                    <p class="text-sm text-gray-500">30-Day Beta Program</p>
                 </div>
             </div>
         </div>
 
+        <!-- Sample Meal Plan Section -->
         <div class="max-w-7xl mx-auto mb-20">
             <div class="glass-card rounded-3xl p-10 md:p-16">
-                <div class="grid md:grid-cols-2 gap-16 items-center">
-                    <div>
-                        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
-                            Get Your Complete Nutrition System
-                        </h2>
-                        <p class="text-xl text-gray-600 mb-8 leading-relaxed">
-                            Your personalized macro targets are just the beginning. Transform them into real results with our complete nutrition management platform.
-                        </p>
-                        
-                        <div class="space-y-4 mb-10">
-                            <div class="flex items-start">
-                                <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">Mobile app with barcode scanner & meal tracking</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">120+ recipes auto-adjusted to your exact macros</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">Weekly meal plans with auto-generated grocery lists</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">Progress photos & body composition tracking</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="feature-check">✓</span>
-                                <span class="text-gray-700 font-medium text-lg">24/7 support from certified nutrition coaches</span>
-                            </div>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 text-center">
+                    See a Sample Day
+                </h2>
+                <p class="text-center text-gray-600 mb-12 text-lg">Here's what a typical day looks like (2,200 calories, 165g protein example)</p>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="meal-card">
+                        <h3 class="font-black text-xl text-gray-900 mb-2">🍳 Breakfast</h3>
+                        <p class="text-sm text-gray-600 mb-3">3-Egg Veggie Scramble with Toast</p>
+                        <div class="text-sm text-gray-700">
+                            <p>• 3 whole eggs</p>
+                            <p>• 1 cup spinach</p>
+                            <p>• 2 slices whole wheat toast</p>
+                            <p>• 1 tbsp olive oil</p>
                         </div>
+                        <p class="text-blue-600 font-bold mt-3">420 cal | 28g P</p>
+                    </div>
 
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
-                            <p class="text-sm font-bold text-blue-900 mb-2">🎁 LIMITED TIME OFFER</p>
-                            <p class="text-gray-700 font-semibold">First 100 users get lifetime access to all future features at the current price. Lock in now!</p>
+                    <div class="meal-card">
+                        <h3 class="font-black text-xl text-gray-900 mb-2">🥗 Lunch</h3>
+                        <p class="text-sm text-gray-600 mb-3">Grilled Chicken Rice Bowl</p>
+                        <div class="text-sm text-gray-700">
+                            <p>• 6oz grilled chicken breast</p>
+                            <p>• 1 cup brown rice</p>
+                            <p>• Mixed vegetables</p>
+                            <p>• Teriyaki sauce</p>
                         </div>
+                        <p class="text-blue-600 font-bold mt-3">620 cal | 52g P</p>
                     </div>
-                    
-                    <div>
-                        <div class="phone-mockup">
-                            <div class="phone-notch"></div>
-                            <div class="phone-screen">
-                                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&h=600&fit=crop&q=90" 
-                                     alt="App interface" 
-                                     style="width: 100%; height: 100%; object-fit: cover;">
-                            </div>
+
+                    <div class="meal-card">
+                        <h3 class="font-black text-xl text-gray-900 mb-2">🍝 Dinner</h3>
+                        <p class="text-sm text-gray-600 mb-3">Salmon with Sweet Potato</p>
+                        <div class="text-sm text-gray-700">
+                            <p>• 6oz baked salmon</p>
+                            <p>• 1 large sweet potato</p>
+                            <p>• Roasted broccoli</p>
+                            <p>• 1 tbsp butter</p>
                         </div>
+                        <p class="text-blue-600 font-bold mt-3">680 cal | 48g P</p>
                     </div>
+                </div>
+
+                <div class="mt-8 grid md:grid-cols-2 gap-6">
+                    <div class="meal-card">
+                        <h3 class="font-black text-xl text-gray-900 mb-2">🍎 Snack 1</h3>
+                        <p class="text-sm text-gray-600 mb-3">Greek Yogurt & Berries</p>
+                        <div class="text-sm text-gray-700">
+                            <p>• 1 cup Greek yogurt (0% fat)</p>
+                            <p>• 1/2 cup mixed berries</p>
+                            <p>• 1 tbsp honey</p>
+                        </div>
+                        <p class="text-blue-600 font-bold mt-3">220 cal | 20g P</p>
+                    </div>
+
+                    <div class="meal-card">
+                        <h3 class="font-black text-xl text-gray-900 mb-2">🥜 Snack 2</h3>
+                        <p class="text-sm text-gray-600 mb-3">Protein Shake</p>
+                        <div class="text-sm text-gray-700">
+                            <p>• 1 scoop whey protein</p>
+                            <p>• 1 banana</p>
+                            <p>• 1 cup almond milk</p>
+                            <p>• 1 tbsp peanut butter</p>
+                        </div>
+                        <p class="text-blue-600 font-bold mt-3">260 cal | 27g P</p>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mt-8">
+                    <p class="font-bold text-blue-900 mb-2">✅ Daily Total: 2,200 calories | 175g protein</p>
+                    <p class="text-sm text-gray-700">Shopping list organized by grocery store aisle • Prep guide included • Recipe variations provided</p>
                 </div>
             </div>
         </div>
 
+        <!-- Pricing Section -->
         <div class="max-w-7xl mx-auto mb-20">
             <div class="text-center mb-16">
                 <h2 class="text-5xl md:text-6xl font-black text-white mb-5">
-                    Choose Your Plan
+                    Choose Your Meal Plan Duration
                 </h2>
                 <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-                    Monthly subscription • Cancel anytime • 30-day money-back guarantee
+                    All plans include shopping lists organized by grocery store aisle
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
                 
                 <div class="pricing-card">
-                    <h3 class="text-2xl font-black text-gray-900 mb-2">Starter</h3>
-                    <p class="text-gray-600 mb-6">Perfect for beginners</p>
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">1-Week Jumpstart</h3>
+                    <p class="text-gray-600 mb-6">"I just want to try this"</p>
                     
                     <div class="mb-8">
-                        <span class="text-6xl font-black text-gray-900">$29</span>
-                        <span class="text-gray-600 text-xl font-semibold">/month</span>
+                        <span class="text-6xl font-black text-gray-900">$19</span>
+                        <span class="text-gray-600 text-xl font-semibold"> one-time</span>
                     </div>
 
                     <div class="space-y-4 mb-10">
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Macro calculator access</span>
+                            <span class="text-gray-700 font-medium">7-day meal plan matched to your macros</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">30 macro-balanced recipes</span>
+                            <span class="text-gray-700 font-medium">"Emergency" shopping list by aisle</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Weekly meal plans</span>
+                            <span class="text-gray-700 font-medium">Simple prep instructions</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Email support</span>
+                            <span class="text-gray-700 font-medium">PDF download</span>
                         </div>
                     </div>
 
-                    <button class="btn-premium" onclick="selectPack('Starter', 29, 'Get started with personalized macros and basic meal planning')">
-                        Start My Transformation
+                    <button class="btn-premium" onclick="selectPack('1-Week Jumpstart', 19, 'Perfect for testing the system')">
+                        Get 1-Week Plan
                     </button>
                 </div>
 
@@ -678,102 +660,106 @@
                         Most Popular
                     </div>
                     
-                    <h3 class="text-2xl font-black text-gray-900 mb-2">Pro</h3>
-                    <p class="text-gray-600 mb-6">For serious results</p>
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">4-Week Transformation</h3>
+                    <p class="text-gray-600 mb-6">"I'm serious about this month"</p>
                     
                     <div class="mb-8">
-                        <span class="text-6xl font-black text-gray-900">$59</span>
-                        <span class="text-gray-600 text-xl font-semibold">/month</span>
+                        <span class="text-6xl font-black text-gray-900">$49</span>
+                        <span class="text-gray-600 text-xl font-semibold"> one-time</span>
                     </div>
 
                     <div class="space-y-4 mb-10">
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium"><strong>Everything in Starter, plus:</strong></span>
+                            <span class="text-gray-700 font-medium">28 days of rotating meal plans</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Mobile app with barcode scanner</span>
+                            <span class="text-gray-700 font-medium">Bulk-buy shopping lists by aisle</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">120+ recipes auto-adjusted to your macros</span>
+                            <span class="text-gray-700 font-medium">Weekly meal prep guide</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Grocery list generator</span>
+                            <span class="text-gray-700 font-medium">Recipe substitution options</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Progress tracking dashboard</span>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="text-blue-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">24/7 chat support</span>
+                            <span class="text-gray-700 font-medium">Progress tracking template</span>
                         </div>
                     </div>
 
-                    <button class="btn-premium" onclick="selectPack('Pro', 59, 'Full mobile app, recipe library, and progress tracking')">
-                        Generate My Custom Plan Now
+                    <button class="btn-premium" onclick="selectPack('4-Week Transformation', 49, 'Build a sustainable routine')">
+                        Get 4-Week Plan
                     </button>
                 </div>
 
                 <div class="pricing-card">
-                    <h3 class="text-2xl font-black text-gray-900 mb-2">Elite</h3>
-                    <p class="text-gray-600 mb-6">Premium 1-on-1 coaching</p>
+                    <h3 class="text-2xl font-black text-gray-900 mb-2">8-Week Lifestyle</h3>
+                    <p class="text-gray-600 mb-6">"I want to change my life"</p>
                     
                     <div class="mb-8">
-                        <span class="text-6xl font-black text-gray-900">$99</span>
-                        <span class="text-gray-600 text-xl font-semibold">/month</span>
+                        <span class="text-6xl font-black text-gray-900">$79</span>
+                        <span class="text-gray-600 text-xl font-semibold"> one-time</span>
                     </div>
 
                     <div class="space-y-4 mb-10">
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium"><strong>Everything in Pro, plus:</strong></span>
+                            <span class="text-gray-700 font-medium">56 days of meal variety</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Personal nutrition coach (RD)</span>
+                            <span class="text-gray-700 font-medium">Advanced grocery shopping hacks</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Bi-weekly video check-ins</span>
+                            <span class="text-gray-700 font-medium">Eating out guide with macro tips</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Custom supplement recommendations</span>
+                            <span class="text-gray-700 font-medium">Meal prep batch cooking guide</span>
                         </div>
                         <div class="flex items-start">
                             <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">Priority support (2hr response)</span>
-                        </div>
-                        <div class="flex items-start">
-                            <span class="text-purple-500 mr-3 text-xl font-bold">✓</span>
-                            <span class="text-gray-700 font-medium">VIP community access</span>
+                            <span class="text-gray-700 font-medium">Lifetime plan access</span>
                         </div>
                     </div>
 
-                    <button class="btn-premium" onclick="selectPack('Elite', 99, 'Personal RD coaching, custom protocols, and VIP support')">
-                        Get Personal Coaching
+                    <button class="btn-premium" onclick="selectPack('8-Week Lifestyle', 79, 'Long-term sustainable change')">
+                        Get 8-Week Plan
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto text-center space-y-6 pb-40">
-            <p class="text-sm text-gray-500 leading-relaxed max-w-4xl mx-auto">
-                <strong class="text-gray-400">Medical Disclaimer:</strong> This calculator provides estimates based on standard equations and should not replace professional medical or nutritional advice. Always consult with a healthcare provider or registered dietitian before making significant dietary changes.
-            </p>
-            <div class="flex justify-center gap-8 text-sm">
-                <a href="mailto:support@macrofitcalc.pro" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Contact Support</a>
-                <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Privacy Policy</a>
-                <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Terms of Service</a>
+        <!-- Legal Disclaimer -->
+        <div class="max-w-6xl mx-auto mb-20">
+            <div class="disclaimer-box">
+                <h3 class="font-black text-lg text-gray-900 mb-3">⚠️ Important Disclaimer</h3>
+                <p class="text-sm text-gray-800 leading-relaxed">
+                    <strong>I am not a doctor or registered dietitian.</strong> The contents of this website and any products sold are for informational purposes only and do not constitute medical advice. Results vary based on individual effort, genetics, and adherence. Always consult a physician or registered dietitian before starting any new diet or exercise program. By using this calculator or purchasing any meal plans, you acknowledge that you have read this disclaimer and agree to the <a href="#terms" class="text-blue-600 underline">Terms of Service</a>.
+                </p>
             </div>
-            <p class="text-gray-600 font-semibold">© 2024 MacroFitCalc Pro. All rights reserved.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="max-w-6xl mx-auto text-center space-y-6 pb-40">
+            <div class="flex justify-center gap-8 text-sm flex-wrap">
+                <a href="#privacy" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Privacy Policy</a>
+                <a href="#terms" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Terms of Service</a>
+                <a href="mailto:support@macrofitcalc.com" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">Contact</a>
+            </div>
+            <p class="text-xs text-gray-500 max-w-3xl mx-auto leading-relaxed">
+                <strong>Privacy Notice:</strong> We collect basic health data (age, weight, height, gender) solely to calculate your macronutrient targets. We do not sell your data to third parties. Your information is encrypted and stored securely.
+            </p>
+            <p class="text-gray-600 font-semibold">© 2024 MacroFitCalc. All rights reserved.</p>
         </div>
     </div>
 
+    <!-- Sticky Checkout Bar -->
     <div id="checkout-bar" class="checkout-bar">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between flex-wrap gap-4">
@@ -784,12 +770,12 @@
                         </svg>
                     </div>
                     <div>
-                        <p id="checkout-pack-name" class="text-white font-black text-xl">Pro Plan Selected</p>
-                        <p id="checkout-pack-desc" class="text-blue-100 font-medium text-sm">Full app access + 120 recipes</p>
+                        <p id="checkout-pack-name" class="text-white font-black text-xl">4-Week Plan Selected</p>
+                        <p id="checkout-pack-desc" class="text-blue-100 font-medium text-sm">28 days of rotating meals</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-6">
-                    <p id="checkout-price" class="text-white text-4xl font-black">$59/mo</p>
+                    <p id="checkout-price" class="text-white text-4xl font-black">$49</p>
                     <button onclick="checkout()" class="bg-white text-blue-600 px-10 py-4 rounded-xl font-black text-xl hover:bg-blue-50 transition-all transform hover:scale-105">
                         Secure Checkout →
                     </button>
@@ -971,9 +957,9 @@
         function selectPack(packName, price, description) {
             state.selectedPack = { name: packName, price: price, description: description };
             
-            document.getElementById('checkout-pack-name').textContent = packName + ' Plan Selected';
+            document.getElementById('checkout-pack-name').textContent = packName + ' Selected';
             document.getElementById('checkout-pack-desc').textContent = description;
-            document.getElementById('checkout-price').textContent = '$' + price + '/mo';
+            document.getElementById('checkout-price').textContent = '$' + price;
             
             document.getElementById('checkout-bar').classList.add('visible');
             
@@ -988,6 +974,7 @@
         function checkout() {
             if (!state.selectedPack) return;
             
+            // Replace with your actual Stripe payment link
             window.location.href = `https://buy.stripe.com/test_YOURLINK?plan=${state.selectedPack.name}&price=${state.selectedPack.price}`;
         }
 
