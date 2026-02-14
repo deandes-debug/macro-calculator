@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MacroFit - Smart Nutrition Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #FF6B35;
+  --primary-dark: #E55A2B;
+  --secondary: #004E89;
+  --accent: #FFD23F;
+  --success: #06D6A0;
+  --bg-dark: #0A1128;
+  --bg-card: #1A1F3A;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0C0;
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(0, 78, 137, 0.15) 0%, transparent 50%);
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 40px 20px;
+}
+
+.logo {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+
+.tagline {
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  font-weight: 500;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 35px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  border-color: rgba(255, 107, 53, 0.3);
+  transform: translateY(-2px);
+}
+
+.card-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.form-section {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  padding: 15px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s ease;
+  appearance: none;
+}
+
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 107, 53, 0.1);
+}
+
+input[type="number"]::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23A0A0C0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 45px;
+}
+
+select option {
+  background: white;
+  color: #1A1A1A;
+  padding: 10px;
+}
+
+.unit-toggle {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 12px;
+  border: 2px solid var(--border);
+}
+
+.unit-btn {
+  padding: 10px 24px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.unit-btn.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+}
+
+.height-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.calculate-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+  margin-top: 10px;
+}
+
+.calculate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 107, 53, 0.4);
+}
+
+.calculate-btn:active {
+  transform: translateY(0);
+}
+
+.error-message {
+  color: var(--primary);
+  font-size: 0.85rem;
+  margin-top: 8px;
+  display: none;
+  font-weight: 500;
+}
+
+.error-message.show {
+  display: block;
+  animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Results Section */
+.results-card {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-3px);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: 'Archivo Black', sans-serif;
+}
+
+.stat-unit {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Macro Breakdown */
+.macro-section {
+  margin-top: 35px;
+  padding-top: 30px;
+  border-top: 2px solid var(--border);
+}
+
+.macro-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+}
+
+.macro-summary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--primary);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.macro-summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+}
+
+.macro-summary-line:last-child {
+  margin-bottom: 0;
+}
+
+.macro-summary-label {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.macro-summary-values {
+  color: var(--text-secondary);
+}
+
+.macro-summary-values strong {
+  color: var(--primary);
+  font-size: 1.15rem;
+}
+
+.macro-item {
+  margin-bottom: 25px;
+  animation: fadeInMacro 0.5s ease-out backwards;
+}
+
+.macro-item:nth-child(2) { animation-delay: 0.1s; }
+.macro-item:nth-child(3) { animation-delay: 0.2s; }
+.macro-item:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes fadeInMacro {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.macro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.macro-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.macro-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.protein-icon { background: #FF6B9D; }
+.carbs-icon { background: #FFD23F; }
+.fat-icon { background: #06D6A0; }
+
+.macro-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.macro-calories {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+.macro-bar-bg {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.macro-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.macro-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.protein-bar { background: linear-gradient(90deg, #FF6B9D, #FF8FAB); }
+.carbs-bar { background: linear-gradient(90deg, #FFD23F, #FFE066); }
+.fat-bar { background: linear-gradient(90deg, #06D6A0, #2FE3B8); }
+
+/* Meal Plan Section */
+.meal-plan-section {
+  margin-top: 35px;
+  padding-top: 30px;
+  border-top: 2px solid var(--border);
+}
+
+.meal-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.meal-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.meal-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary);
+}
+
+.meal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.meal-name {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.meal-time {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.meal-macros {
+  display: flex;
+  gap: 15px;
+  font-size: 0.85rem;
+}
+
+.meal-macro {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary);
+}
+
+.meal-macro strong {
+  color: var(--text-primary);
+}
+
+.meal-example {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.meal-example-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.meal-food-item {
+  margin-left: 8px;
+  margin-bottom: 3px;
+}
+
+.meal-food-item::before {
+  content: "• ";
+  color: var(--primary);
+}
+
+/* Progress Tracker */
+.progress-section {
+  margin-top: 35px;
+  padding-top: 30px;
+  border-top: 2px solid var(--border);
+}
+
+.progress-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.progress-btn {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.progress-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary);
+}
+
+.chart-placeholder {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+  border: 2px dashed var(--border);
+}
+
+/* Tips Section */
+.tips-card {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 210, 63, 0.1));
+  border: 1px solid rgba(255, 107, 53, 0.3);
+}
+
+.tips-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.tip-item {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+}
+
+.tip-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.tip-text {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Save/Export Buttons */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.action-btn {
+  padding: 14px;
+  border: 2px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .meal-macros {
+    flex-wrap: wrap;
+  }
+}
+
+/* Loading Animation */
+.calculating {
+  pointer-events: none;
+  opacity: 0.6;
+  position: relative;
+}
+
+.calculating::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--primary);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+  cursor: help;
+}
+
+.tooltip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border: 1px solid var(--border);
+  z-index: 100;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1 class="logo">MacroFit</h1>
+    <p class="tagline">Your Intelligent Nutrition Calculator</p>
+  </header>
+
+  <div class="grid">
+    <!-- Input Form -->
+    <div class="card">
+      <h2 class="card-title">Your Profile</h2>
+      
+      <!-- PRIVACY NOTICE - PROMINENT -->
+      <div style="background: linear-gradient(135deg, rgba(6, 214, 160, 0.15), rgba(6, 214, 160, 0.05)); border: 2px solid #06D6A0; border-radius: 12px; padding: 15px; margin-bottom: 25px;">
+        <div style="display: flex; align-items: start; gap: 12px;">
+          <div style="font-size: 1.5rem; flex-shrink: 0;">🔒</div>
+          <div>
+            <strong style="color: var(--text-primary); font-size: 1rem; display: block; margin-bottom: 5px;">Your Privacy Matters</strong>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; line-height: 1.6;">
+              All calculations happen in your browser. We don't store, transmit, or see your personal health data. 
+              <a href="privacy.html" style="color: #06D6A0; text-decoration: underline; font-weight: 600;">Privacy Policy</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <label class="form-label">Age</label>
+        <input type="number" id="age" min="1" max="120" placeholder="Enter your age">
+        <div class="error-message" id="age-error">Please enter a valid age (1-120)</div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Sex</label>
+        <select id="sex">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Weight</label>
+        <div class="unit-toggle">
+          <button class="unit-btn active" data-unit="weight" data-value="lbs">LBS</button>
+          <button class="unit-btn" data-unit="weight" data-value="kg">KG</button>
+        </div>
+        <input type="number" id="weight" step="0.1" placeholder="Enter your weight">
+        <div class="error-message" id="weight-error">Please enter a valid weight</div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Height</label>
+        <div class="unit-toggle">
+          <button class="unit-btn active" data-unit="height" data-value="ft">FT/IN</button>
+          <button class="unit-btn" data-unit="height" data-value="cm">CM</button>
+        </div>
+        <div id="height-ft" class="height-inputs">
+          <input type="number" id="height-feet" min="0" max="8" placeholder="Feet">
+          <input type="number" id="height-inches" min="0" max="11" placeholder="Inches">
+        </div>
+        <div id="height-cm" class="hidden">
+          <input type="number" id="height-centimeters" step="0.1" placeholder="Centimeters">
+        </div>
+        <div class="error-message" id="height-error">Please enter a valid height</div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Activity Level</label>
+        <select id="activity">
+          <option value="1.2">Sedentary (little to no exercise)</option>
+          <option value="1.375">Light (exercise 1-3 days/week)</option>
+          <option value="1.55">Moderate (exercise 3-5 days/week)</option>
+          <option value="1.725">Very Active (exercise 6-7 days/week)</option>
+          <option value="1.9">Extreme (athlete/physical job)</option>
+        </select>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Goal</label>
+        <select id="goal">
+          <option value="lose-aggressive">Aggressive Cut (-750 cal)</option>
+          <option value="lose">Weight Loss (-500 cal)</option>
+          <option value="lose-slow">Slow Cut (-250 cal)</option>
+          <option value="maintain">Maintain Weight</option>
+          <option value="gain-slow">Lean Bulk (+250 cal)</option>
+          <option value="gain">Muscle Gain (+500 cal)</option>
+          <option value="gain-aggressive">Aggressive Bulk (+750 cal)</option>
+        </select>
+      </div>
+
+      <div class="form-section">
+        <label class="form-label">Macro Split</label>
+        <select id="macro-split">
+          <option value="balanced">Balanced (30/40/30)</option>
+          <option value="high-protein">High Protein (40/30/30)</option>
+          <option value="low-carb">Low Carb (40/20/40)</option>
+          <option value="keto">Keto (30/5/65)</option>
+          <option value="high-carb">High Carb (25/50/25)</option>
+        </select>
+      </div>
+
+      <button class="calculate-btn" onclick="calculateMacros()">Calculate My Macros</button>
+      
+      <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary);">
+        🔒 Your data stays private. Calculations happen in your browser only. 
+        <a href="privacy.html" style="color: var(--primary); text-decoration: underline;">Privacy Policy</a>
+      </p>
+    </div>
+
+    <!-- Tips Card -->
+    <div class="card tips-card">
+      <h2 class="card-title">Pro Tips</h2>
+      <div class="tips-grid">
+        <div class="tip-item">
+          <div class="tip-icon">💪</div>
+          <div class="tip-text">
+            <strong>Protein is key:</strong> Aim for 0.8-1g per lb of body weight to preserve muscle mass during weight loss.
+          </div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">📊</div>
+          <div class="tip-text">
+            <strong>Track consistently:</strong> Use a food diary or app for at least 2 weeks to understand your eating patterns.
+          </div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">⚖️</div>
+          <div class="tip-text">
+            <strong>Adjust weekly:</strong> Weigh yourself at the same time each week and adjust calories if progress stalls.
+          </div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">🥗</div>
+          <div class="tip-text">
+            <strong>Whole foods first:</strong> Prioritize nutrient-dense whole foods over processed options for better satiety.
+          </div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">💧</div>
+          <div class="tip-text">
+            <strong>Stay hydrated:</strong> Drink at least half your body weight (lbs) in ounces of water daily.
+          </div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">😴</div>
+          <div class="tip-text">
+            <strong>Prioritize sleep:</strong> 7-9 hours of quality sleep supports recovery and hormone balance.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <div class="grid" style="margin-top: 30px;">
+    <div class="card results-card hidden" id="results">
+      <h2 class="card-title">Your Results</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-label">BMR</div>
+          <div class="stat-value" id="bmr">-</div>
+          <div class="stat-unit">cal/day</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">TDEE</div>
+          <div class="stat-value" id="tdee">-</div>
+          <div class="stat-unit">cal/day</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Target</div>
+          <div class="stat-value" id="target">-</div>
+          <div class="stat-unit">cal/day</div>
+        </div>
+      </div>
+
+      <div class="macro-section">
+        <h3 class="macro-title">Daily Macro Targets</h3>
+        
+        <!-- FORMULA BREAKDOWN - ALWAYS VISIBLE -->
+        <div style="background: rgba(6, 214, 160, 0.1); border: 2px solid #06D6A0; border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+          <h4 style="font-size: 1.1rem; margin-bottom: 15px; color: var(--text-primary); display: flex; align-items: center; gap: 10px;">
+            <span>📐</span> Your Calculation Breakdown
+          </h4>
+          <div id="formula-breakdown" style="font-size: 0.9rem; line-height: 1.8; color: var(--text-primary); font-family: 'Courier New', monospace;">
+            <div style="margin-bottom: 12px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+              <strong style="color: #06D6A0;">Step 1: BMR (Basal Metabolic Rate)</strong><br>
+              <span id="bmr-formula">Formula will appear here after calculation...</span><br>
+              <span id="bmr-result" style="color: var(--primary);"></span>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+              <strong style="color: #06D6A0;">Step 2: TDEE (Total Daily Energy Expenditure)</strong><br>
+              <span id="tdee-formula">Formula will appear here after calculation...</span><br>
+              <span id="tdee-result" style="color: var(--primary);"></span>
+            </div>
+            <div style="margin-bottom: 12px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+              <strong style="color: #06D6A0;">Step 3: Calorie Adjustment for Goal</strong><br>
+              <span id="goal-formula">Formula will appear here after calculation...</span><br>
+              <span id="goal-result" style="color: var(--primary);"></span>
+            </div>
+            <div style="padding: 10px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+              <strong style="color: #06D6A0;">Step 4: Macro Distribution</strong><br>
+              <span id="macro-formula">Formula will appear here after calculation...</span><br>
+              <span id="macro-result" style="color: var(--primary);"></span>
+            </div>
+          </div>
+          <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-secondary); font-style: italic; margin-bottom: 0;">
+            ⚠️ Accuracy: ±10% variance is normal due to individual metabolism, muscle mass, and genetics.
+          </p>
+        </div>
+        
+        <div class="macro-summary">
+          <div class="macro-summary-line">
+            <span class="macro-summary-label">Macros (grams):</span>
+            <span class="macro-summary-values">
+              <span id="protein-grams-inline">-</span>g P / 
+              <span id="carbs-grams-inline">-</span>g C / 
+              <span id="fat-grams-inline">-</span>g F = 
+              <strong><span id="total-grams">-</span>g total</strong>
+            </span>
+          </div>
+          <div class="macro-summary-line">
+            <span class="macro-summary-label">Macros (calories):</span>
+            <span class="macro-summary-values">
+              <span id="protein-cals-inline">-</span> P / 
+              <span id="carbs-cals-inline">-</span> C / 
+              <span id="fat-cals-inline">-</span> F = 
+              <strong><span id="total-cals-inline">-</span> total</strong>
+            </span>
+          </div>
+        </div>
+        
+        <div class="macro-item">
+          <div class="macro-header">
+            <div class="macro-name">
+              <span class="macro-icon protein-icon"></span>
+              Protein
+            </div>
+            <div>
+              <span class="macro-amount" id="protein-grams">-</span>
+              <span class="macro-calories" id="protein-cals">(-)</span>
+            </div>
+          </div>
+          <div class="macro-bar-bg">
+            <div class="macro-bar protein-bar" id="protein-bar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="macro-item">
+          <div class="macro-header">
+            <div class="macro-name">
+              <span class="macro-icon carbs-icon"></span>
+              Carbs
+            </div>
+            <div>
+              <span class="macro-amount" id="carbs-grams">-</span>
+              <span class="macro-calories" id="carbs-cals">(-)</span>
+            </div>
+          </div>
+          <div class="macro-bar-bg">
+            <div class="macro-bar carbs-bar" id="carbs-bar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="macro-item">
+          <div class="macro-header">
+            <div class="macro-name">
+              <span class="macro-icon fat-icon"></span>
+              Fat
+            </div>
+            <div>
+              <span class="macro-amount" id="fat-grams">-</span>
+              <span class="macro-calories" id="fat-cals">(-)</span>
+            </div>
+          </div>
+          <div class="macro-bar-bg">
+            <div class="macro-bar fat-bar" id="fat-bar" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="action-btn" onclick="saveResults()">💾 Save Results</button>
+        <button class="action-btn" onclick="shareResults()">📤 Share</button>
+      </div>
+    </div>
+
+    <!-- Meal Plan -->
+    <div class="card results-card hidden" id="meal-plan-card">
+      <h2 class="card-title">Sample Meal Plan</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.95rem;">
+        Based on your macros, here's a sample daily meal structure
+      </p>
+      
+      <!-- HOW IT WORKS SECTION -->
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 15px; color: var(--text-primary);">📊 How We Calculate Your Macros</h3>
+        <div style="font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+          <p style="margin-bottom: 10px;"><strong style="color: var(--primary);">1. BMR Calculation:</strong> We use the <strong>Mifflin-St Jeor equation</strong> (gold standard, published 1990):</p>
+          <ul style="margin-left: 20px; margin-bottom: 10px;">
+            <li>Men: BMR = (10 × weight kg) + (6.25 × height cm) - (5 × age) + 5</li>
+            <li>Women: BMR = (10 × weight kg) + (6.25 × height cm) - (5 × age) - 161</li>
+          </ul>
+          <p style="margin-bottom: 10px;"><strong style="color: var(--primary);">2. TDEE Calculation:</strong> BMR × Activity multiplier (1.2 to 1.9)</p>
+          <p style="margin-bottom: 10px;"><strong style="color: var(--primary);">3. Calorie Adjustment:</strong> Add/subtract 250-750 calories based on your goal</p>
+          <p style="margin-bottom: 10px;"><strong style="color: var(--primary);">4. Macro Distribution:</strong> Applied your selected ratio (Balanced 30/40/30, High Protein 40/30/30, etc.)</p>
+          <p style="margin-bottom: 0;"><em>Note: Results are estimates. Individual needs vary by ±10% based on genetics, muscle mass, and metabolic factors.</em></p>
+        </div>
+      </div>
+      
+      <div class="meal-grid">
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <div class="meal-name">🌅 Breakfast</div>
+            <div class="meal-time">7:00 AM</div>
+          </div>
+          <div class="meal-macros">
+            <div class="meal-macro">P: <strong id="breakfast-p">-</strong>g</div>
+            <div class="meal-macro">C: <strong id="breakfast-c">-</strong>g</div>
+            <div class="meal-macro">F: <strong id="breakfast-f">-</strong>g</div>
+            <div class="meal-macro"><strong id="breakfast-cal">-</strong> cal</div>
+          </div>
+          <div class="meal-example" id="breakfast-example"></div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <div class="meal-name">🥗 Lunch</div>
+            <div class="meal-time">12:00 PM</div>
+          </div>
+          <div class="meal-macros">
+            <div class="meal-macro">P: <strong id="lunch-p">-</strong>g</div>
+            <div class="meal-macro">C: <strong id="lunch-c">-</strong>g</div>
+            <div class="meal-macro">F: <strong id="lunch-f">-</strong>g</div>
+            <div class="meal-macro"><strong id="lunch-cal">-</strong> cal</div>
+          </div>
+          <div class="meal-example" id="lunch-example"></div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <div class="meal-name">🍎 Snack</div>
+            <div class="meal-time">3:00 PM</div>
+          </div>
+          <div class="meal-macros">
+            <div class="meal-macro">P: <strong id="snack-p">-</strong>g</div>
+            <div class="meal-macro">C: <strong id="snack-c">-</strong>g</div>
+            <div class="meal-macro">F: <strong id="snack-f">-</strong>g</div>
+            <div class="meal-macro"><strong id="snack-cal">-</strong> cal</div>
+          </div>
+          <div class="meal-example" id="snack-example"></div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-card-header">
+            <div class="meal-name">🍽️ Dinner</div>
+            <div class="meal-time">6:30 PM</div>
+          </div>
+          <div class="meal-macros">
+            <div class="meal-macro">P: <strong id="dinner-p">-</strong>g</div>
+            <div class="meal-macro">C: <strong id="dinner-c">-</strong>g</div>
+            <div class="meal-macro">F: <strong id="dinner-f">-</strong>g</div>
+            <div class="meal-macro"><strong id="dinner-cal">-</strong> cal</div>
+          </div>
+          <div class="meal-example" id="dinner-example"></div>
+        </div>
+      </div>
+
+      <div class="meal-plan-section">
+        <h3 class="macro-title">Weekly Progress Tracker</h3>
+        <div class="progress-controls">
+          <button class="progress-btn" onclick="alert('Feature coming soon! Track your daily macro intake.')">📝 Log Today</button>
+          <button class="progress-btn" onclick="alert('Feature coming soon! View your weekly trends.')">📈 View Trends</button>
+        </div>
+        <div class="chart-placeholder">
+          <p>Track your daily intake to see progress over time</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Unit toggle functionality
+document.querySelectorAll('.unit-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const unit = this.dataset.unit;
+    const value = this.dataset.value;
+    
+    document.querySelectorAll(`[data-unit="${unit}"]`).forEach(b => {
+      b.classList.remove('active');
+    });
+    this.classList.add('active');
+    
+    if (unit === 'height') {
+      if (value === 'ft') {
+        document.getElementById('height-ft').classList.remove('hidden');
+        document.getElementById('height-cm').classList.add('hidden');
+      } else {
+        document.getElementById('height-ft').classList.add('hidden');
+        document.getElementById('height-cm').classList.remove('hidden');
+      }
+    }
+  });
+});
+
+function validateInputs() {
+  let isValid = true;
+  
+  document.querySelectorAll('.error-message').forEach(err => err.classList.remove('show'));
+  
+  const age = parseFloat(document.getElementById('age').value);
+  if (!age || age < 1 || age > 120) {
+    document.getElementById('age-error').classList.add('show');
+    isValid = false;
+  }
+  
+  const weight = parseFloat(document.getElementById('weight').value);
+  if (!weight || weight <= 0) {
+    document.getElementById('weight-error').classList.add('show');
+    isValid = false;
+  }
+  
+  const heightUnit = document.querySelector('[data-unit="height"].active').dataset.value;
+  if (heightUnit === 'ft') {
+    const feet = parseFloat(document.getElementById('height-feet').value);
+    const inches = parseFloat(document.getElementById('height-inches').value) || 0;
+    if (!feet || feet < 0 || inches < 0) {
+      document.getElementById('height-error').classList.add('show');
+      isValid = false;
+    }
+  } else {
+    const cm = parseFloat(document.getElementById('height-centimeters').value);
+    if (!cm || cm <= 0) {
+      document.getElementById('height-error').classList.add('show');
+      isValid = false;
+    }
+  }
+  
+  return isValid;
+}
+
+function calculateMacros() {
+  if (!validateInputs()) {
+    return;
+  }
+  
+  const age = parseFloat(document.getElementById('age').value);
+  const sex = document.getElementById('sex').value;
+  const activity = parseFloat(document.getElementById('activity').value);
+  const goal = document.getElementById('goal').value;
+  const macroSplit = document.getElementById('macro-split').value;
+  
+  // Get weight in kg
+  const weightUnit = document.querySelector('[data-unit="weight"].active').dataset.value;
+  let weightKg;
+  if (weightUnit === 'lbs') {
+    weightKg = parseFloat(document.getElementById('weight').value) * 0.453592;
+  } else {
+    weightKg = parseFloat(document.getElementById('weight').value);
+  }
+  
+  // Get height in cm
+  const heightUnit = document.querySelector('[data-unit="height"].active').dataset.value;
+  let heightCm;
+  if (heightUnit === 'ft') {
+    const feet = parseFloat(document.getElementById('height-feet').value) || 0;
+    const inches = parseFloat(document.getElementById('height-inches').value) || 0;
+    heightCm = (feet * 12 + inches) * 2.54;
+  } else {
+    heightCm = parseFloat(document.getElementById('height-centimeters').value);
+  }
+  
+  // Calculate BMR using Mifflin-St Jeor Equation
+  let bmr;
+  if (sex === 'male') {
+    bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+  } else {
+    bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+  }
+  
+  const tdee = bmr * activity;
+  
+  // Calculate target calories based on goal
+  let targetCalories;
+  switch(goal) {
+    case 'lose-aggressive':
+      targetCalories = tdee - 750;
+      break;
+    case 'lose':
+      targetCalories = tdee - 500;
+      break;
+    case 'lose-slow':
+      targetCalories = tdee - 250;
+      break;
+    case 'gain-slow':
+      targetCalories = tdee + 250;
+      break;
+    case 'gain':
+      targetCalories = tdee + 500;
+      break;
+    case 'gain-aggressive':
+      targetCalories = tdee + 750;
+      break;
+    default:
+      targetCalories = tdee;
+  }
+  
+  // Calculate macros based on split
+  let proteinPercent, carbsPercent, fatPercent;
+  
+  switch(macroSplit) {
+    case 'high-protein':
+      proteinPercent = 0.40;
+      carbsPercent = 0.30;
+      fatPercent = 0.30;
+      break;
+    case 'low-carb':
+      proteinPercent = 0.40;
+      carbsPercent = 0.20;
+      fatPercent = 0.40;
+      break;
+    case 'keto':
+      proteinPercent = 0.30;
+      carbsPercent = 0.05;
+      fatPercent = 0.65;
+      break;
+    case 'high-carb':
+      proteinPercent = 0.25;
+      carbsPercent = 0.50;
+      fatPercent = 0.25;
+      break;
+    default: // balanced
+      proteinPercent = 0.30;
+      carbsPercent = 0.40;
+      fatPercent = 0.30;
+  }
+  
+  const proteinCals = targetCalories * proteinPercent;
+  const carbsCals = targetCalories * carbsPercent;
+  const fatCals = targetCalories * fatPercent;
+  
+  const proteinGrams = Math.round(proteinCals / 4);
+  const carbsGrams = Math.round(carbsCals / 4);
+  const fatGrams = Math.round(fatCals / 9);
+  
+  // Display results
+  document.getElementById('bmr').textContent = Math.round(bmr);
+  document.getElementById('tdee').textContent = Math.round(tdee);
+  document.getElementById('target').textContent = Math.round(targetCalories);
+  
+  // Display formula breakdown with actual numbers
+  const sexLabel = sex === 'male' ? 'Male' : 'Female';
+  const activityLabel = activity == 1.2 ? 'Sedentary' : activity == 1.375 ? 'Light' : activity == 1.55 ? 'Moderate' : activity == 1.725 ? 'Very Active' : 'Extreme';
+  const goalLabel = goal.includes('lose') ? 'Weight Loss' : goal.includes('gain') ? 'Muscle Gain' : 'Maintenance';
+  const goalAdjust = goal === 'lose-aggressive' ? -750 : goal === 'lose' ? -500 : goal === 'lose-slow' ? -250 : goal === 'gain-slow' ? 250 : goal === 'gain' ? 500 : goal === 'gain-aggressive' ? 750 : 0;
+  
+  document.getElementById('bmr-formula').innerHTML = `${sexLabel}: (10 × ${weightKg.toFixed(1)}kg) + (6.25 × ${heightCm.toFixed(1)}cm) - (5 × ${age}) ${sex === 'male' ? '+ 5' : '- 161'}`;
+  document.getElementById('bmr-result').textContent = `= ${Math.round(bmr)} calories/day`;
+  
+  document.getElementById('tdee-formula').innerHTML = `${Math.round(bmr)} cal × ${activity} (${activityLabel})`;
+  document.getElementById('tdee-result').textContent = `= ${Math.round(tdee)} calories/day`;
+  
+  document.getElementById('goal-formula').innerHTML = `${Math.round(tdee)} cal ${goalAdjust >= 0 ? '+' : ''} ${goalAdjust} cal (${goalLabel})`;
+  document.getElementById('goal-result').textContent = `= ${Math.round(targetCalories)} calories/day`;
+  
+  const macroSplitLabel = macroSplit === 'high-protein' ? 'High Protein (40/30/30)' : macroSplit === 'low-carb' ? 'Low Carb (40/20/40)' : macroSplit === 'keto' ? 'Keto (30/5/65)' : macroSplit === 'high-carb' ? 'High Carb (25/50/25)' : 'Balanced (30/40/30)';
+  document.getElementById('macro-formula').innerHTML = `${macroSplitLabel}:<br>Protein: ${(proteinPercent*100).toFixed(0)}% × ${Math.round(targetCalories)} ÷ 4 cal/g = ${proteinGrams}g<br>Carbs: ${(carbsPercent*100).toFixed(0)}% × ${Math.round(targetCalories)} ÷ 4 cal/g = ${carbsGrams}g<br>Fat: ${(fatPercent*100).toFixed(0)}% × ${Math.round(targetCalories)} ÷ 9 cal/g = ${fatGrams}g`;
+  document.getElementById('macro-result').textContent = `Total: ${proteinGrams + carbsGrams + fatGrams}g macros, ${Math.round(targetCalories)} calories`;
+  
+  document.getElementById('protein-grams').textContent = proteinGrams + 'g';
+  document.getElementById('protein-cals').textContent = `(${Math.round(proteinCals)} cal)`;
+  
+  document.getElementById('carbs-grams').textContent = carbsGrams + 'g';
+  document.getElementById('carbs-cals').textContent = `(${Math.round(carbsCals)} cal)`;
+  
+  document.getElementById('fat-grams').textContent = fatGrams + 'g';
+  document.getElementById('fat-cals').textContent = `(${Math.round(fatCals)} cal)`;
+  
+  // Update macro summary display
+  document.getElementById('protein-grams-inline').textContent = proteinGrams;
+  document.getElementById('carbs-grams-inline').textContent = carbsGrams;
+  document.getElementById('fat-grams-inline').textContent = fatGrams;
+  document.getElementById('total-grams').textContent = proteinGrams + carbsGrams + fatGrams;
+  
+  document.getElementById('protein-cals-inline').textContent = Math.round(proteinCals);
+  document.getElementById('carbs-cals-inline').textContent = Math.round(carbsCals);
+  document.getElementById('fat-cals-inline').textContent = Math.round(fatCals);
+  document.getElementById('total-cals-inline').textContent = Math.round(targetCalories);
+  
+  // Animate bars
+  const totalGrams = proteinGrams + carbsGrams + fatGrams;
+  setTimeout(() => {
+    document.getElementById('protein-bar').style.width = ((proteinGrams / totalGrams) * 100) + '%';
+    document.getElementById('carbs-bar').style.width = ((carbsGrams / totalGrams) * 100) + '%';
+    document.getElementById('fat-bar').style.width = ((fatGrams / totalGrams) * 100) + '%';
+  }, 100);
+  
+  // Calculate meal plan (4 meals: 25%, 35%, 10%, 30%)
+  const mealSplits = [0.25, 0.35, 0.10, 0.30];
+  const meals = ['breakfast', 'lunch', 'snack', 'dinner'];
+  
+  meals.forEach((meal, i) => {
+    const split = mealSplits[i];
+    const mealProtein = Math.round(proteinGrams * split);
+    const mealCarbs = Math.round(carbsGrams * split);
+    const mealFat = Math.round(fatGrams * split);
+    const mealCals = Math.round(targetCalories * split);
+    
+    document.getElementById(`${meal}-p`).textContent = mealProtein;
+    document.getElementById(`${meal}-c`).textContent = mealCarbs;
+    document.getElementById(`${meal}-f`).textContent = mealFat;
+    document.getElementById(`${meal}-cal`).textContent = mealCals;
+    
+    // Generate meal examples
+    document.getElementById(`${meal}-example`).innerHTML = generateMealExample(meal, mealProtein, mealCarbs, mealFat);
+  });
+  
+  // Show results
+  document.getElementById('results').classList.remove('hidden');
+  document.getElementById('meal-plan-card').classList.remove('hidden');
+  
+  // Scroll to results
+  setTimeout(() => {
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+function generateMealExample(mealType, protein, carbs, fat) {
+  const examples = {
+    breakfast: [
+      {
+        name: 'Power Breakfast Bowl',
+        items: [
+          `${Math.round(protein/6)}g oatmeal with berries`,
+          `${Math.round(protein/4)} egg whites + 1 whole egg`,
+          `${Math.round(fat/14)}oz Greek yogurt`,
+          '1 tbsp almond butter'
+        ]
+      },
+      {
+        name: 'High-Protein Pancakes',
+        items: [
+          `${Math.round(protein/25)} protein pancakes`,
+          '1 banana',
+          `${Math.round(fat/5)}g peanut butter`,
+          'Sugar-free syrup'
+        ]
+      },
+      {
+        name: 'Breakfast Burrito',
+        items: [
+          '1 whole wheat tortilla',
+          `${Math.round(protein/6)} scrambled eggs`,
+          '1/4 cup black beans',
+          '1/4 avocado, salsa'
+        ]
+      }
+    ],
+    lunch: [
+      {
+        name: 'Grilled Chicken Bowl',
+        items: [
+          `${Math.round(protein/7)}oz grilled chicken breast`,
+          `${Math.round(carbs/35)}g brown rice`,
+          'Mixed vegetables',
+          'Olive oil drizzle'
+        ]
+      },
+      {
+        name: 'Turkey & Avocado Wrap',
+        items: [
+          `${Math.round(protein/6)}oz sliced turkey`,
+          '1 whole wheat wrap',
+          '1/4 avocado, lettuce, tomato',
+          'Baby carrots on the side'
+        ]
+      },
+      {
+        name: 'Salmon Quinoa Salad',
+        items: [
+          `${Math.round(protein/5)}oz baked salmon`,
+          `${Math.round(carbs/22)}g quinoa`,
+          'Mixed greens, cucumber, tomato',
+          'Lemon vinaigrette'
+        ]
+      }
+    ],
+    snack: [
+      {
+        name: 'Protein Snack',
+        items: [
+          '1 protein shake or bar',
+          '1 apple or banana',
+          `${Math.round(fat/10)}g almonds`
+        ]
+      },
+      {
+        name: 'Greek Yogurt Parfait',
+        items: [
+          `${Math.round(protein/17)} cup Greek yogurt`,
+          '1/2 cup berries',
+          '1 tbsp granola',
+          'Honey drizzle'
+        ]
+      },
+      {
+        name: 'Cottage Cheese Bowl',
+        items: [
+          `${Math.round(protein/14)} cup cottage cheese`,
+          'Cherry tomatoes & cucumber',
+          'Whole grain crackers',
+          'Everything bagel seasoning'
+        ]
+      }
+    ],
+    dinner: [
+      {
+        name: 'Lean Beef & Sweet Potato',
+        items: [
+          `${Math.round(protein/7)}oz lean ground beef`,
+          `${Math.round(carbs/24)} medium sweet potato`,
+          'Broccoli & green beans',
+          'Small side salad'
+        ]
+      },
+      {
+        name: 'Chicken Stir-Fry',
+        items: [
+          `${Math.round(protein/7)}oz chicken breast`,
+          `${Math.round(carbs/45)}g jasmine rice`,
+          'Mixed stir-fry vegetables',
+          'Low-sodium soy sauce'
+        ]
+      },
+      {
+        name: 'Baked Cod & Veggies',
+        items: [
+          `${Math.round(protein/5)}oz cod fillet`,
+          `${Math.round(carbs/30)}g roasted potatoes`,
+          'Asparagus & Brussels sprouts',
+          'Lemon & herbs'
+        ]
+      }
+    ]
+  };
+  
+  // Select a random example for this meal
+  const mealExamples = examples[mealType];
+  const selectedExample = mealExamples[Math.floor(Math.random() * mealExamples.length)];
+  
+  let html = `<div class="meal-example-title">Example: ${selectedExample.name}</div>`;
+  selectedExample.items.forEach(item => {
+    html += `<div class="meal-food-item">${item}</div>`;
+  });
+  
+  return html;
+}
+
+function saveResults() {
+  const results = {
+    bmr: document.getElementById('bmr').textContent,
+    tdee: document.getElementById('tdee').textContent,
+    target: document.getElementById('target').textContent,
+    protein: document.getElementById('protein-grams').textContent,
+    carbs: document.getElementById('carbs-grams').textContent,
+    fat: document.getElementById('fat-grams').textContent,
+    date: new Date().toLocaleDateString()
+  };
+  
+  localStorage.setItem('macrofit-results', JSON.stringify(results));
+  
+  alert('✅ Results saved! Your macros are stored locally and will persist between sessions.');
+}
+
+function shareResults() {
+  const bmr = document.getElementById('bmr').textContent;
+  const tdee = document.getElementById('tdee').textContent;
+  const target = document.getElementById('target').textContent;
+  const protein = document.getElementById('protein-grams').textContent;
+  const carbs = document.getElementById('carbs-grams').textContent;
+  const fat = document.getElementById('fat-grams').textContent;
+  
+  const text = `My MacroFit Results:\n\nBMR: ${bmr}\nTDEE: ${tdee}\nTarget: ${target}\n\nMacros:\n• Protein: ${protein}\n• Carbs: ${carbs}\n• Fat: ${fat}`;
+  
+  if (navigator.share) {
+    navigator.share({
+      title: 'My MacroFit Results',
+      text: text
+    });
+  } else {
+    navigator.clipboard.writeText(text);
+    alert('📋 Results copied to clipboard!');
+  }
+}
+
+// Load saved results on page load
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('macrofit-results');
+  if (saved) {
+    const results = JSON.parse(saved);
+    console.log('Previous results found from ' + results.date);
+  }
+});
+</script>
+
+</body>
+</html>
