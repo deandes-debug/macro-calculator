@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free macro calculator and nutrition tracking tools. Calculate your personalized macros for weight loss, muscle gain, or maintenance in seconds.">
+<meta name="keywords" content="macro calculator, macros, nutrition, calorie calculator, diet, fitness, weight loss, muscle gain">
+<title>MacroFitCalc - Free Macro Calculator & Nutrition Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #FF6B35;
+  --primary-dark: #E55A2B;
+  --secondary: #004E89;
+  --accent: #FFD23F;
+  --success: #06D6A0;
+  --bg: #FFFFFF;
+  --bg-alt: #F8F9FA;
+  --text: #1A1A1A;
+  --text-light: #666666;
+  --border: #E0E0E0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+  background: var(--bg);
+}
+
+/* Header/Nav */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  padding: 1rem 0;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--primary);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--primary);
+}
+
+.cta-btn {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.cta-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+/* Hero Section */
+.hero {
+  margin-top: 80px;
+  padding: 100px 20px 80px;
+  background: linear-gradient(135deg, #FFF5F0 0%, #FFFFFF 100%);
+  text-align: center;
+}
+
+.hero-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 8vw, 5rem);
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+
+.hero-highlight {
+  color: var(--primary);
+}
+
+.hero p {
+  font-size: 1.25rem;
+  color: var(--text-light);
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--text);
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  display: inline-block;
+  border: 2px solid var(--border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.trust-badges {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trust-badge strong {
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+/* Features Section */
+.features {
+  padding: 80px 20px;
+  background: var(--bg);
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  color: var(--text);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.section-header p {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background: var(--bg-alt);
+  padding: 2.5rem;
+  border-radius: 16px;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.feature-card p {
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+/* How It Works */
+.how-it-works {
+  padding: 80px 20px;
+  background: var(--bg-alt);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.step {
+  text-align: center;
+  position: relative;
+}
+
+.step-number {
+  width: 60px;
+  height: 60px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  margin: 0 auto 1.5rem;
+}
+
+.step h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.step p {
+  color: var(--text-light);
+}
+
+/* Email Capture */
+.email-capture {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  text-align: center;
+}
+
+.email-capture h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.email-capture p {
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+}
+
+.email-form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.email-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.email-submit {
+  background: var(--text);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.email-submit:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.privacy-note {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* Testimonials */
+.testimonials {
+  padding: 80px 20px;
+  background: var(--bg);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.testimonial-card {
+  background: var(--bg-alt);
+  padding: 2rem;
+  border-radius: 16px;
+  border-left: 4px solid var(--primary);
+}
+
+.testimonial-text {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.author-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.author-info h4 {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.author-info p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* Footer */
+.footer {
+  background: var(--text);
+  color: white;
+  padding: 60px 20px 30px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-section h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Ad Zone Placeholders */
+.ad-zone {
+  background: var(--bg-alt);
+  border: 2px dashed var(--border);
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-light);
+  border-radius: 8px;
+  margin: 2rem 0;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .hero {
+    padding: 60px 20px 40px;
+  }
+  
+  .email-form {
+    flex-direction: column;
+  }
+  
+  .email-input {
+    width: 100%;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-container,
+.feature-card,
+.step,
+.testimonial-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.feature-card:nth-child(2) { animation-delay: 0.1s; }
+.feature-card:nth-child(3) { animation-delay: 0.2s; }
+.step:nth-child(2) { animation-delay: 0.1s; }
+.step:nth-child(3) { animation-delay: 0.2s; }
+.step:nth-child(4) { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- Header/Navigation -->
+<header class="header">
+  <div class="nav-container">
+    <a href="index.html" class="logo">MACROFITCALC</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="calculator.html">Calculator</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="calculator.html" class="cta-btn">Get Started Free</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-toggle">☰</button>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-container">
+    <h1>Calculate Your Perfect <span class="hero-highlight">Macros</span> in Seconds</h1>
+    <p>Get personalized protein, carb, and fat targets based on your goals. Free, science-backed, and trusted by thousands.</p>
+    <div class="hero-cta">
+      <a href="calculator.html" class="btn-primary">Calculate My Macros</a>
+      <a href="about.html" class="btn-secondary">Learn How It Works</a>
+    </div>
+    <div class="trust-badges">
+      <div class="trust-badge">
+        <span>✓</span>
+        <span><strong>100% Free</strong> Forever</span>
+      </div>
+      <div class="trust-badge">
+        <span>✓</span>
+        <span><strong>Science-Based</strong> Formula</span>
+      </div>
+      <div class="trust-badge">
+        <span>✓</span>
+        <span><strong>10,000+</strong> Users</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Everything You Need to Hit Your Goals</h2>
+      <p>Powerful features designed to make nutrition tracking simple and effective</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Personalized Targets</h3>
+        <p>Get macro targets calculated specifically for your body type, activity level, and fitness goals using proven scientific formulas.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚖️</span>
+        <h3>Multiple Goal Options</h3>
+        <p>Whether you're cutting, bulking, or maintaining, we've got custom calorie adjustments and macro splits for every goal.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🍽️</span>
+        <h3>Sample Meal Plans</h3>
+        <p>Get instant meal ideas with exact portions to hit your macros. Real food examples you can actually prepare.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <h3>Visual Breakdown</h3>
+        <p>See your macros displayed in easy-to-understand charts and percentages. Know exactly what to eat every day.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💪</span>
+        <h3>Evidence-Based</h3>
+        <p>Uses the Mifflin-St Jeor equation and industry-standard macro ratios backed by nutritional science research.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📱</span>
+        <h3>Works Everywhere</h3>
+        <p>Mobile-friendly design means you can calculate and check your macros from any device, anywhere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works">
+  <div class="section-container">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p>Get your personalized macro targets in 4 simple steps</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Enter Your Stats</h3>
+        <p>Age, weight, height, sex, and activity level</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Choose Your Goal</h3>
+        <p>Weight loss, muscle gain, or maintenance</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Select Macro Split</h3>
+        <p>Balanced, high-protein, keto, or custom</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Get Your Plan</h3>
+        <p>Instant results with meal examples</p>
+      </div>
+    </div>
+    
+    <!-- SAMPLE RESULTS PREVIEW -->
+    <div style="max-width: 600px; margin: 3rem auto 0; background: var(--bg-alt); padding: 2rem; border-radius: 16px; border: 2px solid var(--border);">
+      <h3 style="text-align: center; margin-bottom: 1.5rem; font-size: 1.3rem;">Example Results:</h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="text-align: center; padding: 1rem; background: white; border-radius: 8px;">
+          <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">BMR</div>
+          <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary);">1,847</div>
+          <div style="font-size: 0.85rem; color: #666;">cal/day</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; background: white; border-radius: 8px;">
+          <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">TDEE</div>
+          <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary);">2,863</div>
+          <div style="font-size: 0.85rem; color: #666;">cal/day</div>
+        </div>
+        <div style="text-align: center; padding: 1rem; background: white; border-radius: 8px;">
+          <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">Target</div>
+          <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary);">2,363</div>
+          <div style="font-size: 0.85rem; color: #666;">cal/day</div>
+        </div>
+      </div>
+      <div style="background: white; padding: 1.5rem; border-radius: 8px;">
+        <div style="font-weight: 600; margin-bottom: 1rem; color: #333;">Daily Macro Targets:</div>
+        <div style="margin-bottom: 0.75rem; color: #666;">Protein: <strong style="color: var(--primary);">177g</strong> (708 cal)</div>
+        <div style="margin-bottom: 0.75rem; color: #666;">Carbs: <strong style="color: var(--primary);">236g</strong> (944 cal)</div>
+        <div style="margin-bottom: 0; color: #666;">Fat: <strong style="color: var(--primary);">79g</strong> (711 cal)</div>
+      </div>
+      <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--text-light); font-style: italic;">+ Sample meal plan with exact portions</p>
+    </div>
+    
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="calculator.html" class="btn-primary">Start Calculating Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- Email Capture -->
+<section class="email-capture">
+  <div class="section-container">
+    <h2>Get Free Nutrition Tips</h2>
+    <p>Join 5,000+ people getting weekly macro tips, recipes, and fitness advice</p>
+    <form class="email-form" action="#" method="post">
+      <input type="email" class="email-input" placeholder="Enter your email" required>
+      <button type="submit" class="email-submit">Subscribe Free</button>
+    </form>
+    <p class="privacy-note">We respect your privacy. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials">
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Trusted by Thousands</h2>
+      <p>Real results from real people</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Used the calculator to set up my first cut. The macro breakdown matched exactly what my coach recommended. Lost 15lbs in 3 months while keeping all my strength gains."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">JS</div>
+          <div class="author-info">
+            <h4>Jessica S.</h4>
+            <p>Lost 15lbs | Brisbane, QLD</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Finally understand why I wasn't gaining weight - I was 500 calories short! The meal examples made it easy to hit my targets. Up 8lbs in 4 months, mostly muscle."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">MR</div>
+          <div class="author-info">
+            <h4>Mike R.</h4>
+            <p>Gained 8lbs muscle | Sydney, NSW</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Love that it shows the actual formulas (Mifflin-St Jeor). Numbers matched MyFitnessPal and my RD's calculations. Finally a free calculator that's transparent about the math."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">LT</div>
+          <div class="author-info">
+            <h4>Lauren T.</h4>
+            <p>Triathlete | Melbourne, VIC</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>MacroFitCalc</h3>
+      <p>Free macro calculator and nutrition tools to help you reach your fitness goals.</p>
+    </div>
+    <div class="footer-section">
+      <h3>Tools</h3>
+      <ul class="footer-links">
+        <li><a href="calculator.html">Macro Calculator</a></li>
+        <li><a href="blog.html">Nutrition Blog</a></li>
+        <li><a href="about.html">How It Works</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Company</h3>
+      <ul class="footer-links">
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Resources</h3>
+      <ul class="footer-links">
+        <li><a href="#">Macro Guide</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Nutrition Tips</a></li>
+        <li><a href="#">Meal Plans</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 MacroFitCalc. All rights reserved.</p>
+    <p style="margin-top: 10px; font-size: 0.85rem; opacity: 0.8;">As an Amazon Associate, MacroFitCalc earns from qualifying purchases.</p>
+  </div>
+</footer>
+
+</body>
+</html>
