@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Macro Results</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <img src="assets/logo.png" alt="MacroFitCalc Logo" class="logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="sales.html">Starter Pack</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="results-section">
+      <h1>Your Daily Macro Targets</h1>
+      <div class="macro-cards">
+        <div class="card"><img src="assets/icons/calories.png"><h3>Calories</h3><p id="calories"></p></div>
+        <div class="card"><img src="assets/icons/protein.png"><h3>Protein</h3><p id="protein"></p></div>
+        <div class="card"><img src="assets/icons/carbs.png"><h3>Carbs</h3><p id="carbs"></p></div>
+        <div class="card"><img src="assets/icons/fat.png"><h3>Fat</h3><p id="fat"></p></div>
+      </div>
+      <a href="sales.html" class="btn">Turn This Into a 4-Week Plan → $19–$49</a>
+
+      <h3>Recommended Tools</h3>
+      <div class="affiliate-tools">
+        <a href="#">Macro App</a>
+        <a href="#">Food Scale</a>
+        <a href="#">Protein Powder</a>
+      </div>
+
+      <p><strong>Disclaimer:</strong> Educational purposes only.</p>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('calories').textContent = sessionStorage.getItem('calories');
+    document.getElementById('protein').textContent = sessionStorage.getItem('protein') + " g";
+    document.getElementById('carbs').textContent = sessionStorage.getItem('carbs') + " g";
+    document.getElementById('fat').textContent = sessionStorage.getItem('fat') + " g";
+  </script>
+</body>
+</html>
