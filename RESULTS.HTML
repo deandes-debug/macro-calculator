@@ -5,32 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Macro Results</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>Your Estimated Daily Macros</h1>
+    <img src="assets/logo.png" alt="MacroFitCalc Logo" class="logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="sales.html">Starter Pack</a>
+    </nav>
   </header>
 
   <main>
-    <section id="results">
-      <table>
-        <tr><td>Calories:</td><td id="calories"></td></tr>
-        <tr><td>Protein:</td><td id="protein"></td></tr>
-        <tr><td>Carbs:</td><td id="carbs"></td></tr>
-        <tr><td>Fat:</td><td id="fat"></td></tr>
-      </table>
+    <section class="results-section">
+      <h1>Your Daily Macro Targets</h1>
+      <div class="macro-cards">
+        <div class="card">
+          <h3>Calories</h3>
+          <p id="calories"></p>
+        </div>
+        <div class="card">
+          <h3>Protein</h3>
+          <p id="protein"></p>
+        </div>
+        <div class="card">
+          <h3>Carbs</h3>
+          <p id="carbs"></p>
+        </div>
+        <div class="card">
+          <h3>Fat</h3>
+          <p id="fat"></p>
+        </div>
+      </div>
+      <a href="sales.html" class="btn">Turn This Into a 4-Week Plan → $19–$49</a>
 
-      <p>Want a 4-week structured macro plan built around these numbers?</p>
-      <a href="sales.html" class="btn">Get My Starter Pack</a>
+      <h3>Recommended Tools</h3>
+      <div class="affiliate-tools">
+        <a href="#">Macro Tracking App</a>
+        <a href="#">Food Scale</a>
+        <a href="#">Protein Powder</a>
+      </div>
 
-      <h3>Tools to make tracking easier:</h3>
-      <ul>
-        <li><a href="#">Macro Tracking App (Affiliate)</a></li>
-        <li><a href="#">Food Scale (Affiliate)</a></li>
-        <li><a href="#">Protein Powder (Affiliate)</a></li>
-      </ul>
-
-      <p><strong>Disclaimer:</strong> Educational purposes only. Not personalised medical advice.</p>
+      <p><strong>Disclaimer:</strong> Educational purposes only. Not medical advice.</p>
     </section>
   </main>
 
