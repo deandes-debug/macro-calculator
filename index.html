@@ -3,105 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc - Free Macro Calculator</title>
+    <title>MacroFitCalc | Professional Macro Planning & Biometrics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Space+Mono:wght@400;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'DM Sans', sans-serif; background: linear-gradient(165deg,#0A1929 0%,#1E3A5F 50%,#2D5A7B 100%); color: #1E293B; line-height: 1.6; min-height: 100vh; }
-        .mono { font-family: 'Space Mono', monospace; }
-        .handwritten { font-family: 'Caveat', cursive; }
-        .glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
-        .gradient-text { background: linear-gradient(135deg,#0066FF,#00D4AA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .macro-bar { height: 12px; background: #E2E8F0; border-radius: 100px; overflow: hidden; }
-        .macro-fill { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); width: 0; }
-        .macro-fill.protein { background: linear-gradient(90deg,#EF4444,#DC2626); }
-        .macro-fill.carbs { background: linear-gradient(90deg,#3B82F6,#2563EB); }
-        .macro-fill.fats { background: linear-gradient(90deg,#F59E0B,#D97706); }
-        .input-field { width: 100%; padding: 0.875rem 1.125rem; border: 2px solid #E2E8F0; border-radius: 12px; font-weight: 600; transition: all 0.2s; background: white; }
-        .btn-primary { background: linear-gradient(135deg,#0066FF,#0052CC); color: white; box-shadow: 0 4px 14px rgba(0,102,255,0.4); border-radius: 12px; font-weight: 700; transition: all 0.2s; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,102,255,0.5); }
-        .loading { position: fixed; inset: 0; background: rgba(10,25,41,0.95); display: none; align-items: center; justify-content: center; z-index: 9999; }
-        .loading.active { display: flex; }
-        .pdf-mockup { background: #f8fafc; border: 3px solid #cbd5e1; border-radius: 12px; padding: 1.5rem; font-family: 'Space Mono', monospace; font-size: 0.75rem; position: relative; }
-        .pdf-mockup::before { content: 'PDF PREVIEW'; position: absolute; top: 0.5rem; right: 0.5rem; background: #ef4444; color: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-weight: 700; }
+        .glass { background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .gradient-text { background: linear-gradient(135deg,#0066FF,#00D4AA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-field { width: 100%; padding: 0.875rem; border: 2px solid #E2E8F0; border-radius: 12px; font-weight: 600; transition: all 0.2s; }
+        .input-field:focus { border-color: #0066FF; outline: none; ring: 4px rgba(0,102,255,0.1); }
+        .btn-action { background: linear-gradient(135deg,#0066FF,#0052CC); color: white; border-radius: 12px; font-weight: 700; transition: all 0.2s; box-shadow: 0 4px 14px rgba(0,102,255,0.4); }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,102,255,0.5); }
+        .pdf-preview { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; position: relative; }
     </style>
 </head>
-<body>
-    <div id="loading" class="loading"><div class="text-center"><p id="loading-text" class="text-white text-lg font-bold mono">Calculating...</p></div></div>
+<body class="py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-black text-white mb-4 tracking-tight">MacroFitCalc<span class="text-blue-400">.</span></h1>
+            <p class="text-blue-100 text-lg">Precision nutrition engineering for high-performers.</p>
+        </header>
 
-    <div class="min-h-screen py-12 px-4">
-        <div class="max-w-7xl mx-auto">
-            <header class="text-center mb-10">
-                <h1 class="text-5xl md:text-6xl font-black text-white mono mb-4">MacroFitCalc</h1>
-                <p class="text-blue-100">Free macro tool based on the <a href="https://pubmed.ncbi.nlm.nih.gov/15883556/" target="_blank" class="underline">Mifflin-St Jeor equation</a></p>
-                <p class="text-sm text-blue-200 mt-2">Built by Alex Chen, Developer</p>
-            </header>
-
-            <div class="max-w-4xl mx-auto mb-10">
-                <div class="bg-amber-100 border-l-4 border-amber-500 p-4 rounded-r-xl text-center">
-                    <p class="font-bold text-gray-900 text-sm">⚠️ Educational Tool — Not Medical Advice</p>
-                </div>
-            </div>
-
-            <div class="glass rounded-3xl p-6 md:p-10 mb-16">
-                <div class="grid lg:grid-cols-2 gap-10">
-                    <div class="space-y-4">
-                        <h2 class="text-2xl font-black mb-6">Calculate Your Macros</h2>
+        <div class="glass rounded-3xl p-8 md:p-12 mb-16 max-w-5xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">Methodology</p>
+                        <p class="text-sm text-blue-800">Utilizing the <a href="https://pubmed.ncbi.nlm.nih.gov/15883556/" target="_blank" class="underline font-bold">Mifflin-St Jeor Equation</a>, validated as the industry gold-standard for TDEE estimation.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="age" class="input-field" placeholder="Age">
+                        <select id="gender" class="input-field"><option value="male">Male</option><option value="female">Female</option></select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
                         <input type="number" id="weight" class="input-field" placeholder="Weight (kg)">
                         <input type="number" id="height" class="input-field" placeholder="Height (cm)">
-                        <input type="number" id="age" class="input-field" placeholder="Age">
-                        <select id="activity" class="input-field">
-                            <option value="1.2">Sedentary</option>
-                            <option value="1.55" selected>Moderate Activity</option>
-                        </select>
-                        <select id="goal" class="input-field">
-                            <option value="fat-loss">Fat Loss</option>
-                            <option value="maintenance" selected>Maintain Weight</option>
-                        </select>
-                        <button onclick="calculate()" class="w-full btn-primary p-4">Calculate (Free)</button>
                     </div>
+                    <select id="activity" class="input-field">
+                        <option value="1.2">Sedentary (Office job)</option>
+                        <option value="1.55">Moderate (3-5 days/week)</option>
+                        <option value="1.725">High Intensity (Daily)</option>
+                    </select>
+                    <button onclick="runCalc()" class="w-full btn-action p-4 text-lg">Generate Profile</button>
+                </div>
 
-                    <div id="results">
-                        <h2 class="text-2xl font-black mb-6">Your Results</h2>
-                        <div class="text-center p-8 border-2 border-blue-100 rounded-2xl mb-6">
-                            <p class="text-sm font-bold text-gray-500 uppercase">Daily Calories</p>
-                            <p id="calories" class="text-6xl font-black gradient-text">2200</p>
-                        </div>
-                        <div class="space-y-4" id="macro-display">
-                            </div>
+                <div id="results-area" class="flex flex-col justify-center text-center">
+                    <div class="p-8 border-2 border-blue-50 rounded-2xl bg-slate-50/50">
+                        <h3 class="text-gray-500 font-bold uppercase text-xs mb-2">Target Daily Intake</h3>
+                        <p id="cal-out" class="text-7xl font-black gradient-text">0000</p>
+                        <p class="text-gray-400 text-sm mt-2 font-mono">Calories / 24hrs</p>
+                    </div>
+                    <div class="mt-6 grid grid-cols-3 gap-2">
+                        <div class="p-2 bg-red-50 rounded-lg"><p class="text-xs font-bold">PRO</p><p id="p-out" class="font-bold">0g</p></div>
+                        <div class="p-2 bg-blue-50 rounded-lg"><p class="text-xs font-bold">CHO</p><p id="c-out" class="font-bold">0g</p></div>
+                        <div class="p-2 bg-amber-50 rounded-lg"><p class="text-xs font-bold">FAT</p><p id="f-out" class="font-bold">0g</p></div>
                     </div>
                 </div>
             </div>
-
-            <div class="glass rounded-3xl p-8 mb-16 flex flex-col md:flex-row gap-8 items-center">
-                <div class="text-6xl">👨‍💻</div>
-                <div>
-                    <p class="text-gray-700 italic">"I built MacroFitCalc to be the tool I actually wanted: simple math and a shopping list that actually makes sense when you're standing in the grocery aisle."</p>
-                    <p class="text-2xl handwritten mt-4">— Alex Chen</p>
-                </div>
-            </div>
-
-            <footer class="text-center text-blue-200 text-sm space-x-6">
-                <a href="privacy.html" class="hover:text-white">Privacy</a>
-                <a href="terms.html" class="hover:text-white">Terms</a>
-                <p class="mt-4">© 2026 MacroFitCalc by Alex Chen</p>
-            </footer>
         </div>
+
+        <div class="max-w-4xl mx-auto mb-20 text-center">
+            <h2 class="text-3xl font-bold text-white mb-8">From Numbers to Nutrition</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-stretch">
+                <div class="glass p-8 rounded-2xl text-left">
+                    <h4 class="font-bold text-xl mb-4">Manual Path</h4>
+                    <p class="text-sm text-gray-600 mb-6">Spend 4-6 hours weekly meal prepping and ingredient tracking in apps. High risk of decision fatigue.</p>
+                    <button class="w-full p-3 border-2 border-blue-600 text-blue-600 font-bold rounded-xl">Self-Track (Free)</button>
+                </div>
+                <div class="glass p-8 rounded-2xl text-left border-2 border-blue-500">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="font-bold text-xl">The 4-Week System</h4>
+                        <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded">MOST POPULAR</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-6">28 unique meals. Aisle-by-aisle shopping lists. Calculated for your specific biometrics.</p>
+                    <a href="REPLACE_WITH_STRIPE_LINK" class="block w-full btn-action p-3 text-center">Get the Plan - $49</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto glass p-8 rounded-3xl flex flex-col md:flex-row items-center gap-8">
+            <div class="text-5xl bg-blue-100 p-6 rounded-full">👨‍💻</div>
+            <div>
+                <p class="text-gray-700 italic">"I built this because I was tired of fitness apps that felt like data-entry jobs. I wanted a developer-friendly approach to food: input stats, get output plan, execute."</p>
+                <p class="text-2xl handwritten mt-4 text-gray-900">— Alex Chen</p>
+            </div>
+        </div>
+
+        <footer class="mt-20 text-center space-x-6 text-blue-200 text-sm">
+            <a href="privacy.html" class="hover:text-white transition-colors">Privacy</a>
+            <a href="terms.html" class="hover:text-white transition-colors">Terms</a>
+            <p class="mt-4 opacity-50">© 2026 MacroFitCalc | Not Medical Advice.</p>
+        </footer>
     </div>
 
     <script>
-        function calculate() {
-            const loading = document.getElementById('loading');
-            loading.classList.add('active');
-            setTimeout(() => {
-                loading.classList.remove('active');
-                // Basic Calculation Logic
-                const w = +document.getElementById('weight').value || 75;
-                const h = +document.getElementById('height').value || 175;
-                const a = +document.getElementById('age').value || 30;
-                const bmr = (10 * w) + (6.25 * h) - (5 * a) + 5;
-                document.getElementById('calories').textContent = Math.round(bmr * 1.55);
-            }, 1200);
+        function runCalc() {
+            const w = +document.getElementById('weight').value;
+            const h = +document.getElementById('height').value;
+            const a = +document.getElementById('age').value;
+            const g = document.getElementById('gender').value;
+            const act = +document.getElementById('activity').value;
+
+            if(!w || !h || !a) return alert("Please input your biometrics.");
+
+            let bmr = (10 * w) + (6.25 * h) - (5 * a) + (g === 'male' ? 5 : -161);
+            let tdee = bmr * act;
+
+            document.getElementById('cal-out').textContent = Math.round(tdee);
+            document.getElementById('p-out').textContent = Math.round((tdee * 0.3) / 4) + 'g';
+            document.getElementById('c-out').textContent = Math.round((tdee * 0.4) / 4) + 'g';
+            document.getElementById('f-out').textContent = Math.round((tdee * 0.3) / 9) + 'g';
         }
     </script>
 </body>
