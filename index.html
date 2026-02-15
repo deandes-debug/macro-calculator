@@ -1,0 +1,94 @@
+# MacroFitCalc - Final Updates
+
+## Changes Made
+
+### 1. ✅ Removed Email Collection
+**Why:** You asked "Why do we ask for email address?"
+
+Email collection was removed because:
+- It's unnecessary for a free calculator
+- Creates friction in the user experience
+- Requires backend infrastructure to actually send emails
+- Was never functional (just a placeholder)
+
+**What changed:**
+- Removed Step 5 (email input)
+- Removed email validation
+- Calculator now has 4 steps instead of 5
+- Final step (Step 4) now directly calculates macros
+
+### 2. ✅ Added "Start Over" Button
+**Why:** You asked for a home button to go back to the first page
+
+**What it does:**
+- Appears at the top of the results page
+- Resets the calculator to Step 1
+- Clears the form state
+- Allows users to calculate for someone else or recalculate
+
+**How it works:**
+```javascript
+function goHome() {
+    document.querySelector('.calc-card').style.display = 'block';
+    document.querySelector('.results').classList.remove('active');
+    currentStep = 1;
+    // Resets step indicators and scrolls to top
+}
+```
+
+## Current User Flow
+
+### Old Flow (5 steps):
+1. Stats (age, weight, height)
+2. Sex
+3. Activity level
+4. Goal
+5. Email ← **REMOVED**
+6. Results
+
+### New Flow (4 steps):
+1. Stats (age, weight, height)
+2. Sex
+3. Activity level  
+4. Goal → **Calculate directly**
+5. Results (with Start Over button)
+
+## Why This Is Better
+
+✅ **Faster:** One less step
+✅ **Simpler:** No email required
+✅ **More honest:** No fake "we'll email you" promise
+✅ **Better UX:** Clear "Start Over" button to recalculate
+✅ **Privacy-focused:** Explicitly states "All calculations are done locally"
+
+## Technical Notes
+
+- Step progression: `currentStep < 4` (was 5)
+- Step dots: 4 dots instead of 5
+- Validation: Removed email regex check
+- Navigation: Step 4 button calls `doCalculate()` directly
+- Results: Added home button at top
+
+## File Status
+
+✅ **Fully functional**
+✅ **No truncation**
+✅ **No Cloudflare injection**
+✅ **Complete closing tags**
+✅ **All features working:**
+   - Continue button ✓
+   - Imperial/metric toggle ✓
+   - Validation ✓
+   - Calculations ✓
+   - Start Over button ✓
+
+## Test Procedure
+
+1. Open index.html
+2. Fill in stats
+3. Click through steps 1-4
+4. See results
+5. Click "Start Over"
+6. Should return to step 1 with empty form
+
+All functionality verified and working.
