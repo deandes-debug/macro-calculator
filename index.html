@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacroFitCalc - Science-Based Macro Calculator by Alex Chen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: linear-gradient(165deg, #0A1929 0%, #1E3A5F 50%, #2D5A7B 100%); color: #1E293B; line-height: 1.6; }
+        .mono { font-family: 'Space Mono', monospace; }
+        .glass { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
+        .gradient-text { background: linear-gradient(135deg, #0066FF, #00D4AA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .macro-bar { height: 12px; background: #E2E8F0; border-radius: 100px; overflow: hidden; }
+        .macro-fill { height: 100%; transition: width 1s cubic-bezier(0.4,0,0.2,1); width: 0; }
+        .macro-fill.protein { background: linear-gradient(90deg, #EF4444, #DC2626); }
+        .macro-fill.carbs { background: linear-gradient(90deg, #3B82F6, #2563EB); }
+        .macro-fill.fats { background: linear-gradient(90deg, #F59E0B, #D97706); }
+        .input-field { width: 100%; padding: 0.875rem 1.125rem; border: 2px solid #E2E8F0; border-radius: 12px; font-size: 1rem; font-weight: 600; transition: all 0.2s; background: white; }
+        .input-field:focus { outline: none; border-color: #0066FF; box-shadow: 0 0 0 4px rgba(0,102,255,0.1); }
+        .btn { padding: 1rem 2rem; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s; border: none; width: 100%; }
+        .btn-primary { background: linear-gradient(135deg, #0066FF, #0052CC); color: white; box-shadow: 0 4px 14px rgba(0,102,255,0.4); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,102,255,0.5); }
+        .card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s; }
+        .loading { position: fixed; inset: 0; background: rgba(10,25,41,0.95); display: none; align-items: center; justify-content: center; z-index: 9999; }
+        .loading.active { display: flex; }
+        .spinner { width: 60px; height: 60px; border: 4px solid rgba(0,102,255,0.2); border-top-color: #0066FF; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .tooltip { position: relative; display: inline-block; cursor: help; }
+        .tooltip-text { visibility: hidden; opacity: 0; background: #1E293B; color: white; padding: 0.75rem 1rem; border-radius: 8px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); width: 240px; font-size: 0.8125rem; transition: all 0.2s; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+        .badge { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 100px; font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; background: rgba(0,102,255,0.1); color: #0066FF; border: 1px solid rgba(0,102,255,0.3); }
+        .avatar-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: white; margin: 0 auto 1rem; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-up { animation: fadeUp 0.6s ease-out forwards; }
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .pdf-preview { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; font-family: 'Space Mono', monospace; font-size: 0.75rem; line-height: 1.6; }
+        @media (max-width: 768px) {
+            .tooltip-text { width: 200px; }
+            .btn { padding: 0.875rem 1.5rem; font-size: 0.9375rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">
+        <div class="text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <p id="loading-text" class="text-white text-lg font-bold mono">Calculating...</p>
+        </div>
+    </div>
+
+    <div class="min-h-screen py-8 md:py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            
+            <header class="text-center mb-10 fade-up">
+                <div class="inline-flex items-center gap-3 mb-6">
+                    <div style="width:56px;height:56px;background:linear-gradient(135deg,#0066FF,#00D4AA);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 8px 24px rgba(0,102,255,0.4);">🎯</div>
+                    <h1 class="text-4xl md:text-6xl font-black text-white mono">MacroFitCalc</h1>
+                </div>
+                <p class="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto mb-6">
+                    Free macro calculator using the <a href="https://pubmed.ncbi.nlm.nih.gov/15883556/" target="_blank" class="text-blue-300 underline hover:text-white">Mifflin-St Jeor equation</a>—validated by 2,000+ studies
+                </p>
+                <div class="flex flex-wrap justify-center gap-3 mb-6">
+                    <span class="badge">Free Forever</span>
+                    <span class="badge">Evidence-Based</span>
+                </div>
+                <p class="text-sm text-blue-200">Built by <strong>Alex Chen</strong>, developer • Lost 35 lbs using this formula</p>
+            </header>
+
+            <div class="max-w-4xl mx-auto mb-10 fade-up delay-1">
+                <div style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-left:4px solid #F59E0B;padding:1rem;border-radius:12px;text-align:center;">
+                    <p class="font-bold text-gray-900 text-sm">⚠️ Educational Tool — Not Medical Advice</p>
+                    <p class="text-gray-800 text-xs mt-1">Consult a doctor before starting any diet. <a href="terms.html" class="text-blue-700 underline font-semibold">Full disclaimer</a></p>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-6 md:p-10 mb-16 fade-up delay-2">
+                <div class="grid lg:grid-cols-2 gap-10">
+                    
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-black mb-6">Calculate Your Macros</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Gender</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button id="btn-male" class="input-field text-center cursor-pointer" onclick="setGender('male')" style="border-color:#0066FF;">Male</button>
+                                    <button id="btn-female" class="input-field text-center cursor-pointer" onclick="setGender('female')">Female</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Age</label>
+                                <input type="number" id="age" class="input-field" value="30" min="15" max="100">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Weight</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <input type="number" id="weight" class="input-field col-span-2" value="75">
+                                    <select id="weight-unit" class="input-field">
+                                        <option value="kg">kg</option>
+                                        <option value="lb">lb</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Height</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <input type="number" id="height" class="input-field col-span-2" value="175">
+                                    <select id="height-unit" class="input-field">
+                                        <option value="cm">cm</option>
+                                        <option value="in">in</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Activity Level</label>
+                                <select id="activity" class="input-field text-sm">
+                                    <option value="1.2">Sedentary (desk job)</option>
+                                    <option value="1.375">Light (1-3x/week)</option>
+                                    <option value="1.55" selected>Moderate (3-5x/week)</option>
+                                    <option value="1.725">Very Active (6-7x/week)</option>
+                                    <option value="1.9">Athlete (2x daily)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Goal</label>
+                                <select id="goal" class="input-field">
+                                    <option value="fat-loss">Fat Loss (-20%)</option>
+                                    <option value="maintenance" selected>Maintain</option>
+                                    <option value="muscle-gain">Build Muscle (+15%)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Macro Split</label>
+                                <select id="preference" class="input-field text-sm">
+                                    <option value="balanced" selected>Balanced (40C/30P/30F)</option>
+                                    <option value="high-protein">High Protein (35C/35P/30F)</option>
+                                    <option value="low-carb">Low Carb (20C/35P/45F)</option>
+                                </select>
+                            </div>
+                            <div class="pt-2">
+                                <label class="flex items-start gap-3 cursor-pointer text-sm">
+                                    <input type="checkbox" id="consent" class="mt-1" required>
+                                    <span>Browser-only calculation. <a href="privacy.html" class="text-blue-600 underline">Privacy</a></span>
+                                </label>
+                            </div>
+                            <button onclick="calculate()" class="btn btn-primary">Calculate (Free)</button>
+                        </div>
+                    </div>
+
+                    <div id="results">
+                        <h2 class="text-2xl md:text-3xl font-black mb-6">Your Results</h2>
+                        <div style="background:linear-gradient(135deg,rgba(0,102,255,0.1),rgba(0,212,170,0.1));border:2px solid rgba(0,102,255,0.2);border-radius:1.5rem;padding:1.5rem;text-align:center;margin-bottom:1.5rem;">
+                            <p class="text-sm font-bold text-gray-600 uppercase mb-2">Daily Target</p>
+                            <p id="calories" class="text-5xl md:text-6xl font-black gradient-text mb-2">2200</p>
+                            <p class="text-sm text-gray-600 mb-3">calories/day</p>
+                            <div id="math-breakdown" class="text-xs text-gray-600 mono bg-white bg-opacity-60 p-3 rounded-lg"></div>
+                        </div>
+
+                        <div class="space-y-4 mb-6">
+                            <div class="card" style="border:2px solid #E2E8F0;">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-2xl">🥩</span>
+                                        <span class="font-bold text-sm md:text-base">Protein</span>
+                                        <div class="tooltip">
+                                            <span class="text-sm text-gray-500 cursor-help">ⓘ</span>
+                                            <span class="tooltip-text" id="protein-tip">Preserves muscle</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p id="protein-g" class="text-xl md:text-2xl font-black">165g</p>
+                                        <p id="protein-cal" class="text-xs text-red-600 font-semibold">660 cal</p>
+                                    </div>
+                                </div>
+                                <div class="macro-bar"><div id="protein-bar" class="macro-fill protein"></div></div>
+                                <p id="protein-pct" class="text-xs text-gray-600 mt-2">30%</p>
+                            </div>
+
+                            <div class="card" style="border:2px solid #E2E8F0;">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-2xl">🍚</span>
+                                        <span class="font-bold text-sm md:text-base">Carbs</span>
+                                        <div class="tooltip">
+                                            <span class="text-sm text-gray-500 cursor-help">ⓘ</span>
+                                            <span class="tooltip-text" id="carbs-tip">Primary fuel</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p id="carbs-g" class="text-xl md:text-2xl font-black">220g</p>
+                                        <p id="carbs-cal" class="text-xs text-blue-600 font-semibold">880 cal</p>
+                                    </div>
+                                </div>
+                                <div class="macro-bar"><div id="carbs-bar" class="macro-fill carbs"></div></div>
+                                <p id="carbs-pct" class="text-xs text-gray-600 mt-2">40%</p>
+                            </div>
+
+                            <div class="card" style="border:2px solid #E2E8F0;">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-2xl">🥑</span>
+                                        <span class="font-bold text-sm md:text-base">Fats</span>
+                                        <div class="tooltip">
+                                            <span class="text-sm text-gray-500 cursor-help">ⓘ</span>
+                                            <span class="tooltip-text" id="fats-tip">Hormones & vitamins</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p id="fats-g" class="text-xl md:text-2xl font-black">73g</p>
+                                        <p id="fats-cal" class="text-xs text-yellow-600 font-semibold">660 cal</p>
+                                    </div>
+                                </div>
+                                <div class="macro-bar"><div id="fats-bar" class="macro-fill fats"></div></div>
+                                <p id="fats-pct" class="text-xs text-gray-600 mt-2">30%</p>
+                            </div>
+                        </div>
+
+                        <div id="insights"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="action-guide" style="display:none;" class="glass rounded-3xl p-6 md:p-10 mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-center mb-8">What's Inside the Meal Plans</h2>
+                
+                <div class="pdf-preview mb-6">
+                    <p class="font-bold mb-3">📄 Sample from 4-Week Plan (Day 3)</p>
+                    <p class="text-gray-700">BREAKFAST (7:00 AM)</p>
+                    <p class="text-gray-600">• 3 eggs scrambled</p>
+                    <p class="text-gray-600">• 2 slices whole wheat toast</p>
+                    <p class="text-gray-600">• 1 cup spinach</p>
+                    <p class="text-blue-600 font-bold mt-1">→ 420 cal | 28g P | 35g C | 18g F</p>
+                    <p class="text-gray-700 mt-4">SHOPPING LIST (Organized by Aisle)</p>
+                    <p class="text-gray-600">📍 PRODUCE</p>
+                    <p class="text-gray-600 ml-4">□ Spinach (2 bags)</p>
+                    <p class="text-gray-600 ml-4">□ Broccoli (3 heads)</p>
+                    <p class="text-gray-600">🥩 PROTEINS</p>
+                    <p class="text-gray-600 ml-4">□ Eggs (18-pack)</p>
+                    <p class="text-gray-600 ml-4">□ Chicken breast (3 lbs)</p>
+                </div>
+
+                <div id="meal-guide"></div>
+                <div id="pain-reality"></div>
+                <div id="path-fork"></div>
+            </div>
+
+            <div class="glass rounded-3xl p-6 md:p-10 mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-center mb-8">Meet Alex Chen</h2>
+                <div class="grid md:grid-cols-5 gap-8 items-center">
+                    <div class="md:col-span-2 text-center">
+                        <div style="width:160px;height:160px;background:linear-gradient(135deg,#0066FF,#00D4AA);border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:64px;">👨‍💻</div>
+                        <h3 class="text-2xl font-black">Alex Chen</h3>
+                        <p class="text-gray-600">Developer, Sydney</p>
+                    </div>
+                    <div class="md:col-span-3">
+                        <p class="text-gray-700 leading-relaxed mb-4">I'm a software developer, not a nutritionist. In 2023, I was 35 lbs overweight and confused by contradictory diet advice. I discovered the Mifflin-St Jeor equation in a research paper, built this calculator for myself, and lost the weight in 6 months.</p>
+                        <p class="text-gray-700 leading-relaxed mb-4">The calculator is free forever. I sell structured meal plans for people who want to skip the meal-planning headache. That's it.</p>
+                        <p class="text-sm text-gray-600 italic">📧 alex@macrofitcalc.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-white text-center mb-10">What Users Say</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="card">
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#F59E0B,#EF4444);">MR</div>
+                        <p class="text-sm text-gray-700 mb-4">"Was under-eating at 1,800 cal. Calculator showed 2,200. Used the plan, hit 180g protein daily. Down 14 lbs in 8 weeks."</p>
+                        <p class="font-bold text-gray-900">Mark R.</p>
+                        <p class="text-xs text-gray-600">Software Engineer, London</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6);">SL</div>
+                        <p class="text-sm text-gray-700 mb-4">"Aisle-organized lists save me 20 min/week. Zero food waste. Lost 8 lbs first month and saved money."</p>
+                        <p class="font-bold text-gray-900">Sarah L.</p>
+                        <p class="text-xs text-gray-600">Busy Mom, Austin TX</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#10B981,#059669);">DK</div>
+                        <p class="text-sm text-gray-700 mb-4">"Restaurant guide is clutch for work travel. Eat at Chipotle, track macros, stay on track. Down 12 lbs."</p>
+                        <p class="font-bold text-gray-900">David K.</p>
+                        <p class="text-xs text-gray-600">Consultant, Toronto</p>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="text-center space-y-4 pb-12">
+                <div class="flex justify-center gap-4 md:gap-6 text-sm flex-wrap">
+                    <a href="privacy.html" class="text-blue-300 hover:text-white transition-colors">Privacy</a>
+                    <a href="terms.html" class="text-blue-300 hover:text-white transition-colors">Terms</a>
+                    <a href="mailto:support@macrofitcalc.com" class="text-blue-300 hover:text-white transition-colors">Contact</a>
+                </div>
+                <p class="text-blue-200 text-sm">© 2024 MacroFitCalc • Built by Alex Chen</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        const state = {gender:'male',age:30,weight:75,height:175,weightUnit:'kg',heightUnit:'cm',activity:1.55,goal:'maintenance',preference:'balanced'};
+        
+        function setGender(g) {
+            state.gender = g;
+            document.getElementById('btn-male').style.borderColor = g === 'male' ? '#0066FF' : '#E2E8F0';
+            document.getElementById('btn-female').style.borderColor = g === 'female' ? '#0066FF' : '#E2E8F0';
+        }
+        
+        function calculate() {
+            if (!document.getElementById('consent').checked) { alert('Please agree to terms'); return; }
+            
+            state.age = +document.getElementById('age').value;
+            state.weight = +document.getElementById('weight').value;
+            state.height = +document.getElementById('height').value;
+            state.weightUnit = document.getElementById('weight-unit').value;
+            state.heightUnit = document.getElementById('height-unit').value;
+            state.activity = +document.getElementById('activity').value;
+            state.goal = document.getElementById('goal').value;
+            state.preference = document.getElementById('preference').value;
+            
+            const loading = document.getElementById('loading');
+            const txt = document.getElementById('loading-text');
+            loading.classList.add('active');
+            
+            const steps = ['Analyzing...','Calculating BMR...','Optimizing...'];
+            let i = 0;
+            const int = setInterval(() => { if (i < steps.length) txt.textContent = steps[i++]; }, 500);
+            
+            setTimeout(() => {
+                clearInterval(int);
+                loading.classList.remove('active');
+                updateResults();
+                document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+                document.getElementById('action-guide').style.display = 'block';
+            }, 1600);
+        }
+        
+        function updateResults() {
+            let wkg = state.weight, hcm = state.height;
+            if (state.weightUnit === 'lb') wkg *= 0.453592;
+            if (state.heightUnit === 'in') hcm *= 2.54;
+            
+            let bmr = state.gender === 'male' ? (10*wkg)+(6.25*hcm)-(5*state.age)+5 : (10*wkg)+(6.25*hcm)-(5*state.age)-161;
+            let tdee = bmr * state.activity;
+            
+            const goalMods = {'fat-loss':0.8,'maintenance':1.0,'muscle-gain':1.15};
+            const cals = tdee * goalMods[state.goal];
+            
+            const prefs = {
+                'balanced':{protein:30,carbs:40,fats:30},
+                'high-protein':{protein:35,carbs:35,fats:30},
+                'low-carb':{protein:35,carbs:20,fats:45}
+            };
+            const split = prefs[state.preference];
+            
+            const pCal = cals*(split.protein/100), cCal = cals*(split.carbs/100), fCal = cals*(split.fats/100);
+            const pG = Math.round(pCal/4), cG = Math.round(cCal/4), fG = Math.round(fCal/9);
+            
+            document.getElementById('calories').textContent = Math.round(cals);
+            document.getElementById('math-breakdown').innerHTML = `BMR: ${Math.round(bmr)} × Activity: ${state.activity} × Goal: ${goalMods[state.goal]} = ${Math.round(cals)} cal`;
+            
+            document.getElementById('protein-g').textContent = pG+'g';
+            document.getElementById('protein-cal').textContent = Math.round(pCal)+' cal';
+            document.getElementById('protein-pct').textContent = split.protein+'% of calories';
+            document.getElementById('carbs-g').textContent = cG+'g';
+            document.getElementById('carbs-cal').textContent = Math.round(cCal)+' cal';
+            document.getElementById('carbs-pct').textContent = split.carbs+'% of calories';
+            document.getElementById('fats-g').textContent = fG+'g';
+            document.getElementById('fats-cal').textContent = Math.round(fCal)+' cal';
+            document.getElementById('fats-pct').textContent = split.fats+'% of calories';
+            
+            setTimeout(() => {
+                document.getElementById('protein-bar').style.width = split.protein+'%';
+                document.getElementById('carbs-bar').style.width = split.carbs+'%';
+                document.getElementById('fats-bar').style.width = split.fats+'%';
+            }, 100);
+            
+            const perKg = (pG/wkg).toFixed(1);
+            document.getElementById('protein-tip').textContent = `${perKg}g/kg preserves muscle`;
+            document.getElementById('carbs-tip').textContent = `${split.carbs}% for energy`;
+            document.getElementById('fats-tip').textContent = `${split.fats}% for hormones`;
+            
+            let insight = '';
+            if (state.goal === 'fat-loss') {
+                const loss = Math.abs((tdee-cals)*7/7700).toFixed(1);
+                insight = `<div style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);border-left:4px solid #10B981;padding:1.25rem;border-radius:12px;"><p class="font-bold text-green-900 mb-2">📉 Fat Loss Strategy</p><p class="text-sm text-gray-800">Expect ~${loss}kg/week loss. Prioritize protein.</p></div>`;
+            } else if (state.goal === 'muscle-gain') {
+                insight = `<div style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);border-left:4px solid #10B981;padding:1.25rem;border-radius:12px;"><p class="font-bold text-green-900 mb-2">💪 Muscle Gain</p><p class="text-sm text-gray-800">Expect 0.25-0.5kg/week. Train 3-5x/week.</p></div>`;
+            } else {
+                insight = `<div style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE);border-left:4px solid #0066FF;padding:1.25rem;border-radius:12px;"><p class="font-bold text-blue-900 mb-2">⚖️ Maintenance</p><p class="text-sm text-gray-800">Weight stable. Use as baseline.</p></div>`;
+            }
+            document.getElementById('insights').innerHTML = insight;
+            
+            const perMeal = {p:Math.round(pG/4),c:Math.round(cG/4),f:Math.round(fG/4)};
+            document.getElementById('meal-guide').innerHTML = `
+                <div style="background:linear-gradient(135deg,#F8FAFC,#E2E8F0);padding:1.5rem;border-radius:1rem;margin-bottom:1.5rem;">
+                    <h3 class="text-xl font-bold mb-4">Per Meal Breakdown (4 meals/day)</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-xl text-center">
+                            <p class="text-2xl md:text-3xl font-black">${perMeal.p}g</p>
+                            <p class="text-xs mb-2">Protein</p>
+                            <p class="text-xs text-gray-500">150g chicken OR 6oz salmon</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl text-center">
+                            <p class="text-2xl md:text-3xl font-black">${perMeal.c}g</p>
+                            <p class="text-xs mb-2">Carbs</p>
+                            <p class="text-xs text-gray-500">1 cup rice OR 1 potato</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl text-center">
+                            <p class="text-2xl md:text-3xl font-black">${perMeal.f}g</p>
+                            <p class="text-xs mb-2">Fats</p>
+                            <p class="text-xs text-gray-500">1.5 tbsp oil OR ½ avocado</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('pain-reality').innerHTML = `
+                <div style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-left:4px solid #F59E0B;padding:1.5rem;border-radius:12px;margin-bottom:1.5rem;">
+                    <p class="font-bold text-amber-900 mb-3">⚠️ Why Manual Tracking Fails</p>
+                    <div class="space-y-2 text-sm text-gray-800">
+                        <p><strong>Week 1:</strong> Perfect tracking</p>
+                        <p><strong>Week 2:</strong> Googling macros at 9pm</p>
+                        <p><strong>Week 3:</strong> Same meal 5x - out of ideas</p>
+                        <p><strong>Week 4:</strong> Quit - too exhausting</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('path-fork').innerHTML = `
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card" style="border:2px solid #E2E8F0;">
+                        <h3 class="text-lg md:text-xl font-bold mb-3">🆓 Track Myself</h3>
+                        <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                            <li>• Use MyFitnessPal</li>
+                            <li>• Manual meal planning</li>
+                            <li>• ~45-60 min/week</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="alert('Use MyFitnessPal: ${Math.round(cals)}cal, ${pG}g P, ${cG}g C, ${fG}g F')" style="background:white;color:#0066FF;border:2px solid #0066FF;">Continue Free</button>
+                    </div>
+                    <div class="card" style="border:2px solid #0066FF;">
+                        <h3 class="text-lg md:text-xl font-bold mb-3">⚡ Get Meal Plans</h3>
+                        <p class="text-xs text-gray-600 mb-3"><strong>4-Week has 28 UNIQUE meals</strong> (not the same 7 meals repeated)</p>
+                        <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                            <li>• Pre-calculated to your macros</li>
+                            <li>• Shopping by aisle</li>
+                            <li>• 0 min/week planning</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="alert('Meal plans: $19 (1-week test) or $49 (4-week variety system)')">View Plans</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        window.addEventListener('DOMContentLoaded', updateResults);
+    </script>
+</body>
+</html>
