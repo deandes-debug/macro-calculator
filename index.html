@@ -3,117 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc | Professional Macro Planning & Biometrics</title>
+    <title>MacroFitCalc | Precision Nutrition Engineering</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Space+Mono:wght@400;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'DM Sans', sans-serif; background: linear-gradient(165deg,#0A1929 0%,#1E3A5F 50%,#2D5A7B 100%); color: #1E293B; line-height: 1.6; min-height: 100vh; }
-        .glass { background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-        .gradient-text { background: linear-gradient(135deg,#0066FF,#00D4AA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .input-field { width: 100%; padding: 0.875rem; border: 2px solid #E2E8F0; border-radius: 12px; font-weight: 600; transition: all 0.2s; }
-        .input-field:focus { border-color: #0066FF; outline: none; ring: 4px rgba(0,102,255,0.1); }
-        .btn-action { background: linear-gradient(135deg,#0066FF,#0052CC); color: white; border-radius: 12px; font-weight: 700; transition: all 0.2s; box-shadow: 0 4px 14px rgba(0,102,255,0.4); }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,102,255,0.5); }
-        .pdf-preview { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; position: relative; }
+        :root { --brand: #0066FF; --accent: #00D4AA; }
+        body { font-family: 'DM Sans', sans-serif; background: #0A1929; color: #f8fafc; line-height: 1.6; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .hero-gradient { background: radial-gradient(circle at top right, rgba(0,102,255,0.15), transparent), radial-gradient(circle at bottom left, rgba(0,212,170,0.1), transparent); }
+        .gradient-text { background: linear-gradient(135deg, var(--brand), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-dark { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 12px; padding: 0.8rem; width: 100%; transition: 0.3s; }
+        .input-dark:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.2); }
+        .btn-premium { background: linear-gradient(135deg, var(--brand), #0052CC); color: white; padding: 1rem; border-radius: 12px; font-weight: 700; transition: 0.3s; box-shadow: 0 10px 20px rgba(0, 102, 255, 0.3); }
+        .btn-premium:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(0, 102, 255, 0.4); }
+        .macro-card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.05); }
+        .loader-ring { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--brand); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="py-12 px-4">
-    <div class="max-w-6xl mx-auto">
-        <header class="text-center mb-12">
-            <h1 class="text-5xl font-black text-white mb-4 tracking-tight">MacroFitCalc<span class="text-blue-400">.</span></h1>
-            <p class="text-blue-100 text-lg">Precision nutrition engineering for high-performers.</p>
+<body class="hero-gradient">
+    <div id="loader" class="fixed inset-0 bg-[#0A1929] z-50 hidden flex-items-center justify-center flex-col">
+        <div class="loader-ring mb-4"></div>
+        <p id="loader-status" class="font-mono text-sm tracking-widest text-blue-400 uppercase">Analyzing Biometrics...</p>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-12">
+        <header class="text-center mb-16">
+            <div class="inline-block px-4 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-bold uppercase tracking-widest mb-4">Science-Backed Performance</div>
+            <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">MacroFitCalc<span class="text-blue-500">.</span></h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">Engineering precise nutritional targets using the <a href="https://pubmed.ncbi.nlm.nih.gov/15883556/" target="_blank" class="text-blue-400 underline hover:text-white">Mifflin-St Jeor Protocol</a>.</p>
         </header>
 
-        <div class="glass rounded-3xl p-8 md:p-12 mb-16 max-w-5xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                        <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">Methodology</p>
-                        <p class="text-sm text-blue-800">Utilizing the <a href="https://pubmed.ncbi.nlm.nih.gov/15883556/" target="_blank" class="underline font-bold">Mifflin-St Jeor Equation</a>, validated as the industry gold-standard for TDEE estimation.</p>
-                    </div>
-                    
+        <main class="grid lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-5 glass p-8 rounded-3xl">
+                <h2 class="text-2xl font-bold mb-8 flex items-center gap-2">
+                    <span class="text-blue-500">01</span> Input Parameters
+                </h2>
+                <div class="space-y-5">
                     <div class="grid grid-cols-2 gap-4">
-                        <input type="number" id="age" class="input-field" placeholder="Age">
-                        <select id="gender" class="input-field"><option value="male">Male</option><option value="female">Female</option></select>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase mb-2 block">Gender</label>
+                            <select id="gender" class="input-dark"><option value="male">Male</option><option value="female">Female</option></select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase mb-2 block">Age</label>
+                            <input type="number" id="age" class="input-dark" value="30">
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <input type="number" id="weight" class="input-field" placeholder="Weight (kg)">
-                        <input type="number" id="height" class="input-field" placeholder="Height (cm)">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase mb-2 block">Weight (kg)</label>
+                            <input type="number" id="weight" class="input-dark" value="75">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase mb-2 block">Height (cm)</label>
+                            <input type="number" id="height" class="input-dark" value="175">
+                        </div>
                     </div>
-                    <select id="activity" class="input-field">
-                        <option value="1.2">Sedentary (Office job)</option>
-                        <option value="1.55">Moderate (3-5 days/week)</option>
-                        <option value="1.725">High Intensity (Daily)</option>
-                    </select>
-                    <button onclick="runCalc()" class="w-full btn-action p-4 text-lg">Generate Profile</button>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500 uppercase mb-2 block">Activity Coefficient</label>
+                        <select id="activity" class="input-dark">
+                            <option value="1.2">Sedentary (1.2x)</option>
+                            <option value="1.55" selected>Active (1.55x)</option>
+                            <option value="1.9">Extreme (1.9x)</option>
+                        </select>
+                    </div>
+                    <button onclick="calculate()" class="w-full btn-premium mt-4">Generate Engineering Profile</button>
+                    <p class="text-[10px] text-center text-slate-500 mt-4 uppercase tracking-widest">Calculations processed locally • <a href="privacy.html" class="underline">Privacy Secure</a></p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-8">
+                <div class="glass p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                    <h2 class="text-2xl font-bold mb-8 flex items-center gap-2">
+                        <span class="text-blue-500">02</span> Bio-Output
+                    </h2>
+                    <div class="flex flex-col md:flex-row items-center gap-12">
+                        <div class="text-center md:text-left">
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Total Daily Energy Expenditure</p>
+                            <p id="cals" class="text-7xl font-black gradient-text tracking-tighter">0000</p>
+                            <p class="text-slate-400 font-mono text-sm">kcal / day</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 w-full">
+                            <div class="macro-card flex justify-between items-center">
+                                <div><span class="text-red-500 font-bold">PRO</span> <span class="text-slate-500 text-xs ml-2">30%</span></div>
+                                <div id="p-g" class="text-xl font-black">0g</div>
+                            </div>
+                            <div class="macro-card flex justify-between items-center">
+                                <div><span class="text-blue-400 font-bold">CHO</span> <span class="text-slate-500 text-xs ml-2">40%</span></div>
+                                <div id="c-g" class="text-xl font-black">0g</div>
+                            </div>
+                            <div class="macro-card flex justify-between items-center">
+                                <div><span class="text-emerald-400 font-bold">FAT</span> <span class="text-slate-500 text-xs ml-2">30%</span></div>
+                                <div id="f-g" class="text-xl font-black">0g</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="results-area" class="flex flex-col justify-center text-center">
-                    <div class="p-8 border-2 border-blue-50 rounded-2xl bg-slate-50/50">
-                        <h3 class="text-gray-500 font-bold uppercase text-xs mb-2">Target Daily Intake</h3>
-                        <p id="cal-out" class="text-7xl font-black gradient-text">0000</p>
-                        <p class="text-gray-400 text-sm mt-2 font-mono">Calories / 24hrs</p>
-                    </div>
-                    <div class="mt-6 grid grid-cols-3 gap-2">
-                        <div class="p-2 bg-red-50 rounded-lg"><p class="text-xs font-bold">PRO</p><p id="p-out" class="font-bold">0g</p></div>
-                        <div class="p-2 bg-blue-50 rounded-lg"><p class="text-xs font-bold">CHO</p><p id="c-out" class="font-bold">0g</p></div>
-                        <div class="p-2 bg-amber-50 rounded-lg"><p class="text-xs font-bold">FAT</p><p id="f-out" class="font-bold">0g</p></div>
+                <div class="glass p-8 rounded-3xl">
+                    <h2 class="text-xl font-bold mb-6">Aisle-by-Aisle Shopping Preview</h2>
+                    <div class="bg-slate-900/50 p-6 rounded-xl font-mono text-xs border border-white/5 space-y-2">
+                        <p class="text-blue-400 font-bold">[ AISLE 4: PROTEINS ]</p>
+                        <p class="text-slate-400">□ 2.4kg Lean Beef Minst (5% fat)</p>
+                        <p class="text-slate-400">□ 1.8kg Chicken Breast (Skinless)</p>
+                        <p class="text-blue-400 font-bold mt-4">[ AISLE 1: PRODUCE ]</p>
+                        <p class="text-slate-400">□ 3x Spinach (Bulk Bags)</p>
+                        <p class="text-slate-400">□ 5x Large Sweet Potatoes</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
 
-        <div class="max-w-4xl mx-auto mb-20 text-center">
-            <h2 class="text-3xl font-bold text-white mb-8">From Numbers to Nutrition</h2>
-            <div class="grid md:grid-cols-2 gap-8 items-stretch">
-                <div class="glass p-8 rounded-2xl text-left">
-                    <h4 class="font-bold text-xl mb-4">Manual Path</h4>
-                    <p class="text-sm text-gray-600 mb-6">Spend 4-6 hours weekly meal prepping and ingredient tracking in apps. High risk of decision fatigue.</p>
-                    <button class="w-full p-3 border-2 border-blue-600 text-blue-600 font-bold rounded-xl">Self-Track (Free)</button>
-                </div>
-                <div class="glass p-8 rounded-2xl text-left border-2 border-blue-500">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="font-bold text-xl">The 4-Week System</h4>
-                        <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded">MOST POPULAR</span>
-                    </div>
-                    <p class="text-sm text-gray-600 mb-6">28 unique meals. Aisle-by-aisle shopping lists. Calculated for your specific biometrics.</p>
-                    <a href="REPLACE_WITH_STRIPE_LINK" class="block w-full btn-action p-3 text-center">Get the Plan - $49</a>
-                </div>
+        <section class="mt-20 glass p-10 rounded-[40px] flex flex-col md:flex-row items-center gap-12 border-blue-500/20">
+            <div class="w-32 h-32 bg-gradient-to-tr from-blue-600 to-emerald-400 rounded-2xl rotate-3 flex items-center justify-center text-5xl">👨‍💻</div>
+            <div class="flex-1">
+                <p class="text-xl text-slate-300 italic mb-6">"I didn't want another subscription. I wanted a developer-focused solution to my diet: Input biometrics, get the mathematical output, and a shopping list organized by store aisle. No fluff."</p>
+                <p class="text-2xl font-bold text-white">Alex Chen</p>
+                <p class="text-blue-400 text-sm font-mono">Principal Developer & Founder</p>
             </div>
-        </div>
+        </section>
 
-        <div class="max-w-3xl mx-auto glass p-8 rounded-3xl flex flex-col md:flex-row items-center gap-8">
-            <div class="text-5xl bg-blue-100 p-6 rounded-full">👨‍💻</div>
-            <div>
-                <p class="text-gray-700 italic">"I built this because I was tired of fitness apps that felt like data-entry jobs. I wanted a developer-friendly approach to food: input stats, get output plan, execute."</p>
-                <p class="text-2xl handwritten mt-4 text-gray-900">— Alex Chen</p>
+        <footer class="mt-20 pt-10 border-t border-white/5 text-center text-slate-500 text-sm">
+            <div class="flex justify-center gap-8 mb-6">
+                <a href="privacy.html" class="hover:text-white">Privacy Protocol</a>
+                <a href="terms.html" class="hover:text-white">Legal Terms</a>
             </div>
-        </div>
-
-        <footer class="mt-20 text-center space-x-6 text-blue-200 text-sm">
-            <a href="privacy.html" class="hover:text-white transition-colors">Privacy</a>
-            <a href="terms.html" class="hover:text-white transition-colors">Terms</a>
-            <p class="mt-4 opacity-50">© 2026 MacroFitCalc | Not Medical Advice.</p>
+            <p>© 2026 MacroFitCalc • Built for Precision.</p>
         </footer>
     </div>
 
     <script>
-        function runCalc() {
-            const w = +document.getElementById('weight').value;
-            const h = +document.getElementById('height').value;
-            const a = +document.getElementById('age').value;
-            const g = document.getElementById('gender').value;
-            const act = +document.getElementById('activity').value;
+        function calculate() {
+            const l = document.getElementById('loader');
+            l.classList.remove('hidden'); l.classList.add('flex');
+            
+            setTimeout(() => {
+                const w = +document.getElementById('weight').value;
+                const h = +document.getElementById('height').value;
+                const a = +document.getElementById('age').value;
+                const g = document.getElementById('gender').value;
+                const act = +document.getElementById('activity').value;
 
-            if(!w || !h || !a) return alert("Please input your biometrics.");
+                let bmr = (10 * w) + (6.25 * h) - (5 * a) + (g === 'male' ? 5 : -161);
+                let tdee = Math.round(bmr * act);
 
-            let bmr = (10 * w) + (6.25 * h) - (5 * a) + (g === 'male' ? 5 : -161);
-            let tdee = bmr * act;
-
-            document.getElementById('cal-out').textContent = Math.round(tdee);
-            document.getElementById('p-out').textContent = Math.round((tdee * 0.3) / 4) + 'g';
-            document.getElementById('c-out').textContent = Math.round((tdee * 0.4) / 4) + 'g';
-            document.getElementById('f-out').textContent = Math.round((tdee * 0.3) / 9) + 'g';
+                document.getElementById('cals').textContent = tdee;
+                document.getElementById('p-g').textContent = Math.round((tdee * 0.3) / 4) + 'g';
+                document.getElementById('c-g').textContent = Math.round((tdee * 0.4) / 4) + 'g';
+                document.getElementById('f-g').textContent = Math.round((tdee * 0.3) / 9) + 'g';
+                
+                l.classList.add('hidden');
+            }, 1200);
         }
     </script>
 </body>
