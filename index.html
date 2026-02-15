@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacroFitCalc - Science-Based Macro Calculator</title>
+    <meta name="description" content="Calculate your daily macros using the evidence-based Mifflin-St Jeor equation. Free, accurate, and science-backed.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0D0D0D;
+            --bg-card: #161616;
+            --text: #FFFFFF;
+            --text-dim: #888888;
+            --accent: #FF3366;
+            --yellow: #FFD60A;
+            --green: #30D158;
+            --border: #2A2A2A;
+        }
+        
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        
+        body {
+            font-family: 'Bricolage Grotesque', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        header {
+            background: rgba(13, 13, 13, 0.95);
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+            text-decoration: none;
+        }
+        
+        .logo::before { content: '🔥 '; }
+        
+        nav {
+            display: flex;
+            gap: 24px;
+        }
+        
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        nav a:hover {
+            color: var(--text);
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: clamp(16px, 3vw, 20px);
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+        
+        .method-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+        
+        .method-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Calculator Card */
+        .calc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .step-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .step-dot {
+            width: 40px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .step-dot.active {
+            background: var(--accent);
+            width: 60px;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .question {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .question-sub {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+        
+        /* Unit Toggle */
+        .unit-toggle {
+            display: inline-flex;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 30px;
+        }
+        
+        .unit-toggle button {
+            padding: 8px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .unit-toggle button.active {
+            background: var(--accent);
+            color: white;
+        }
+        
+        /* Inputs */
+        .input-wrap {
+            margin-bottom: 24px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 20px;
+            font-weight: 700;
+            font-family: 'Space Mono', monospace;
+            transition: all 0.2s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        input.error {
+            border-color: var(--accent);
+        }
+        
+        /* Options */
+        .options {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .option {
+            padding: 20px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        
+        .option.selected {
+            border-color: var(--accent);
+            background: rgba(255, 51, 102, 0.05);
+        }
+        
+        .option input {
+            display: none;
+        }
+        
+        .option-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .option-desc {
+            font-size: 14px;
+            color: var(--text-dim);
+        }
+        
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-dim);
+            border: 2px solid var(--border);
+        }
+        
+        /* Results */
+        .results {
+            display: none;
+        }
+        
+        .results.active {
+            display: block;
+        }
+        
+        .receipt {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 40px;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border);
+        }
+        
+        .receipt-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .receipt-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .receipt-label {
+            color: var(--text-dim);
+            font-size: 14px;
+        }
+        
+        .receipt-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .receipt-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--border);
+        }
+        
+        .receipt-total .receipt-value {
+            font-size: 32px;
+            color: var(--yellow);
+        }
+        
+        .receipt-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+        
+        .receipt-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .receipt-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, #1A1A1A 0%, var(--bg-card) 100%);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .cta-section h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .price {
+            font-size: 56px;
+            font-weight: 800;
+            font-family: 'Space Mono', monospace;
+            color: var(--yellow);
+            margin: 20px 0;
+        }
+        
+        .cta-btn {
+            background: var(--accent);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* About Section */
+        .about-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px;
+            margin: 60px 0;
+        }
+        
+        .about-section h2 {
+            font-size: 36px;
+            margin-bottom: 24px;
+            font-weight: 800;
+        }
+        
+        .about-section h3 {
+            font-size: 24px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        
+        .about-section p {
+            color: var(--text-dim);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        
+        .about-section a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .about-section a:hover {
+            text-decoration: underline;
+        }
+        
+        .about-section ul {
+            margin: 16px 0 16px 24px;
+        }
+        
+        .about-section li {
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 80px;
+        }
+        
+        footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+            margin: 0 16px;
+            font-size: 14px;
+        }
+        
+        footer a:hover {
+            color: var(--text);
+        }
+        
+        .disclaimer {
+            margin-top: 24px;
+            font-size: 12px;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .calc-card,
+            .about-section,
+            .cta-section,
+            .receipt {
+                padding: 24px;
+            }
+            
+            .question {
+                font-size: 24px;
+            }
+            
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">MACROFITCALC</a>
+        <nav>
+            <a href="#about">About</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <div style="display: inline-block; padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px;">
+            ⚡ NO BS NUTRITION
+        </div>
+        <h1>The macro calculator that doesn't sugarcoat it</h1>
+        <p class="subtitle">Science-based. Brutally honest. Surprisingly helpful.</p>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer" class="method-link">
+            Uses the Mifflin-St Jeor equation (1990) →
+        </a>
+    </div>
+    
+    <div class="calc-card">
+        <div class="step-dots">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+        
+        <div class="form-step active" data-step="1">
+            <div class="question">Your stats</div>
+            <p class="question-sub">Don't lie. We'll know.</p>
+            
+            <div class="unit-toggle">
+                <button type="button" id="metricBtn" class="active">Metric</button>
+                <button type="button" id="imperialBtn">Imperial</button>
+            </div>
+            
+            <div class="input-wrap">
+                <label>Age</label>
+                <input type="number" id="age" min="15" max="100" placeholder="30">
+            </div>
+            
+            <div class="input-wrap">
+                <label id="weightLabel">Weight (kg)</label>
+                <input type="number" id="weight" min="30" max="500" step="0.1" placeholder="70.0">
+            </div>
+            
+            <div class="input-wrap">
+                <label id="heightLabel">Height (cm)</label>
+                <input type="number" id="height" min="100" max="250" placeholder="175">
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" onclick="goNext()">Continue →</button>
+            </div>
+        </div>
+        
+        <div class="form-step" data-step="2">
+            <div class="question">Biological sex</div>
+            <p class="question-sub">Affects your metabolism</p>
+            
+            <div class="options">
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="sex" value="male">
+                    <div class="option-title">Male</div>
+                    <div class="option-desc">Higher muscle mass = higher BMR</div>
+                </label>
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="sex" value="female">
+                    <div class="option-title">Female</div>
+                    <div class="option-desc">Different hormonal profile</div>
+                </label>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="goPrev()">← Back</button>
+                <button type="button" class="btn btn-primary" onclick="goNext()">Continue →</button>
+            </div>
+        </div>
+        
+        <div class="form-step" data-step="3">
+            <div class="question">Activity level</div>
+            <p class="question-sub">Be honest.</p>
+            
+            <div class="options">
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="activity" value="1.2">
+                    <div class="option-title">Sedentary</div>
+                    <div class="option-desc">Desk job, minimal exercise</div>
+                </label>
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="activity" value="1.375">
+                    <div class="option-title">Lightly Active</div>
+                    <div class="option-desc">Gym 1-3x/week</div>
+                </label>
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="activity" value="1.55">
+                    <div class="option-title">Moderately Active</div>
+                    <div class="option-desc">Gym 3-5x/week</div>
+                </label>
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="activity" value="1.725">
+                    <div class="option-title">Very Active</div>
+                    <div class="option-desc">Training 6-7x/week</div>
+                </label>
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="activity" value="1.9">
+                    <div class="option-title">Extremely Active</div>
+                    <div class="option-desc">Athlete / Physical job</div>
+                </label>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="goPrev()">← Back</button>
+                <button type="button" class="btn btn-primary" onclick="goNext()">Continue →</button>
+            </div>
+        </div>
+        
+        <div class="form-step" data-step="4">
+            <div class="question">Your goal</div>
+            <p class="question-sub">Pick one</p>
+            
+            <div class="options">
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="goal" value="deficit">
+                    <div class="option-title">Lose Fat</div>
+                    <div class="option-desc">20% deficit, high protein</div>
+                </label>
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="goal" value="maintenance">
+                    <div class="option-title">Maintain</div>
+                    <div class="option-desc">Balanced macros</div>
+                </label>
+                <label class="option" onclick="selectOption(this)">
+                    <input type="radio" name="goal" value="surplus">
+                    <div class="option-title">Build Muscle</div>
+                    <div class="option-desc">10% surplus, high carbs</div>
+                </label>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="goPrev()">← Back</button>
+                <button type="button" class="btn btn-primary" onclick="doCalculate()">Calculate My Macros →</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="results">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button type="button" class="btn btn-secondary" onclick="goHome()" style="max-width: 200px; margin: 0 auto;">← Start Over</button>
+        </div>
+        
+        <div class="receipt">
+            <div class="receipt-header">
+                <div class="receipt-title">YOUR MACROS</div>
+                <div style="font-size: 12px; color: var(--text-dim);" id="goalText"></div>
+            </div>
+            
+            <div class="receipt-line">
+                <span class="receipt-label">PROTEIN</span>
+                <span class="receipt-value" id="protein">0</span>
+            </div>
+            
+            <div class="receipt-line">
+                <span class="receipt-label">CARBS</span>
+                <span class="receipt-value" id="carbs">0</span>
+            </div>
+            
+            <div class="receipt-line">
+                <span class="receipt-label">FATS</span>
+                <span class="receipt-value" id="fats">0</span>
+            </div>
+            
+            <div class="receipt-total">
+                <div class="receipt-line">
+                    <span class="receipt-label">DAILY TOTAL</span>
+                    <span class="receipt-value" id="calories">0</span>
+                </div>
+            </div>
+            
+            <div class="receipt-footer">
+                Calculated using <a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">Mifflin-St Jeor (1990)</a><br>
+                Your TDEE: <span id="tdee">0</span> kcal
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <h3>Stop guessing portions</h3>
+            <p style="color: var(--text-dim); margin-bottom: 20px;">Knowing your macros is easy. Actually hitting them every day? That's the hard part.</p>
+            <div class="price">$49</div>
+            <p style="color: var(--text-dim); margin-bottom: 30px;">28-day personalized meal plan calculated to YOUR macros</p>
+            <a href="#" class="cta-btn">Get Your Meal Plan →</a>
+        </div>
+        
+        <div class="calc-card" style="margin-top: 40px;">
+            <div style="text-align: center;">
+                <h3 style="font-size: 24px; margin-bottom: 12px;">Want nutrition tips & exclusive offers?</h3>
+                <p style="color: var(--text-dim); margin-bottom: 30px;">Get science-based nutrition advice and early access to new meal plans. No spam, ever.</p>
+                
+                <div style="max-width: 500px; margin: 0 auto;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <input type="email" id="subscribeEmail" placeholder="your@email.com" style="flex: 1; min-width: 250px;">
+                        <button type="button" class="btn btn-primary" onclick="subscribe()" id="subscribeBtn" style="flex-shrink: 0;">Subscribe</button>
+                    </div>
+                    <div id="subscribeMessage" style="margin-top: 12px; font-size: 14px; display: none;"></div>
+                </div>
+                
+                <p style="font-size: 12px; color: var(--text-dim); margin-top: 16px;">
+                    We respect your privacy. Unsubscribe anytime. <a href="privacy.html" style="color: var(--accent);">Privacy Policy</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="about-section" id="about">
+        <h2>About This Calculator</h2>
+        <p>MacroFitCalc uses the <strong>Mifflin-St Jeor equation</strong>, one of the most accurate methods for estimating Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE).</p>
+        
+        <h3>Why Mifflin-St Jeor?</h3>
+        <p>A 1990 study published in the American Journal of Clinical Nutrition found the Mifflin-St Jeor equation to be more accurate than the older Harris-Benedict equation (1919). The study showed that Mifflin-St Jeor predicted within 10% of measured resting energy expenditure for most individuals.</p>
+        
+        <p><strong>Primary Reference:</strong> Mifflin MD, St Jeor ST, Hill LA, Scott BJ, Daugherty SA, Koh YO. <a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">A new predictive equation for resting energy expenditure in healthy individuals.</a> Am J Clin Nutr. 1990;51(2):241-7.</p>
+        
+        <h3>How We Calculate Macros</h3>
+        <p>Your macronutrient distribution varies based on your goal:</p>
+        <ul>
+            <li><strong>Weight Loss:</strong> 2.0g protein per kg bodyweight to preserve muscle during fat loss. Calories 20% below TDEE.</li>
+            <li><strong>Maintenance:</strong> 1.6g protein per kg bodyweight with balanced distribution. Calories match TDEE.</li>
+            <li><strong>Muscle Gain:</strong> 1.8g protein per kg bodyweight with higher carbs for training fuel. Calories 10% above TDEE.</li>
+        </ul>
+        
+        <p><strong>Important:</strong> This calculator provides estimates for educational purposes only. Individual nutritional needs vary based on metabolism, genetics, health conditions, and other factors. Always consult with a registered dietitian or healthcare provider before making significant dietary changes.</p>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="mailto:support@macrofitcalc.com">Contact</a>
+        
+        <p class="disclaimer">
+            All calculations are processed locally in your browser. No personal data is stored. This tool is for educational purposes only and is not a substitute for professional medical or nutritional advice.
+        </p>
+    </div>
+</footer>
+
+<script>
+let currentStep = 1;
+let isMetric = true;
+let hasToggled = false;
+
+// Unit toggle
+document.getElementById('metricBtn').addEventListener('click', function() {
+    if (isMetric) return;
+    
+    isMetric = true;
+    this.classList.add('active');
+    document.getElementById('imperialBtn').classList.remove('active');
+    
+    document.getElementById('weightLabel').textContent = 'Weight (kg)';
+    document.getElementById('heightLabel').textContent = 'Height (cm)';
+    
+    const weightEl = document.getElementById('weight');
+    const heightEl = document.getElementById('height');
+    
+    weightEl.min = '30';
+    weightEl.max = '500';
+    weightEl.placeholder = '70.0';
+    
+    heightEl.min = '100';
+    heightEl.max = '250';
+    heightEl.placeholder = '175';
+    
+    if (hasToggled) {
+        if (weightEl.value) weightEl.value = (parseFloat(weightEl.value) / 2.205).toFixed(1);
+        if (heightEl.value) heightEl.value = Math.round(parseFloat(heightEl.value) * 2.54);
+    }
+    
+    hasToggled = true;
+});
+
+document.getElementById('imperialBtn').addEventListener('click', function() {
+    if (!isMetric) return;
+    
+    isMetric = false;
+    this.classList.add('active');
+    document.getElementById('metricBtn').classList.remove('active');
+    
+    document.getElementById('weightLabel').textContent = 'Weight (lbs)';
+    document.getElementById('heightLabel').textContent = 'Height (inches)';
+    
+    const weightEl = document.getElementById('weight');
+    const heightEl = document.getElementById('height');
+    
+    weightEl.min = '66';
+    weightEl.max = '1100';
+    weightEl.placeholder = '154.0';
+    
+    heightEl.min = '39';
+    heightEl.max = '98';
+    heightEl.placeholder = '69';
+    
+    if (hasToggled) {
+        if (weightEl.value) weightEl.value = (parseFloat(weightEl.value) * 2.205).toFixed(1);
+        if (heightEl.value) heightEl.value = Math.round(parseFloat(heightEl.value) / 2.54);
+    }
+    
+    hasToggled = true;
+});
+
+// Option selection
+function selectOption(label) {
+    const radio = label.querySelector('input');
+    const name = radio.name;
+    
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+        r.closest('.option').classList.remove('selected');
+    });
+    
+    radio.checked = true;
+    label.classList.add('selected');
+}
+
+// Validation
+function validateStep(step) {
+    if (step === 1) {
+        const age = parseFloat(document.getElementById('age').value);
+        const weight = parseFloat(document.getElementById('weight').value);
+        const height = parseFloat(document.getElementById('height').value);
+        
+        const ageEl = document.getElementById('age');
+        const weightEl = document.getElementById('weight');
+        const heightEl = document.getElementById('height');
+        
+        let valid = true;
+        
+        if (!age || age < 15 || age > 100) {
+            ageEl.classList.add('error');
+            valid = false;
+        } else {
+            ageEl.classList.remove('error');
+        }
+        
+        const wMin = parseFloat(weightEl.min);
+        const wMax = parseFloat(weightEl.max);
+        if (!weight || weight < wMin || weight > wMax) {
+            weightEl.classList.add('error');
+            valid = false;
+        } else {
+            weightEl.classList.remove('error');
+        }
+        
+        const hMin = parseFloat(heightEl.min);
+        const hMax = parseFloat(heightEl.max);
+        if (!height || height < hMin || height > hMax) {
+            heightEl.classList.add('error');
+            valid = false;
+        } else {
+            heightEl.classList.remove('error');
+        }
+        
+        return valid;
+    }
+    
+    if (step === 2) return document.querySelector('input[name="sex"]:checked') !== null;
+    if (step === 3) return document.querySelector('input[name="activity"]:checked') !== null;
+    if (step === 4) return document.querySelector('input[name="goal"]:checked') !== null;
+    
+    return true;
+}
+
+// Navigation
+function goNext() {
+    if (!validateStep(currentStep)) return;
+    
+    if (currentStep < 4) {
+        document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+        currentStep++;
+        document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+        
+        document.querySelectorAll('.step-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i < currentStep);
+        });
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function goPrev() {
+    if (currentStep > 1) {
+        document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+        currentStep--;
+        document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+        
+        document.querySelectorAll('.step-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i < currentStep);
+        });
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// Calculate
+function doCalculate() {
+    let age = parseInt(document.getElementById('age').value);
+    let weight = parseFloat(document.getElementById('weight').value);
+    let height = parseFloat(document.getElementById('height').value);
+    const sex = document.querySelector('input[name="sex"]:checked').value;
+    const activity = parseFloat(document.querySelector('input[name="activity"]:checked').value);
+    const goal = document.querySelector('input[name="goal"]:checked').value;
+    
+    if (!isMetric) {
+        weight = weight / 2.205;
+        height = height * 2.54;
+    }
+    
+    let bmr = sex === 'male' 
+        ? (10 * weight) + (6.25 * height) - (5 * age) + 5
+        : (10 * weight) + (6.25 * height) - (5 * age) - 161;
+    
+    let tdee = bmr * activity;
+    let calories, proteinPerKg, goalText;
+    
+    if (goal === 'deficit') {
+        calories = tdee * 0.8;
+        proteinPerKg = 2.0;
+        goalText = 'Fat Loss Mode (20% deficit)';
+    } else if (goal === 'surplus') {
+        calories = tdee * 1.1;
+        proteinPerKg = 1.8;
+        goalText = 'Muscle Building (10% surplus)';
+    } else {
+        calories = tdee;
+        proteinPerKg = 1.6;
+        goalText = 'Maintenance Mode';
+    }
+    
+    const protein = Math.round(weight * proteinPerKg);
+    const proteinCals = protein * 4;
+    const remaining = calories - proteinCals;
+    const carbRatio = goal === 'deficit' ? 0.50 : goal === 'surplus' ? 0.64 : 0.57;
+    const carbs = Math.round((remaining * carbRatio) / 4);
+    const fats = Math.round((remaining * (1 - carbRatio)) / 9);
+    calories = Math.round(calories);
+    
+    document.getElementById('calories').textContent = calories + ' kcal';
+    document.getElementById('protein').textContent = protein + 'g';
+    document.getElementById('carbs').textContent = carbs + 'g';
+    document.getElementById('fats').textContent = fats + 'g';
+    document.getElementById('goalText').textContent = goalText;
+    document.getElementById('tdee').textContent = Math.round(tdee);
+    
+    document.querySelector('.calc-card').style.display = 'none';
+    document.querySelector('.results').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Reset to home
+function goHome() {
+    document.querySelector('.calc-card').style.display = 'block';
+    document.querySelector('.results').classList.remove('active');
+    
+    document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+    currentStep = 1;
+    document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+    
+    document.querySelectorAll('.step-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < currentStep);
+    });
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Subscribe
+function subscribe() {
+    const emailInput = document.getElementById('subscribeEmail');
+    const email = emailInput.value.trim();
+    const messageDiv = document.getElementById('subscribeMessage');
+    const btn = document.getElementById('subscribeBtn');
+    
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailInput.style.borderColor = 'var(--accent)';
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = 'var(--accent)';
+        messageDiv.textContent = 'Please enter a valid email address';
+        return;
+    }
+    
+    emailInput.style.borderColor = '';
+    btn.disabled = true;
+    btn.textContent = 'Subscribing...';
+    
+    setTimeout(() => {
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = 'var(--green)';
+        messageDiv.textContent = '✓ Subscribed! Check your email to confirm.';
+        
+        emailInput.value = '';
+        btn.disabled = false;
+        btn.textContent = 'Subscribed ✓';
+        btn.style.background = 'var(--green)';
+        
+        console.log('Email subscribed:', email);
+        
+        setTimeout(() => {
+            btn.textContent = 'Subscribe';
+            btn.style.background = '';
+        }, 3000);
+    }, 800);
+}
+</script>
+
+</body>
+</html>
