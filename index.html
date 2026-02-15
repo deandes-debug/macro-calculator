@@ -3,82 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacroFitCalc | Bio-Metric Precision</title>
+    <title>MacroFitCalc | Precision Biometrics</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #070B14; color: #f8fafc; }
+        :root { --accent: #00D1FF; --bg-dark: #050810; --glass: rgba(255, 255, 255, 0.03); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: #94a3b8; }
         .mono { font-family: 'Space Mono', monospace; }
-        .glass { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
-        .neon-blue { color: #00D1FF; text-shadow: 0 0 10px rgba(0, 209, 255, 0.3); }
-        .btn-premium { background: #00D1FF; color: #000; font-weight: 800; border-radius: 8px; transition: 0.3s; }
-        .btn-premium:hover { background: #fff; box-shadow: 0 0 20px rgba(0, 209, 255, 0.5); transform: translateY(-1px); }
-        .input-dark { background: #121826; border: 1px solid #2D3748; border-radius: 8px; color: #fff; padding: 12px; width: 100%; }
+        .text-white { color: #f8fafc; }
+        .text-accent { color: var(--accent); }
+        .glass { background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); }
+        .input-field { background: #0F172A; border: 1px solid #1E293B; border-radius: 8px; color: #fff; padding: 12px; transition: 0.2s; width: 100%; font-family: 'Space Mono', monospace; font-size: 0.9rem; }
+        .input-field:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px rgba(0, 209, 255, 0.1); }
+        .btn-glow { background: var(--accent); color: #000; font-weight: 800; border-radius: 8px; transition: 0.3s; box-shadow: 0 0 15px rgba(0, 209, 255, 0.2); text-transform: uppercase; letter-spacing: 0.05em; }
+        .btn-glow:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(0, 209, 255, 0.4); background: #fff; }
+        .stat-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 1rem; }
+        .animate-fade { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="p-4 md:p-12">
     <div class="max-w-6xl mx-auto">
-        <header class="mb-16 border-b border-white/10 pb-8">
-            <h1 class="text-4xl font-black tracking-tighter">MacroFitCalc<span class="neon-blue">.</span></h1>
-            <p class="text-slate-400 mono text-xs uppercase tracking-widest mt-2">Precision Engineering for Human Performance</p>
+        <header class="flex justify-between items-center mb-16 border-b border-white/5 pb-8">
+            <div>
+                <h1 class="text-3xl font-black tracking-tighter text-white">MacroFitCalc<span class="text-accent">.</span></h1>
+                <p class="mono text-[10px] uppercase tracking-[0.2em] text-slate-500 mt-2">v2.1_Stable // Engineering_Grade</p>
+            </div>
+            <div class="hidden md:block text-right">
+                <p class="text-[10px] mono text-slate-500 uppercase">Methodology</p>
+                <a href="https://pubmed.ncbi.nlm.nih.gov/15883556/" target="_blank" class="text-xs hover:text-accent transition underline underline-offset-4 text-slate-400">Mifflin-St Jeor Protocol</a>
+            </div>
         </header>
 
-        <div class="grid lg:grid-cols-2 gap-12">
-            <div class="glass p-8 rounded-2xl">
-                <h3 class="mono text-xs text-blue-400 uppercase mb-8 tracking-widest">[ 01_Biometric_Inputs ]</h3>
+        <main class="grid lg:grid-cols-2 gap-12 items-start">
+            <div class="glass p-8 rounded-2xl animate-fade" style="animation-delay: 0.1s;">
+                <h2 class="mono text-xs text-accent uppercase mb-8 tracking-widest">// 01_BIOMETRIC_DATA</h2>
                 <div class="space-y-6">
                     <div class="grid grid-cols-2 gap-4">
-                        <input type="number" id="age" class="input-dark" placeholder="Age">
-                        <select id="gender" class="input-dark"><option value="male">Male</option><option value="female">Female</option></select>
+                        <div><label class="text-[10px] uppercase font-bold text-slate-500 mb-2 block">Age</label><input type="number" id="age" class="input-field" placeholder="30" value="30"></div>
+                        <div><label class="text-[10px] uppercase font-bold text-slate-500 mb-2 block">Sex</label><select id="gender" class="input-field"><option value="male">Male</option><option value="female">Female</option></select></div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <input type="number" id="weight" class="input-dark" placeholder="Weight (kg)">
-                        <input type="number" id="height" class="input-dark" placeholder="Height (cm)">
+                        <div><label class="text-[10px] uppercase font-bold text-slate-500 mb-2 block">Weight (kg)</label><input type="number" id="weight" class="input-field" placeholder="75" value="75"></div>
+                        <div><label class="text-[10px] uppercase font-bold text-slate-500 mb-2 block">Height (cm)</label><input type="number" id="height" class="input-field" placeholder="175" value="175"></div>
                     </div>
-                    <select id="activity" class="input-dark">
-                        <option value="1.2">Sedentary (1.2x)</option>
-                        <option value="1.55" selected>Active (1.55x)</option>
-                    </select>
-                    <button onclick="calculate()" class="w-full btn-premium p-4">Generate Engineering Profile</button>
+                    <div>
+                        <label class="text-[10px] uppercase font-bold text-slate-500 mb-2 block">Activity Level</label>
+                        <select id="activity" class="input-field">
+                            <option value="1.2">Sedentary (1.2x)</option>
+                            <option value="1.55" selected>Moderate (1.55x)</option>
+                            <option value="1.9">Elite (1.9x)</option>
+                        </select>
+                    </div>
+                    <button onclick="runCalculation()" id="calcBtn" class="w-full btn-glow p-4 mt-4">Initialize Calculation</button>
+                    <p class="text-[10px] text-center mt-4 mono text-slate-600">PROCESSED LOCALLY • NO SERVER STORAGE</p>
                 </div>
             </div>
 
-            <div class="glass p-8 rounded-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 mono text-[10px] text-slate-700">v2.0_STABLE</div>
-                <h3 class="mono text-xs text-blue-400 uppercase mb-8 tracking-widest">[ 02_Bio_Output ]</h3>
-                <div class="text-center md:text-left">
-                    <p id="cals" class="text-8xl font-black tracking-tighter neon-blue">0000</p>
-                    <p class="mono text-slate-500 text-sm mt-2 uppercase tracking-widest">Target_Calories_Per_24H</p>
+            <div class="glass p-8 rounded-2xl min-h-[450px] flex flex-col animate-fade" style="animation-delay: 0.2s;">
+                <h2 class="mono text-xs text-accent uppercase mb-8 tracking-widest">// 02_ENGINEERED_OUTPUT</h2>
+                
+                <div id="resultPlaceholder" class="flex-1 flex flex-col items-center justify-center text-slate-700">
+                    <div class="w-16 h-16 border-2 border-slate-800 rounded-full flex items-center justify-center mb-4">
+                        <span class="mono text-2xl">?</span>
+                    </div>
+                    <p class="mono text-xs uppercase tracking-widest">Awaiting_Input_Stream...</p>
                 </div>
-                <div class="mt-12 grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
-                    <div><p class="mono text-[10px] text-slate-500 mb-1">PRO</p><p id="pro" class="font-bold text-xl">0g</p></div>
-                    <div><p class="mono text-[10px] text-slate-500 mb-1">CHO</p><p id="cho" class="font-bold text-xl">0g</p></div>
-                    <div><p class="mono text-[10px] text-slate-500 mb-1">FAT</p><p id="fat" class="font-bold text-xl">0g</p></div>
-                </div>
-            </div>
-        </div>
 
-        <div class="mt-12 glass p-8 rounded-2xl border-blue-500/20">
-            <h3 class="mono text-xs text-blue-400 uppercase mb-4 tracking-widest">[ 03_Actionable_Systems ]</h3>
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <p class="text-slate-400">The math is done. Now you need the execution. Our 4-Week System includes aisle-by-aisle shopping lists and 28 unique meals calculated for your bio-profile.</p>
-                <a href="https://buy.stripe.com/example" class="btn-premium p-4 text-center">Get the System - $49</a>
+                <div id="realResults" class="hidden flex-1 animate-fade">
+                    <div class="text-center mb-12">
+                        <p class="text-[10px] uppercase font-bold text-slate-500 mb-2">Target Daily Caloric Intake</p>
+                        <p id="calResult" class="text-7xl md:text-8xl font-black text-white tracking-tighter leading-none">0000</p>
+                        <p class="mono text-xs text-accent mt-2">kCal / 24h cycle</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="stat-card text-center">
+                            <p class="text-[10px] text-slate-400 font-bold mb-1">PROTEIN</p>
+                            <p id="proResult" class="text-xl font-bold text-white">0g</p>
+                            <div class="w-full h-1 bg-slate-800 mt-2 rounded-full overflow-hidden"><div class="h-full bg-white w-[30%]"></div></div>
+                        </div>
+                        <div class="stat-card text-center">
+                            <p class="text-[10px] text-slate-400 font-bold mb-1">CARBS</p>
+                            <p id="choResult" class="text-xl font-bold text-white">0g</p>
+                            <div class="w-full h-1 bg-slate-800 mt-2 rounded-full overflow-hidden"><div class="h-full bg-accent w-[40%]"></div></div>
+                        </div>
+                        <div class="stat-card text-center">
+                            <p class="text-[10px] text-slate-400 font-bold mb-1">FATS</p>
+                            <p id="fatResult" class="text-xl font-bold text-white">0g</p>
+                            <div class="w-full h-1 bg-slate-800 mt-2 rounded-full overflow-hidden"><div class="h-full bg-slate-500 w-[30%]"></div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
+
+        <section id="system" class="mt-24 mb-24 max-w-4xl mx-auto hidden animate-fade">
+            <div class="glass p-1 rounded-2xl">
+                <div class="grid md:grid-cols-2">
+                    <div class="p-8 md:p-10">
+                        <h3 class="font-bold text-xl text-white mb-4">Manual Tracking</h3>
+                        <ul class="space-y-4 text-sm text-slate-400 mb-8 mono">
+                            <li class="flex items-center gap-3"><span class="text-red-500">×</span> Guessing portions</li>
+                            <li class="flex items-center gap-3"><span class="text-red-500">×</span> "Decision Fatigue"</li>
+                            <li class="flex items-center gap-3"><span class="text-red-500">×</span> Inconsistent Macros</li>
+                        </ul>
+                        <p class="text-xs text-slate-500 uppercase tracking-widest">Result: High Failure Rate</p>
+                    </div>
+                    <div class="p-8 md:p-10 bg-white/5 rounded-xl border border-white/5 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-accent text-black px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Recommended</div>
+                        <h3 class="font-bold text-xl text-white mb-4">The 4-Week System</h3>
+                        <ul class="space-y-4 text-sm text-white mb-8 mono">
+                            <li class="flex items-center gap-3"><span class="text-accent">✓</span> 28 Days of Unique Meals</li>
+                            <li class="flex items-center gap-3"><span class="text-accent">✓</span> Aisle-by-Aisle Shopping List</li>
+                            <li class="flex items-center gap-3"><span class="text-accent">✓</span> Bio-Calculated for YOU</li>
+                        </ul>
+                        <a href="#" class="block w-full btn-glow p-4 text-center text-sm font-bold">Download System — $49</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="border-t border-white/10 pt-12 pb-12 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center font-bold text-white text-xs">AC</div>
+                <div>
+                    <p class="text-sm font-bold text-white">Alex Chen</p>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-widest">Principal Dev & Founder</p>
+                </div>
+            </div>
+            <div class="flex gap-8 text-[10px] uppercase tracking-widest text-slate-500">
+                <a href="privacy.html" class="hover:text-accent transition">Privacy</a>
+                <a href="terms.html" class="hover:text-accent transition">Terms</a>
+            </div>
+        </footer>
     </div>
+
     <script>
-        function calculate() {
-            const w = +document.getElementById('weight').value;
-            const h = +document.getElementById('height').value;
-            const a = +document.getElementById('age').value;
-            const g = document.getElementById('gender').value;
-            const act = +document.getElementById('activity').value;
-            let bmr = (10 * w) + (6.25 * h) - (5 * a) + (g === 'male' ? 5 : -161);
-            let tdee = Math.round(bmr * act);
-            document.getElementById('cals').innerText = tdee;
-            document.getElementById('pro').innerText = Math.round((tdee * 0.3) / 4) + 'g';
-            document.getElementById('cho').innerText = Math.round((tdee * 0.4) / 4) + 'g';
-            document.getElementById('fat').innerText = Math.round((tdee * 0.3) / 9) + 'g';
+        function runCalculation() {
+            const btn = document.getElementById('calcBtn');
+            const originalText = btn.innerText;
+            btn.innerText = "PROCESSING...";
+            
+            setTimeout(() => {
+                const w = +document.getElementById('weight').value;
+                const h = +document.getElementById('height').value;
+                const a = +document.getElementById('age').value;
+                const g = document.getElementById('gender').value;
+                const act = +document.getElementById('activity').value;
+
+                // Basic Logic
+                let bmr = (10 * w) + (6.25 * h) - (5 * a) + (g === 'male' ? 5 : -161);
+                let tdee = Math.round(bmr * act);
+
+                // Update UI
+                document.getElementById('resultPlaceholder').classList.add('hidden');
+                document.getElementById('realResults').classList.remove('hidden');
+                document.getElementById('system').classList.remove('hidden'); // Reveal sales section
+                
+                // Numbers
+                document.getElementById('calResult').innerText = tdee;
+                document.getElementById('proResult').innerText = Math.round((tdee * 0.3) / 4) + 'g';
+                document.getElementById('choResult').innerText = Math.round((tdee * 0.4) / 4) + 'g';
+                document.getElementById('fatResult').innerText = Math.round((tdee * 0.3) / 9) + 'g';
+                
+                btn.innerText = "RE-CALCULATE PROFILE";
+                
+                // Smooth scroll to results
+                document.getElementById('system').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            }, 800);
         }
     </script>
 </body>
